@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://bckaw12ogxpcg"]
+
+[ext_resource type="Texture2D" uid="uid://ccwc5d4fhw8yk" path="res://Backgrounds/uEmbhh.png" id="1_albmj"]
+[ext_resource type="PackedScene" uid="uid://cy0yp8xplplpm" path="res://scenes/enemy/enemy.tscn" id="2_3p8pv"]
+[ext_resource type="PackedScene" uid="uid://duscmgc6kn30a" path="res://scenes/player/player.tscn" id="3_tp0ju"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i166f"]
+size = Vector2(1606, 19)
+
+[node name="Level" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(803.625, 446)
+scale = Vector2(1.25059, 1.2526)
+texture = ExtResource("1_albmj")
+
+[node name="Player" parent="." instance=ExtResource("3_tp0ju")]
+
+[node name="Enemy" parent="." instance=ExtResource("2_3p8pv")]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(799, 772.5)
+shape = SubResource("RectangleShape2D_i166f")
