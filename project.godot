@@ -11,14 +11,20 @@ config_version=5
 [application]
 
 config/name="Cyberkiller"
-run/main_scene="res://scenes/level/level.tscn"
+run/main_scene="uid://b4fakfs1jvhyi"
 config/features=PackedStringArray("4.4", "Mobile")
 config/icon="res://icon.svg"
 
 [display]
 
-window/size/viewport_width=1600
-window/size/viewport_height=900
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=3
+window/stretch/scale_mode="integer"
+
+[editor]
+
+movie_writer/movie_file="C:/Users/gusta/OneDrive/Documentos/novo-projeto-de-jogo-1.1/Cyberkiller/recordings/recording.avi"
 
 [input]
 

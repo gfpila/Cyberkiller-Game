@@ -1,0 +1,92 @@
+[gd_scene load_steps=13 format=3 uid="uid://b4fakfs1jvhyi"]
+
+[ext_resource type="Texture2D" uid="uid://d2v3b47ufacj" path="res://menu/background-menu.png" id="1_naxqw"]
+[ext_resource type="Script" uid="uid://5bb7vagpcg6r" path="res://scenes/main-menu/main_menu.gd" id="1_qhk2d"]
+[ext_resource type="AudioStream" uid="uid://bqp4i7ls0we4o" path="res://Music/menu/background.mp3" id="2_naxqw"]
+[ext_resource type="AudioStream" uid="uid://fwgos7w8byjc" path="res://Sound Effects/general/som (clicar botão menu).wav" id="3_lhle4"]
+[ext_resource type="Texture2D" uid="uid://s25s6yjosnry" path="res://menu/jogar.png" id="4_sg3tv"]
+[ext_resource type="Texture2D" uid="uid://c12kdim4b33xt" path="res://menu/opcoes.png" id="5_lhle4"]
+[ext_resource type="Texture2D" uid="uid://bkfbr15wgo2f2" path="res://menu/sair.png" id="6_eel2y"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sg3tv"]
+texture = ExtResource("1_naxqw")
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lhle4"]
+bg_color = Color(0.199161, 0.139087, 0.223568, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_lhle4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lhle4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eel2y"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qhk2d")
+metadata/_edit_lock_ = true
+
+[node name="Audio" type="Node2D" parent="."]
+
+[node name="musica" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("2_naxqw")
+autoplay = true
+
+[node name="botao" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("3_lhle4")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_sg3tv")
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="Jogar" type="Button" parent="."]
+layout_mode = 2
+offset_left = 803.0
+offset_top = 496.0
+offset_right = 2222.0
+offset_bottom = 895.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+theme_override_styles/hover = SubResource("StyleBoxFlat_lhle4")
+theme_override_styles/normal = SubResource("StyleBoxLine_lhle4")
+icon = ExtResource("4_sg3tv")
+metadata/_edit_lock_ = true
+
+[node name="Sair" type="Button" parent="."]
+layout_mode = 2
+offset_left = 802.0
+offset_top = 711.0
+offset_right = 2221.0
+offset_bottom = 1109.0
+scale = Vector2(0.25, 0.25)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_lhle4")
+icon = ExtResource("6_eel2y")
+metadata/_edit_lock_ = true
+
+[node name="Opcoes" type="Button" parent="."]
+layout_mode = 2
+offset_left = 800.0
+offset_top = 606.0
+offset_right = 2219.0
+offset_bottom = 1003.0
+scale = Vector2(0.25, 0.25)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_eel2y")
+icon = ExtResource("5_lhle4")
+metadata/_edit_lock_ = true
+
+[connection signal="pressed" from="Jogar" to="." method="_on_jogar_pressed"]
+[connection signal="pressed" from="Sair" to="." method="_on_sair_pressed"]

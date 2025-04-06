@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://ba4hf6ga382uq"
+path="res://.godot/imported/rise.ogg-d1f20b7ea8b7cea2c1f524a0392ac00d.oggvorbisstr"
+
+[deps]
+
+source_file="res://Sound Effects/character/rise.ogg"
+dest_files=["res://.godot/imported/rise.ogg-d1f20b7ea8b7cea2c1f524a0392ac00d.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

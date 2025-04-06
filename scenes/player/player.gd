@@ -15,6 +15,7 @@ func _physics_process(delta: float) -> void:
 
 	# Se pressionar pulo e estiver no chão, aplica a força do pulo
 	if Input.is_action_just_pressed("jump") and is_on_floor():
+		$Audio/jump.play()
 		velocity.y = JUMP_VELOCITY
 
 	# Atualiza a posição do personagem com colisão
@@ -26,6 +27,7 @@ func _physics_process(delta: float) -> void:
 
 	# Se pressionar ataque, prioriza a animação de ataque
 	if Input.is_action_just_pressed("attack"):
+		$Audio/attack.play()
 		$AnimatedSprite2D.play("attack_animation")
 
 	# Se estiver no ar, toca a animação de pulo

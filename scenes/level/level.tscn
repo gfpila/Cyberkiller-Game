@@ -5,21 +5,23 @@
 [ext_resource type="PackedScene" uid="uid://duscmgc6kn30a" path="res://scenes/player/player.tscn" id="3_tp0ju"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i166f"]
-size = Vector2(1606, 19)
+size = Vector2(1907, 19)
 
 [node name="Level" type="Node2D"]
 
 [node name="Background" type="Sprite2D" parent="."]
-position = Vector2(803.625, 446)
-scale = Vector2(1.25059, 1.2526)
+position = Vector2(962.624, 539.532)
+scale = Vector2(1.49903, 1.51241)
 texture = ExtResource("1_albmj")
 
 [node name="Player" parent="." instance=ExtResource("3_tp0ju")]
+position = Vector2(7, 156)
 
 [node name="Enemy" parent="." instance=ExtResource("2_3p8pv")]
+position = Vector2(9, 158)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(799, 772.5)
+position = Vector2(969, 928)
 shape = SubResource("RectangleShape2D_i166f")

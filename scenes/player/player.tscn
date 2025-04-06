@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://duscmgc6kn30a"]
+[gd_scene load_steps=27 format=3 uid="uid://duscmgc6kn30a"]
 
 [ext_resource type="Script" uid="uid://xrscejhut5cs" path="res://scenes/player/player.gd" id="1_hejnc"]
 [ext_resource type="Texture2D" uid="uid://puogr6vik8ur" path="res://hero/hero-attack/hero-attack-1.png" id="2_2wcte"]
@@ -21,6 +21,9 @@
 [ext_resource type="Texture2D" uid="uid://dg0fx8dsve183" path="res://hero/hero-run/hero-run-5.png" id="15_tvp0i"]
 [ext_resource type="Texture2D" uid="uid://cxh2ydjmscekp" path="res://hero/hero-run/hero-run-6.png" id="16_2ohpg"]
 [ext_resource type="Script" uid="uid://cyup7ng7y5cn5" path="res://scenes/player/animated_sprite_2d.gd" id="17_cabpx"]
+[ext_resource type="AudioStream" uid="uid://dyyggqfohqn2h" path="res://Sound Effects/character/jump.ogg" id="22_yj68g"]
+[ext_resource type="AudioStream" uid="uid://cuhexpnbfel12" path="res://Sound Effects/character/attack.ogg" id="23_ioxgp"]
+[ext_resource type="AudioStream" uid="uid://chdruxmf6hwd2" path="res://Music/partida/01.ogg" id="24_cnsyf"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_eai12"]
 animations = [{
@@ -118,3 +121,16 @@ script = ExtResource("17_cabpx")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(201, 710)
 shape = SubResource("RectangleShape2D_ht0jr")
+
+[node name="Audio" type="Node2D" parent="."]
+
+[node name="jump" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("22_yj68g")
+
+[node name="attack" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("23_ioxgp")
+
+[node name="music" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("24_cnsyf")
+volume_db = -9.324
+autoplay = true
