@@ -7,7 +7,7 @@ static func request_hit_stop(duration: float = 0.2, node: CanvasItem = null) -> 
 	
 	# Salva a escala de tempo original
 	var original_time_scale = Engine.time_scale
-	Engine.time_scale = 0.01
+	Engine.time_scale = 0.001
 	
 	var original_modulate: Color
 	if node != null:

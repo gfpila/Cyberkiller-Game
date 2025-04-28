@@ -5,7 +5,7 @@ const JUMP_VELOCITY = -700.0
 const GRAVITY = 2000.0
 const ATTACK_DURATION = 0.35
 
-@export var max_health: int = 20
+@export var max_health: int = 30
 @export var knockback_force: float = 2800.0
 @export var knockback_friction: float = 0.85
 @export var vertical_knockback_factor: float = 0.25
@@ -117,7 +117,7 @@ func take_damage(amount: int, attack_origin: Vector2) -> void:
 		return
 		
 	health -= amount
-	GameEffects.request_hit_stop(0.3, animated_sprite)
+	GameEffects.request_hit_stop(0.4, animated_sprite)
 	init_knockback(attack_origin)
 	play_audio("hurt")
 	await knockback_finished
