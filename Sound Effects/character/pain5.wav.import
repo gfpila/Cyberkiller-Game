@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dpprhi0im8ort"
+path="res://.godot/imported/pain5.wav-f22da2784defd34336db4cfbc25ecd07.sample"
+
+[deps]
+
+source_file="res://Sound Effects/character/pain5.wav"
+dest_files=["res://.godot/imported/pain5.wav-f22da2784defd34336db4cfbc25ecd07.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

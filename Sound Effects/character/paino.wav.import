@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://normjwelt3x5"
+path="res://.godot/imported/paino.wav-0aac51e42f1d425509b5262525cdee82.sample"
+
+[deps]
+
+source_file="res://Sound Effects/character/paino.wav"
+dest_files=["res://.godot/imported/paino.wav-0aac51e42f1d425509b5262525cdee82.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

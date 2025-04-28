@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://duscmgc6kn30a"]
+[gd_scene load_steps=30 format=3 uid="uid://duscmgc6kn30a"]
 
 [ext_resource type="Script" uid="uid://xrscejhut5cs" path="res://scenes/player/player.gd" id="1_hejnc"]
 [ext_resource type="Texture2D" uid="uid://puogr6vik8ur" path="res://hero/hero-attack/hero-attack-1.png" id="2_2wcte"]
@@ -23,12 +23,14 @@
 [ext_resource type="Script" uid="uid://cyup7ng7y5cn5" path="res://scenes/player/animated_sprite_2d.gd" id="17_cabpx"]
 [ext_resource type="AudioStream" uid="uid://dyyggqfohqn2h" path="res://Sound Effects/character/jump.ogg" id="22_yj68g"]
 [ext_resource type="AudioStream" uid="uid://cuhexpnbfel12" path="res://Sound Effects/character/attack.ogg" id="23_ioxgp"]
-[ext_resource type="AudioStream" uid="uid://chdruxmf6hwd2" path="res://Music/partida/01.ogg" id="24_cnsyf"]
+[ext_resource type="AudioStream" uid="uid://ba4hf6ga382uq" path="res://Sound Effects/character/rise.ogg" id="24_cnsyf"]
+[ext_resource type="AudioStream" uid="uid://dqe3w8u3f5w27" path="res://Sound Effects/character/hurt3.wav" id="25_6cv16"]
+[ext_resource type="AudioStream" uid="uid://0l8ny7be512o" path="res://Sound Effects/character/kill.ogg" id="26_6cv16"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_eai12"]
 animations = [{
 "frames": [{
-"duration": 0.5,
+"duration": 1.0,
 "texture": ExtResource("2_2wcte")
 }, {
 "duration": 0.5,
@@ -45,7 +47,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"attack_animation",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -108,18 +110,22 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ht0jr"]
 size = Vector2(100.5, 107)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cnsyf"]
+size = Vector2(86, 51)
+
 [node name="Player" type="CharacterBody2D"]
+collision_mask = 6
 script = ExtResource("1_hejnc")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(200, 696)
+position = Vector2(0, -7)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_eai12")
-animation = &"jump"
+animation = &"attack_animation"
 script = ExtResource("17_cabpx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(201, 710)
+position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_ht0jr")
 
 [node name="Audio" type="Node2D" parent="."]
@@ -130,7 +136,22 @@ stream = ExtResource("22_yj68g")
 [node name="attack" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("23_ioxgp")
 
-[node name="music" type="AudioStreamPlayer" parent="Audio"]
+[node name="rise" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("24_cnsyf")
-volume_db = -9.324
-autoplay = true
+
+[node name="hurt" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("25_6cv16")
+volume_db = 12.0
+
+[node name="death" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("26_6cv16")
+
+[node name="HandPivot" type="Node2D" parent="."]
+position = Vector2(0, -7)
+
+[node name="SwordArea" type="Area2D" parent="HandPivot"]
+position = Vector2(0, -9)
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HandPivot/SwordArea"]
+shape = SubResource("RectangleShape2D_cnsyf")

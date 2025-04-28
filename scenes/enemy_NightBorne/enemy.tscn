@@ -1,0 +1,498 @@
+[gd_scene load_steps=64 format=3 uid="uid://cy0yp8xplplpm"]
+
+[ext_resource type="Texture2D" uid="uid://daxjxeqkvwwvw" path="res://enemies/NightBorne/NightBorne_attack/ca93f7c5-7122-43f9-837a-0b1167dc76a7-0.png" id="1_2f3il"]
+[ext_resource type="Texture2D" uid="uid://ddl83cisproxu" path="res://enemies/NightBorne/NightBorne_idle/a4964b1c-2d22-4672-953d-c8c151d229b4-0.png" id="1_4efjx"]
+[ext_resource type="Texture2D" uid="uid://bhpema7gtnwo5" path="res://enemies/NightBorne/NightBorne_attack/ca93f7c5-7122-43f9-837a-0b1167dc76a7-1.png" id="2_dtxhd"]
+[ext_resource type="Texture2D" uid="uid://cnj6cmcagshgo" path="res://enemies/NightBorne/NightBorne_idle/a4964b1c-2d22-4672-953d-c8c151d229b4-1.png" id="2_hvxgb"]
+[ext_resource type="Texture2D" uid="uid://55xwlht3ql1c" path="res://enemies/NightBorne/NightBorne_idle/a4964b1c-2d22-4672-953d-c8c151d229b4-2.png" id="3_peoo5"]
+[ext_resource type="Texture2D" uid="uid://b8j7ompimj8xl" path="res://enemies/NightBorne/NightBorne_attack/ca93f7c5-7122-43f9-837a-0b1167dc76a7-2.png" id="3_so3kp"]
+[ext_resource type="Texture2D" uid="uid://by566a4qniibv" path="res://enemies/NightBorne/NightBorne_idle/a4964b1c-2d22-4672-953d-c8c151d229b4-3.png" id="4_2f3il"]
+[ext_resource type="Texture2D" uid="uid://csieyngiyuh0" path="res://enemies/NightBorne/NightBorne_attack/ca93f7c5-7122-43f9-837a-0b1167dc76a7-3.png" id="4_5woo5"]
+[ext_resource type="Texture2D" uid="uid://dubjou7vnxskr" path="res://enemies/NightBorne/NightBorne_idle/a4964b1c-2d22-4672-953d-c8c151d229b4-4.png" id="5_dtxhd"]
+[ext_resource type="Texture2D" uid="uid://b6p7e58llk1i7" path="res://enemies/NightBorne/NightBorne_attack/ca93f7c5-7122-43f9-837a-0b1167dc76a7-4.png" id="5_pb0yv"]
+[ext_resource type="Texture2D" uid="uid://p0iye01a8ri4" path="res://enemies/NightBorne/NightBorne_attack/ca93f7c5-7122-43f9-837a-0b1167dc76a7-5.png" id="6_prup0"]
+[ext_resource type="Texture2D" uid="uid://igtjtfy44gu1" path="res://enemies/NightBorne/NightBorne_idle/a4964b1c-2d22-4672-953d-c8c151d229b4-5.png" id="6_so3kp"]
+[ext_resource type="Texture2D" uid="uid://da2ejkg528wtb" path="res://enemies/NightBorne/NightBorne_idle/a4964b1c-2d22-4672-953d-c8c151d229b4-6.png" id="7_5woo5"]
+[ext_resource type="Texture2D" uid="uid://b6vw2xdc0yutw" path="res://enemies/NightBorne/NightBorne_attack/ca93f7c5-7122-43f9-837a-0b1167dc76a7-6.png" id="7_dxjon"]
+[ext_resource type="Texture2D" uid="uid://b8c1tfox1pke8" path="res://enemies/NightBorne/NightBorne_attack/ca93f7c5-7122-43f9-837a-0b1167dc76a7-7.png" id="8_f5q6l"]
+[ext_resource type="Texture2D" uid="uid://bsljdystf31cj" path="res://enemies/NightBorne/NightBorne_idle/a4964b1c-2d22-4672-953d-c8c151d229b4-7.png" id="8_pb0yv"]
+[ext_resource type="Texture2D" uid="uid://o767w5vin4uw" path="res://enemies/NightBorne/NightBorne_attack/ca93f7c5-7122-43f9-837a-0b1167dc76a7-8.png" id="9_8ed2q"]
+[ext_resource type="Texture2D" uid="uid://crrvgrpt0f5ua" path="res://enemies/NightBorne/NightBorne_idle/a4964b1c-2d22-4672-953d-c8c151d229b4-8.png" id="9_prup0"]
+[ext_resource type="Texture2D" uid="uid://d2cga8evbvwpn" path="res://enemies/NightBorne/NightBorne_attack/ca93f7c5-7122-43f9-837a-0b1167dc76a7-9.png" id="10_wk82e"]
+[ext_resource type="Texture2D" uid="uid://dut6068bvn56k" path="res://enemies/NightBorne/NightBorne_attack/ca93f7c5-7122-43f9-837a-0b1167dc76a7-10.png" id="11_bsmli"]
+[ext_resource type="Texture2D" uid="uid://bft5fp2hxmby0" path="res://enemies/NightBorne/NightBorne_attack/ca93f7c5-7122-43f9-837a-0b1167dc76a7-11.png" id="12_cicna"]
+[ext_resource type="Texture2D" uid="uid://do2pvrepva0vc" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-0.png" id="13_spmyg"]
+[ext_resource type="Texture2D" uid="uid://cr87q0rta6lsh" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-1.png" id="14_e5e7g"]
+[ext_resource type="Texture2D" uid="uid://wqcgffnqte3x" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-2.png" id="15_rpg67"]
+[ext_resource type="Texture2D" uid="uid://caiv582dshm1i" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-3.png" id="16_wv1rs"]
+[ext_resource type="Texture2D" uid="uid://l34n2q8ogkc5" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-4.png" id="17_88j4c"]
+[ext_resource type="Texture2D" uid="uid://on0hddhkmsaf" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-5.png" id="18_w0t7y"]
+[ext_resource type="Texture2D" uid="uid://cxmrbltpmiffr" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-6.png" id="19_sisxf"]
+[ext_resource type="Texture2D" uid="uid://b5glrmi3ayhnl" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-7.png" id="20_p054n"]
+[ext_resource type="Texture2D" uid="uid://7fkcad58ioyd" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-8.png" id="21_e2u3r"]
+[ext_resource type="Texture2D" uid="uid://dsfkbwvpukmao" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-9.png" id="22_6aapb"]
+[ext_resource type="Texture2D" uid="uid://caccpok22qpqp" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-10.png" id="23_btnhe"]
+[ext_resource type="Texture2D" uid="uid://hgfk75a1tvmp" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-11.png" id="24_0a44c"]
+[ext_resource type="Texture2D" uid="uid://dgoo4nmghyf1m" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-12.png" id="25_2ruph"]
+[ext_resource type="Texture2D" uid="uid://vwbvi7vs17oj" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-13.png" id="26_wwovr"]
+[ext_resource type="Texture2D" uid="uid://du58876ioke74" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-14.png" id="27_5neuq"]
+[ext_resource type="Texture2D" uid="uid://c8fsxf5dfvyey" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-15.png" id="28_efon5"]
+[ext_resource type="Texture2D" uid="uid://iempaknkv2u8" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-16.png" id="29_rs4gx"]
+[ext_resource type="Texture2D" uid="uid://se1qtetes0m8" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-17.png" id="30_ssdc0"]
+[ext_resource type="Texture2D" uid="uid://rjqih75p827y" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-18.png" id="31_4haxy"]
+[ext_resource type="Texture2D" uid="uid://be5libne0uen4" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-19.png" id="32_t0oaf"]
+[ext_resource type="Texture2D" uid="uid://clka3s1gmkjax" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-20.png" id="33_f5v2h"]
+[ext_resource type="Texture2D" uid="uid://cg2coqarpo7dt" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-21.png" id="34_6h1mn"]
+[ext_resource type="Texture2D" uid="uid://dsyuqq0wvl5lv" path="res://enemies/NightBorne/NightBorne_death/1daf4197-9fe3-49ac-9140-b8f8a56dc227-22.png" id="35_yq5mq"]
+[ext_resource type="Texture2D" uid="uid://dcfllki1nsepk" path="res://enemies/NightBorne/NightBorne_hurt/67f48cb6-684f-409e-af3c-0940cbaaabfc-0.png" id="36_b20pg"]
+[ext_resource type="Texture2D" uid="uid://ue5tjvhb7y2x" path="res://enemies/NightBorne/NightBorne_hurt/67f48cb6-684f-409e-af3c-0940cbaaabfc-1.png" id="37_iuxr4"]
+[ext_resource type="Texture2D" uid="uid://dslk0poru8751" path="res://enemies/NightBorne/NightBorne_hurt/67f48cb6-684f-409e-af3c-0940cbaaabfc-2.png" id="38_xqba5"]
+[ext_resource type="Texture2D" uid="uid://dxlyw3hqn1jd6" path="res://enemies/NightBorne/NightBorne_hurt/67f48cb6-684f-409e-af3c-0940cbaaabfc-3.png" id="39_38p23"]
+[ext_resource type="Texture2D" uid="uid://bitt6w030pw13" path="res://enemies/NightBorne/NightBorne_hurt/67f48cb6-684f-409e-af3c-0940cbaaabfc-4.png" id="40_fnh86"]
+[ext_resource type="Texture2D" uid="uid://bupfu53karap1" path="res://enemies/NightBorne/NightBorne_run/40a7d2c2-2a85-4f01-b56a-18d8070bc24d-0.png" id="50_3kdti"]
+[ext_resource type="Texture2D" uid="uid://ccwh0wlgvah1m" path="res://enemies/NightBorne/NightBorne_run/40a7d2c2-2a85-4f01-b56a-18d8070bc24d-1.png" id="51_d4gai"]
+[ext_resource type="Texture2D" uid="uid://b7lj8pth6k0vp" path="res://enemies/NightBorne/NightBorne_run/40a7d2c2-2a85-4f01-b56a-18d8070bc24d-2.png" id="52_fhc7w"]
+[ext_resource type="Texture2D" uid="uid://dn21q3c1tqtpx" path="res://enemies/NightBorne/NightBorne_run/40a7d2c2-2a85-4f01-b56a-18d8070bc24d-3.png" id="53_cpdb5"]
+[ext_resource type="Texture2D" uid="uid://bld2rf6sopb5g" path="res://enemies/NightBorne/NightBorne_run/40a7d2c2-2a85-4f01-b56a-18d8070bc24d-4.png" id="54_4cdgu"]
+[ext_resource type="Texture2D" uid="uid://b3rd3hyleh1j2" path="res://enemies/NightBorne/NightBorne_run/40a7d2c2-2a85-4f01-b56a-18d8070bc24d-5.png" id="55_jyehw"]
+[ext_resource type="AudioStream" uid="uid://bdix4fxx5xxnj" path="res://Sound Effects/general/hit.wav" id="56_e5e7g"]
+[ext_resource type="AudioStream" uid="uid://cu703jgignuy6" path="res://Sound Effects/general/monster_attack.mp3" id="57_rpg67"]
+[ext_resource type="AudioStream" uid="uid://cm1y3gk3nr22o" path="res://Sound Effects/general/monster_sfx_pack/monster-8.wav" id="58_wv1rs"]
+
+[sub_resource type="GDScript" id="GDScript_4g3ns"]
+script/source = "extends CharacterBody2D
+
+@export var max_health: int = 100
+@export var knockback_force: float = 2000.0
+@export var friction: float = 0.8
+@export var move_speed: float = 300.0
+@export var attack_range: float = 120.0
+@export var detection_range: float = 400.0
+@export var attack_cooldown: float = 1.5
+@export var gravity: float = 2000.0
+@export var knockback_duration: float = 0.25
+@export var vertical_knockback_factor: float = 0.3
+
+var health: int
+enum State { IDLE, CHASE, ATTACK, HURT, DEAD }
+var current_state: State = State.IDLE
+
+var target: Node2D = null
+var has_target: bool = false
+var knockback: Vector2 = Vector2.ZERO
+var can_attack: bool = true
+
+@onready var animated_sprite = $AnimatedSprite2D
+@onready var collision_shape = $CollisionShape2D
+@onready var hand_pivot = $HandPivot
+@onready var attack_area: Area2D = $HandPivot/SwordArea
+@onready var detection_area = $DetectionArea
+@onready var audio_nodes = {
+	\"hit\": $Audio/hit,
+	\"attack\": $Audio/attack,
+	\"death\": $Audio/death
+}
+
+func _ready() -> void:
+	set_collision_mask_value(3, false)
+	health = max_health
+	add_to_group(\"enemies\")
+	setup_detection_area()
+	
+	attack_area.monitoring = false
+	attack_area.body_entered.connect(_on_attack_area_body_entered)
+	
+	current_state = State.IDLE
+	animated_sprite.play(\"idle\")
+
+func setup_detection_area() -> void:
+	var shape = CircleShape2D.new()
+	shape.radius = detection_range
+	detection_area.get_node(\"CollisionShape2D\").shape = shape
+	detection_area.body_entered.connect(_on_detection_area_body_entered)
+
+func _physics_process(delta: float) -> void:
+	if current_state == State.DEAD:
+		return
+
+	# Aplicar gravidade
+	if not is_on_floor():
+		velocity.y += gravity * delta
+	else:
+		velocity.y = 0
+
+	if current_state == State.ATTACK:
+		move_and_slide()
+		return
+
+	if knockback != Vector2.ZERO:
+		handle_knockback(delta)
+	elif has_target and is_instance_valid(target):
+		handle_combat()
+	else:
+		current_state = State.IDLE
+		velocity.x = 0
+
+	handle_animations()
+	move_and_slide()
+
+func handle_animations() -> void:
+	match current_state:
+		State.DEAD:
+			animated_sprite.play(\"death\")
+		State.HURT:
+			animated_sprite.play(\"hurt\")
+		State.ATTACK:
+			animated_sprite.play(\"attack\")
+		State.CHASE:
+			if not is_on_floor():
+				animated_sprite.play(\"jump\")
+			elif abs(velocity.x) > 0:
+				animated_sprite.play(\"run\")
+			else:
+				animated_sprite.play(\"idle\")
+		State.IDLE:
+			if not is_on_floor():
+				animated_sprite.play(\"jump\")
+			elif abs(velocity.x) > 0:
+				animated_sprite.play(\"run\")
+			else:
+				animated_sprite.play(\"idle\")
+
+func handle_knockback(delta: float) -> void:
+	velocity = knockback
+	velocity.y += gravity * delta
+	knockback *= friction
+	
+	# Interromper knockback se colidir com parede ou força for pequena
+	if knockback.length() < 50 or is_on_wall():
+		knockback = Vector2.ZERO
+		if health > 0:
+			current_state = State.CHASE if has_target else State.IDLE
+
+func handle_combat() -> void:
+	var direction = (target.global_position - global_position).normalized()
+	var distance = global_position.distance_to(target.global_position)
+
+	animated_sprite.flip_h = direction.x < 0
+	update_attack_area_position()
+
+	if distance <= attack_range and can_attack:
+		start_attack()
+	else:
+		current_state = State.CHASE
+		velocity.x = direction.x * move_speed
+
+func take_damage(amount: int, attack_origin: Vector2) -> void:
+	if current_state == State.DEAD:
+		return
+
+	# Calcular direção do knockback
+	var knockback_dir = (global_position - attack_origin).normalized()
+	knockback_dir.y *= vertical_knockback_factor
+	knockback = knockback_dir * knockback_force
+
+	health -= amount
+	current_state = State.HURT
+	audio_nodes[\"hit\"].play()
+
+	# Tempo mínimo de knockback
+	var knockback_timer = get_tree().create_timer(knockback_duration)
+	await knockback_timer.timeout
+	
+	knockback = Vector2.ZERO
+	
+	if health <= 0:
+		die()
+	else:
+		current_state = State.CHASE if has_target else State.IDLE
+
+func start_attack() -> void:
+	if !can_attack: 
+		return
+
+	can_attack = false
+	current_state = State.ATTACK
+	audio_nodes[\"attack\"].play()
+
+	update_attack_area_position()
+	attack_area.monitoring = true
+
+	await animated_sprite.animation_finished
+	attack_area.monitoring = false
+	current_state = State.CHASE if has_target else State.IDLE
+	
+	await get_tree().create_timer(attack_cooldown).timeout
+	can_attack = true
+
+func update_attack_area_position() -> void:
+	var offset = Vector2(attack_range * 0.8, 0)  # Ajuste fino na posição
+	attack_area.position = offset if not animated_sprite.flip_h else -offset
+
+func die() -> void:
+	audio_nodes[\"death\"].play()
+	collision_shape.set_deferred(\"disabled\", true)
+	current_state = State.DEAD
+	animated_sprite.play(\"death\")
+	await animated_sprite.animation_finished
+	queue_free()
+
+func _on_detection_area_body_entered(body: Node2D) -> void:
+	if body.is_in_group(\"player\"):
+		target = body
+		has_target = true
+		current_state = State.CHASE
+
+func _on_attack_area_body_entered(body: Node2D) -> void:
+	if body.is_in_group(\"player\") and current_state == State.ATTACK:
+		body.take_damage(10, global_position)
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_opd48"]
+size = Vector2(108.531, 99.1565)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_iv7se"]
+animations = [{
+"frames": [{
+"duration": 0.4,
+"texture": ExtResource("1_2f3il")
+}, {
+"duration": 0.4,
+"texture": ExtResource("2_dtxhd")
+}, {
+"duration": 0.4,
+"texture": ExtResource("3_so3kp")
+}, {
+"duration": 0.4,
+"texture": ExtResource("4_5woo5")
+}, {
+"duration": 0.4,
+"texture": ExtResource("5_pb0yv")
+}, {
+"duration": 0.4,
+"texture": ExtResource("6_prup0")
+}, {
+"duration": 0.4,
+"texture": ExtResource("7_dxjon")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_f5q6l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_8ed2q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_wk82e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_bsmli")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_cicna")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 22.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_spmyg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_e5e7g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_rpg67")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_wv1rs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_88j4c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_w0t7y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_sisxf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_p054n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_e2u3r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_6aapb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_btnhe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_0a44c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_2ruph")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_wwovr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_5neuq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_efon5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_rs4gx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_ssdc0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_4haxy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_t0oaf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_f5v2h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_6h1mn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_yq5mq")
+}],
+"loop": false,
+"name": &"death",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 0.7,
+"texture": ExtResource("36_b20pg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_iuxr4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_xqba5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_38p23")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_fnh86")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_hvxgb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_peoo5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_2f3il")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_dtxhd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_so3kp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_5woo5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_pb0yv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_prup0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_4efjx")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("50_3kdti")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_d4gai")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_fhc7w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_cpdb5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_4cdgu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_jyehw")
+}],
+"loop": false,
+"name": &"run",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e5e7g"]
+size = Vector2(101.333, 67.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_e5e7g"]
+radius = 400.0
+
+[node name="Enemy" type="CharacterBody2D"]
+position = Vector2(10, 5)
+collision_layer = 4
+collision_mask = 3
+script = SubResource("GDScript_4g3ns")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-12.1344, -17.5783)
+shape = SubResource("RectangleShape2D_opd48")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-21.4, -42)
+scale = Vector2(1.08, 1.00833)
+sprite_frames = SubResource("SpriteFrames_iv7se")
+animation = &"attack"
+
+[node name="Audio" type="Node2D" parent="."]
+position = Vector2(-11, -9)
+
+[node name="hit" type="AudioStreamPlayer2D" parent="Audio"]
+position = Vector2(-9, -8)
+stream = ExtResource("56_e5e7g")
+
+[node name="attack" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("57_rpg67")
+volume_db = 24.0
+
+[node name="death" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("58_wv1rs")
+volume_db = 3.888
+
+[node name="HandPivot" type="Node2D" parent="."]
+position = Vector2(0, -20)
+scale = Vector2(1.08, 1)
+
+[node name="SwordArea" type="Area2D" parent="HandPivot"]
+position = Vector2(6.48132, -3)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HandPivot/SwordArea"]
+shape = SubResource("RectangleShape2D_e5e7g")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_e5e7g")

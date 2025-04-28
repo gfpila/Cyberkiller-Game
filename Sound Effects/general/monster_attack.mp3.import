@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cu703jgignuy6"
+path="res://.godot/imported/monster_attack.mp3-09789bc1bb602d192e38a36cd6a164a4.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/general/monster_attack.mp3"
+dest_files=["res://.godot/imported/monster_attack.mp3-09789bc1bb602d192e38a36cd6a164a4.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

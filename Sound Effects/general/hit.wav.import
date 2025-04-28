@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://bdix4fxx5xxnj"
-path="res://.godot/imported/acertar inimigo.wav-43065964f55a8b62a663fc00d7ae4c6c.sample"
+path="res://.godot/imported/hit.wav-ebddef22eb3a4cc4389d5bd92c28148b.sample"
 
 [deps]
 
-source_file="res://Sound Effects/general/acertar inimigo.wav"
-dest_files=["res://.godot/imported/acertar inimigo.wav-43065964f55a8b62a663fc00d7ae4c6c.sample"]
+source_file="res://Sound Effects/general/hit.wav"
+dest_files=["res://.godot/imported/hit.wav-ebddef22eb3a4cc4389d5bd92c28148b.sample"]
 
 [params]
 

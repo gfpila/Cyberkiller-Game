@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://c3jgehwqxxp18"
+path="res://.godot/imported/die1.wav-630ad000a589b37b96a18c80797586a6.sample"
+
+[deps]
+
+source_file="res://Sound Effects/character/die1.wav"
+dest_files=["res://.godot/imported/die1.wav-630ad000a589b37b96a18c80797586a6.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

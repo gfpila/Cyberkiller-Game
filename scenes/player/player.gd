@@ -1,44 +1,165 @@
 extends CharacterBody2D
 
-const SPEED = 400  # Velocidade de movimento
-const JUMP_VELOCITY = -700  # Força do pulo
-const GRAVITY = 2000  # Gravidade aplicada ao personagem
+const SPEED = 500.0
+const JUMP_VELOCITY = -700.0
+const GRAVITY = 2000.0
+const ATTACK_DURATION = 0.3
+
+@export var max_health: int = 3000
+@export var knockback_force: float = 2800.0
+@export var knockback_friction: float = 0.9
+@export var vertical_knockback_factor: float = 0.25
+@export var knockback_duration: float = 0.4
+@export var invulnerability_time: float = 0.5
+
+var health: int
+var can_attack: bool = true
+var is_invulnerable: bool = false
+var knockback: Vector2 = Vector2.ZERO
+var knockback_timer: float = 0.0
+
+var attack_area: Area2D
+
+@onready var animated_sprite = $AnimatedSprite2D
+@onready var audio_nodes = {
+	"jump": $Audio/jump,
+	"attack": $Audio/attack,
+	"rise": $Audio/rise,
+	"hurt": $Audio/hurt
+}
+
+func _ready() -> void:
+	health = max_health
+	attack_area = $HandPivot/SwordArea
+	add_to_group("player")
+	attack_area.monitoring = false
+	attack_area.body_entered.connect(_on_attack_area_body_entered)
+	play_audio("rise")
 
 func _physics_process(delta: float) -> void:
-	# Aplica gravidade
-	if not is_on_floor():
-		velocity.y += GRAVITY * delta
-
-	# Obtém a direção horizontal do movimento
-	var direction := Input.get_axis("left", "right")
-	velocity.x = direction * SPEED
-
-	# Se pressionar pulo e estiver no chão, aplica a força do pulo
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		$Audio/jump.play()
-		velocity.y = JUMP_VELOCITY
-
-	# Atualiza a posição do personagem com colisão
+	if knockback != Vector2.ZERO:
+		knockback_timer += delta
+		handle_knockback(delta)
+		return
+	
+	handle_movement(delta)
+	handle_actions()
+	update_animations()
 	move_and_slide()
 
-	# Se a animação de ataque ainda estiver rodando, não muda a animação
-	if $AnimatedSprite2D.animation == "attack_animation" and $AnimatedSprite2D.is_playing():
-		return 
+func handle_knockback(delta: float) -> void:
+	velocity = knockback
+	velocity.y += GRAVITY * delta
+	knockback *= knockback_friction
+	
+	move_and_slide()
+	
+	if knockback_timer >= knockback_duration || knockback.length() < 50 || is_on_wall():
+		end_knockback()
 
-	# Se pressionar ataque, prioriza a animação de ataque
-	if Input.is_action_just_pressed("attack"):
-		$Audio/attack.play()
-		$AnimatedSprite2D.play("attack_animation")
-
-	# Se estiver no ar, toca a animação de pulo
-	elif not is_on_floor():
-		$AnimatedSprite2D.play("jump")
-
-	# Se estiver se movendo, toca a animação de corrida
-	elif direction != 0:
-		$AnimatedSprite2D.play("run")
-
-		# Flip da sprite baseado na direção do movimento
-		$AnimatedSprite2D.flip_h = direction < 0
+func handle_movement(delta: float) -> void:
+	if not is_on_floor():
+		velocity.y += GRAVITY * delta
 	else:
-		$AnimatedSprite2D.play("default")
+		velocity.y = 0
+	
+	var direction = Input.get_axis("left", "right")
+	velocity.x = direction * SPEED
+
+func handle_actions() -> void:
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+		play_audio("jump")
+	
+	if Input.is_action_just_pressed("attack") and can_attack:
+		start_attack()
+
+func update_animations() -> void:
+	var direction = Input.get_axis("left", "right")
+	
+	if is_invulnerable:
+		animated_sprite.modulate = Color.RED
+	else:
+		animated_sprite.modulate = Color.WHITE
+	
+	if animated_sprite.animation == "attack_animation" and animated_sprite.is_playing():
+		return
+	
+	if not is_on_floor():
+		play_animation("jump")
+	elif direction != 0:
+		play_animation("run")
+	else:
+		play_animation("default")
+	
+	if direction != 0 and animated_sprite.animation != "attack_animation":
+		animated_sprite.flip_h = direction < 0
+		update_attack_area_position()
+
+func start_attack() -> void:
+	can_attack = false
+	play_audio("attack")
+	play_animation("attack_animation")
+	update_attack_area_position()
+	
+	attack_area.monitoring = true
+	await get_tree().create_timer(ATTACK_DURATION).timeout
+	attack_area.monitoring = false
+	can_attack = true
+
+func take_damage(amount: int, attack_origin: Vector2) -> void:
+	if is_invulnerable:
+		return
+	
+	health -= amount
+	init_knockback(attack_origin)
+	play_audio("hurt")
+	apply_invulnerability()
+	
+	if health <= 0:
+		die()
+
+func init_knockback(attack_origin: Vector2) -> void:
+	var knockback_dir = (global_position - attack_origin).normalized()
+	knockback_dir.y *= vertical_knockback_factor
+	knockback = knockback_dir * knockback_force
+	knockback_timer = 0.0
+
+func end_knockback() -> void:
+	knockback = Vector2.ZERO
+	knockback_timer = 0.0
+	velocity = Vector2.ZERO
+
+func apply_invulnerability() -> void:
+	is_invulnerable = true
+	
+	# Sistema de piscar corrigido
+	var tween = create_tween()
+	tween.tween_property(animated_sprite, "modulate", Color(1, 0.5, 0.5), 0.1)
+	tween.tween_property(animated_sprite, "modulate", Color.WHITE, 0.1)
+	tween.set_loops(4)  # Configura loops no Tween principal
+	
+	await tween.finished
+	is_invulnerable = false
+
+func die() -> void:
+	set_collision_mask_value(1, false)
+	animated_sprite.play("death")
+	await animated_sprite.animation_finished
+	queue_free()
+
+func update_attack_area_position() -> void:
+	var offset = Vector2(50, 0) if !animated_sprite.flip_h else Vector2(-50, 0)
+	attack_area.position = offset
+
+func play_animation(anim_name: String) -> void:
+	if animated_sprite.animation != anim_name:
+		animated_sprite.play(anim_name)
+
+func play_audio(audio: String) -> void:
+	if audio_nodes.has(audio):
+		audio_nodes[audio].play()
+
+func _on_attack_area_body_entered(body: Node2D) -> void:
+	if body.is_in_group("enemies"):
+		body.take_damage(10, global_position)
