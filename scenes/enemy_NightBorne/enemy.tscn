@@ -68,7 +68,7 @@ script/source = "extends CharacterBody2D
 @export var move_speed: float = 300.0
 @export var attack_range: float = 120.0
 @export var detection_range: float = 400.0
-@export var attack_cooldown: float = 1.5
+@export var attack_cooldown: float = 1
 @export var gravity: float = 2000.0
 @export var knockback_duration: float = 0.25
 @export var vertical_knockback_factor: float = 0.3
@@ -195,7 +195,8 @@ func take_damage(amount: int, attack_origin: Vector2) -> void:
 	health -= amount
 	current_state = State.HURT
 	audio_nodes[\"hit\"].play()
-
+	GameEffects.request_hit_stop(0.3, animated_sprite)
+	
 	# Tempo mínimo de knockback
 	var knockback_timer = get_tree().create_timer(knockback_duration)
 	await knockback_timer.timeout
@@ -249,7 +250,7 @@ func _on_attack_area_body_entered(body: Node2D) -> void:
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_opd48"]
-size = Vector2(108.531, 99.1565)
+size = Vector2(65.3999, 99.1565)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_iv7se"]
 animations = [{
@@ -457,7 +458,7 @@ collision_mask = 3
 script = SubResource("GDScript_4g3ns")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-12.1344, -17.5783)
+position = Vector2(-33.7, -17.5783)
 shape = SubResource("RectangleShape2D_opd48")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

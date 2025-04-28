@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://lyn3r8rg1qlr"
-path="res://.godot/imported/hero-crouch.png-b7e1848c13f437469e5b4fe4d40c5617.ctex"
+path="res://.godot/imported/hero-crouch.png-fab5a23673c8bb17980e3ceec917a726.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://hero/hero-crouch/hero-crouch.png"
-dest_files=["res://.godot/imported/hero-crouch.png-b7e1848c13f437469e5b4fe4d40c5617.ctex"]
+source_file="res://hero/hero-hurt/hero-crouch.png"
+dest_files=["res://.godot/imported/hero-crouch.png-fab5a23673c8bb17980e3ceec917a726.ctex"]
 
 [params]
 

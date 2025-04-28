@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://duscmgc6kn30a"]
+[gd_scene load_steps=32 format=3 uid="uid://duscmgc6kn30a"]
 
 [ext_resource type="Script" uid="uid://xrscejhut5cs" path="res://scenes/player/player.gd" id="1_hejnc"]
 [ext_resource type="Texture2D" uid="uid://puogr6vik8ur" path="res://hero/hero-attack/hero-attack-1.png" id="2_2wcte"]
@@ -6,8 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://brfxyh86bita6" path="res://hero/hero-attack/hero-attack-3.png" id="4_76vyt"]
 [ext_resource type="Texture2D" uid="uid://h154rww4qs37" path="res://hero/hero-attack/hero-attack-4.png" id="5_2r60o"]
 [ext_resource type="Texture2D" uid="uid://cysqjs4l15fcc" path="res://hero/hero-attack/hero-attack-5.png" id="6_snu52"]
+[ext_resource type="Texture2D" uid="uid://b3f5yysumbave" path="res://hero/hero-hurt/hero-hurt.png" id="7_28m0y"]
 [ext_resource type="Texture2D" uid="uid://mr8qnynpb87s" path="res://hero/hero-idle/hero-idle-1.png" id="7_k7ylw"]
 [ext_resource type="Texture2D" uid="uid://bmb1mghihdnyp" path="res://hero/hero-idle/hero-idle-2.png" id="8_gcjv0"]
+[ext_resource type="Texture2D" uid="uid://lyn3r8rg1qlr" path="res://hero/hero-hurt/hero-crouch.png" id="8_uniwh"]
 [ext_resource type="Texture2D" uid="uid://bhh1f11rkfsp8" path="res://hero/hero-idle/hero-idle-3.png" id="9_b75c3"]
 [ext_resource type="Texture2D" uid="uid://f3h5dgki7eoe" path="res://hero/hero-idle/hero-idle-4.png" id="10_2plfs"]
 [ext_resource type="Texture2D" uid="uid://dn3gnjpsnbgem" path="res://hero/hero-jump/hero-jump-1.png" id="11_3j4b4"]
@@ -50,6 +52,17 @@ animations = [{
 "speed": 8.0
 }, {
 "frames": [{
+"duration": 0.8,
+"texture": ExtResource("7_28m0y")
+}, {
+"duration": 1.6,
+"texture": ExtResource("8_uniwh")
+}],
+"loop": false,
+"name": &"death",
+"speed": 1.0
+}, {
+"frames": [{
 "duration": 1.0,
 "texture": ExtResource("7_k7ylw")
 }, {
@@ -85,6 +98,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("11_3j4b4")
+}, {
+"duration": 0.6,
+"texture": ExtResource("14_cnsyf")
+}, {
+"duration": 0.6,
+"texture": ExtResource("13_ioxgp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_yj68g")
+}],
+"loop": true,
+"name": &"knockback",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("11_skgyt")
 }, {
 "duration": 1.0,
@@ -108,10 +138,10 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ht0jr"]
-size = Vector2(100.5, 107)
+size = Vector2(63.25, 107)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cnsyf"]
-size = Vector2(86, 51)
+size = Vector2(52.5, 51)
 
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 6
@@ -121,17 +151,17 @@ script = ExtResource("1_hejnc")
 position = Vector2(0, -7)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_eai12")
-animation = &"attack_animation"
+animation = &"knockback"
 script = ExtResource("17_cabpx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 2)
+position = Vector2(-33, 2)
 shape = SubResource("RectangleShape2D_ht0jr")
 
-[node name="Audio" type="Node2D" parent="."]
-
-[node name="jump" type="AudioStreamPlayer2D" parent="Audio"]
+[node name="jump" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("22_yj68g")
+
+[node name="Audio" type="Node2D" parent="."]
 
 [node name="attack" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("23_ioxgp")
@@ -154,4 +184,5 @@ position = Vector2(0, -9)
 collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HandPivot/SwordArea"]
+position = Vector2(-1, 18)
 shape = SubResource("RectangleShape2D_cnsyf")

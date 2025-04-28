@@ -3,11 +3,11 @@ extends CharacterBody2D
 const SPEED = 500.0
 const JUMP_VELOCITY = -700.0
 const GRAVITY = 2000.0
-const ATTACK_DURATION = 0.3
+const ATTACK_DURATION = 0.35
 
-@export var max_health: int = 3000
+@export var max_health: int = 20
 @export var knockback_force: float = 2800.0
-@export var knockback_friction: float = 0.9
+@export var knockback_friction: float = 0.85
 @export var vertical_knockback_factor: float = 0.25
 @export var knockback_duration: float = 0.4
 @export var invulnerability_time: float = 0.5
@@ -17,7 +17,7 @@ var can_attack: bool = true
 var is_invulnerable: bool = false
 var knockback: Vector2 = Vector2.ZERO
 var knockback_timer: float = 0.0
-
+var dead = false
 var attack_area: Area2D
 
 @onready var animated_sprite = $AnimatedSprite2D
@@ -28,6 +28,8 @@ var attack_area: Area2D
 	"hurt": $Audio/hurt
 }
 
+signal knockback_finished
+
 func _ready() -> void:
 	health = max_health
 	attack_area = $HandPivot/SwordArea
@@ -37,6 +39,9 @@ func _ready() -> void:
 	play_audio("rise")
 
 func _physics_process(delta: float) -> void:
+	if dead == true:
+		return
+	
 	if knockback != Vector2.ZERO:
 		knockback_timer += delta
 		handle_knockback(delta)
@@ -108,27 +113,33 @@ func start_attack() -> void:
 	can_attack = true
 
 func take_damage(amount: int, attack_origin: Vector2) -> void:
-	if is_invulnerable:
+	if is_invulnerable or dead:
 		return
-	
+		
 	health -= amount
+	GameEffects.request_hit_stop(0.3, animated_sprite)
 	init_knockback(attack_origin)
 	play_audio("hurt")
-	apply_invulnerability()
-	
+	await knockback_finished
 	if health <= 0:
 		die()
+		return
+	apply_invulnerability()
+	
+
 
 func init_knockback(attack_origin: Vector2) -> void:
 	var knockback_dir = (global_position - attack_origin).normalized()
 	knockback_dir.y *= vertical_knockback_factor
 	knockback = knockback_dir * knockback_force
 	knockback_timer = 0.0
+	animated_sprite.play('knockback')
 
 func end_knockback() -> void:
 	knockback = Vector2.ZERO
 	knockback_timer = 0.0
 	velocity = Vector2.ZERO
+	emit_signal("knockback_finished")
 
 func apply_invulnerability() -> void:
 	is_invulnerable = true
@@ -143,9 +154,20 @@ func apply_invulnerability() -> void:
 	is_invulnerable = false
 
 func die() -> void:
+	dead = true
+	animated_sprite.modulate = Color.WHITE
 	set_collision_mask_value(1, false)
 	animated_sprite.play("death")
-	await animated_sprite.animation_finished
+	
+	#Primeiro: piscadas fortes
+	var tween = create_tween()
+	for i in range(3):
+		tween.tween_property(animated_sprite, "modulate", Color(2, 2, 2), 0.05)
+		tween.tween_property(animated_sprite, "modulate", Color.WHITE, 0.05) 
+	
+	tween.tween_property(animated_sprite, "modulate:a", 0.0, 2)
+	
+	await tween.finished
 	queue_free()
 
 func update_attack_area_position() -> void:
