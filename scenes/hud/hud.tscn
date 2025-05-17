@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://4iow6nruv8rm"]
+
+[ext_resource type="Script" uid="uid://me5rtbtty2us" path="res://scenes/hud/life.gd" id="1_cgeww"]
+[ext_resource type="Texture2D" uid="uid://df2wqaxop8snd" path="res://hud/heart.png" id="2_c45xl"]
+
+[node name="HUD" type="CanvasLayer"]
+
+[node name="Life" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(1, 1)
+anchors_preset = -1
+anchor_left = 0.044
+anchor_top = 0.044
+anchor_right = 0.111
+anchor_bottom = 0.044
+offset_right = 1.0
+offset_bottom = 1.0
+script = ExtResource("1_cgeww")
+heart_texture = ExtResource("2_c45xl")

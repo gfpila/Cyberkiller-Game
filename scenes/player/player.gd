@@ -4,21 +4,24 @@ const SPEED = 500.0
 const JUMP_VELOCITY = -700.0
 const GRAVITY = 2000.0
 const ATTACK_DURATION = 0.35
+const ATTACK_COOLDOWN = 0.5
 
-@export var max_health: int = 30
+
+@export var max_health: int = 40
 @export var knockback_force: float = 2800.0
 @export var knockback_friction: float = 0.85
 @export var vertical_knockback_factor: float = 0.25
 @export var knockback_duration: float = 0.4
 @export var invulnerability_time: float = 0.5
 
-var health: int
+
 var can_attack: bool = true
 var is_invulnerable: bool = false
 var knockback: Vector2 = Vector2.ZERO
 var knockback_timer: float = 0.0
 var dead = false
 var attack_area: Area2D
+var health: int = max_health
 
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var audio_nodes = {
@@ -29,6 +32,7 @@ var attack_area: Area2D
 }
 
 signal knockback_finished
+signal health_changed(current: int, max: int)
 
 func _ready() -> void:
 	health = max_health
@@ -106,18 +110,20 @@ func start_attack() -> void:
 	play_audio("attack")
 	play_animation("attack_animation")
 	update_attack_area_position()
-	
+	var cooldown_timer = get_tree().create_timer(ATTACK_COOLDOWN)
 	attack_area.monitoring = true
-	await get_tree().create_timer(ATTACK_DURATION).timeout
+	await get_tree().create_timer(ATTACK_DURATION - 0.2).timeout
 	attack_area.monitoring = false
+	await cooldown_timer.timeout
 	can_attack = true
-
+	
 func take_damage(amount: int, attack_origin: Vector2) -> void:
 	if is_invulnerable or dead:
 		return
 		
 	health -= amount
-	GameEffects.request_hit_stop(0.4, animated_sprite)
+	emit_signal("health_changed", health, max_health)
+	GameEffects.request_hit_stop(0.4, animated_sprite, global_position)
 	init_knockback(attack_origin)
 	play_audio("hurt")
 	await knockback_finished
@@ -126,8 +132,6 @@ func take_damage(amount: int, attack_origin: Vector2) -> void:
 		return
 	apply_invulnerability()
 	
-
-
 func init_knockback(attack_origin: Vector2) -> void:
 	var knockback_dir = (global_position - attack_origin).normalized()
 	knockback_dir.y *= vertical_knockback_factor
@@ -152,6 +156,10 @@ func apply_invulnerability() -> void:
 	
 	await tween.finished
 	is_invulnerable = false
+	
+func heal(amount: int) -> void:
+	health = min(health + amount, max_health)
+	emit_signal("health_changed", health, max_health)
 
 func die() -> void:
 	dead = true
@@ -168,7 +176,16 @@ func die() -> void:
 	tween.tween_property(animated_sprite, "modulate:a", 0.0, 2)
 	
 	await tween.finished
-	queue_free()
+	
+	# Mostrar tela de morte:
+	var game_over_scene = preload("res://scenes/gameOver/gameOver.tscn")
+	var game_over_instance = game_over_scene.instantiate()
+	get_tree().get_root().add_child(game_over_instance)
+
+	# Esperar 5 segundos e voltar para o menu
+	await get_tree().create_timer(2.0).timeout
+	get_tree().change_scene_to_file("res://scenes/main-menu/main_menu.tscn")
+	
 
 func update_attack_area_position() -> void:
 	var offset = Vector2(50, 0) if !animated_sprite.flip_h else Vector2(-50, 0)

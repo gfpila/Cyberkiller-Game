@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dxxqx0epp12xu"]
+
+[ext_resource type="Texture2D" uid="uid://07wuu02jr7ee" path="res://effects/splatter2.png" id="1_w352g"]
+[ext_resource type="Script" uid="uid://ctoflob1ou4e1" path="res://scenes/blood/blood.gd" id="2_6vi5i"]
+
+[node name="Blood" type="Sprite2D"]
+z_index = 50
+position = Vector2(0, 1)
+scale = Vector2(0.365234, 0.382813)
+texture = ExtResource("1_w352g")
+script = ExtResource("2_6vi5i")

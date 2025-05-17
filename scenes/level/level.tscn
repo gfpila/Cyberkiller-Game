@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://bckaw12ogxpcg"]
+[gd_scene load_steps=9 format=3 uid="uid://bckaw12ogxpcg"]
 
 [ext_resource type="Texture2D" uid="uid://djpf8ll1oyn2j" path="res://Backgrounds/bb520080-d77f-4f10-b514-5c0399fcf347 (1).png" id="1_i166f"]
 [ext_resource type="PackedScene" uid="uid://cy0yp8xplplpm" path="res://scenes/enemy_NightBorne/enemy.tscn" id="2_3p8pv"]
+[ext_resource type="PackedScene" uid="uid://4iow6nruv8rm" path="res://scenes/hud/hud.tscn" id="3_hnne4"]
 [ext_resource type="PackedScene" uid="uid://duscmgc6kn30a" path="res://scenes/player/player.tscn" id="3_tp0ju"]
 [ext_resource type="AudioStream" uid="uid://chdruxmf6hwd2" path="res://Music/partida/01.ogg" id="4_qkmgm"]
 
@@ -23,6 +24,8 @@ texture = ExtResource("1_i166f")
 
 [node name="Player" parent="." instance=ExtResource("3_tp0ju")]
 position = Vector2(851, 867)
+
+[node name="HUD" parent="." instance=ExtResource("3_hnne4")]
 
 [node name="Enemy" parent="." instance=ExtResource("2_3p8pv")]
 position = Vector2(1229, 902)

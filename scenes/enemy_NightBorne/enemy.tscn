@@ -195,7 +195,7 @@ func take_damage(amount: int, attack_origin: Vector2) -> void:
 	health -= amount
 	current_state = State.HURT
 	audio_nodes[\"hit\"].play()
-	GameEffects.request_hit_stop(0.4, animated_sprite)
+	GameEffects.request_hit_stop(0.4, animated_sprite, global_position)
 	
 	# Tempo mínimo de knockback
 	var knockback_timer = get_tree().create_timer(knockback_duration)
@@ -214,6 +214,7 @@ func start_attack() -> void:
 
 	can_attack = false
 	current_state = State.ATTACK
+	await get_tree().create_timer(0.15).timeout
 	audio_nodes[\"attack\"].play()
 
 	update_attack_area_position()
@@ -250,30 +251,30 @@ func _on_attack_area_body_entered(body: Node2D) -> void:
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_opd48"]
-size = Vector2(65.3999, 99.1565)
+size = Vector2(101, 106.156)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_iv7se"]
 animations = [{
 "frames": [{
-"duration": 0.4,
+"duration": 0.2,
 "texture": ExtResource("1_2f3il")
 }, {
-"duration": 0.4,
+"duration": 0.2,
 "texture": ExtResource("2_dtxhd")
 }, {
-"duration": 0.4,
+"duration": 0.2,
 "texture": ExtResource("3_so3kp")
 }, {
-"duration": 0.4,
+"duration": 0.2,
 "texture": ExtResource("4_5woo5")
 }, {
-"duration": 0.4,
+"duration": 0.2,
 "texture": ExtResource("5_pb0yv")
 }, {
-"duration": 0.4,
+"duration": 0.2,
 "texture": ExtResource("6_prup0")
 }, {
-"duration": 0.4,
+"duration": 0.2,
 "texture": ExtResource("7_dxjon")
 }, {
 "duration": 1.0,
@@ -282,10 +283,10 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("9_8ed2q")
 }, {
-"duration": 1.0,
+"duration": 1.5,
 "texture": ExtResource("10_wk82e")
 }, {
-"duration": 1.0,
+"duration": 1.5,
 "texture": ExtResource("11_bsmli")
 }, {
 "duration": 1.0,
@@ -446,7 +447,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e5e7g"]
-size = Vector2(55.2963, 67.5)
+size = Vector2(140.741, 136)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e5e7g"]
 radius = 400.0
@@ -454,11 +455,11 @@ radius = 400.0
 [node name="Enemy" type="CharacterBody2D"]
 position = Vector2(10, 5)
 collision_layer = 4
-collision_mask = 3
+collision_mask = 2
 script = SubResource("GDScript_4g3ns")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-33.7, -17.5783)
+position = Vector2(-14.5, -14.0781)
 shape = SubResource("RectangleShape2D_opd48")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -491,10 +492,13 @@ position = Vector2(6.48132, -3)
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HandPivot/SwordArea"]
-position = Vector2(-23.0184, 0)
+position = Vector2(-17.5924, 9)
 shape = SubResource("RectangleShape2D_e5e7g")
 
 [node name="DetectionArea" type="Area2D" parent="."]
+position = Vector2(-11, -10)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+position = Vector2(-13, -1)
 shape = SubResource("CircleShape2D_e5e7g")
+metadata/_edit_lock_ = true

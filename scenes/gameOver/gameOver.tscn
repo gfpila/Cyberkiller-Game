@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://do5q74kcr6h46"]
+
+[ext_resource type="Texture2D" uid="uid://d01uu1xmfn1qe" path="res://menu/tela morte.png" id="1_7s3h2"]
+
+[node name="TextureRect" type="TextureRect"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_7s3h2")

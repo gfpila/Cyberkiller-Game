@@ -24,6 +24,8 @@ GameEffects="*res://utils/game_effects.gd"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/mode=3
+window/size/initial_position_type=3
+window/stretch/mode="canvas_items"
 window/stretch/scale_mode="integer"
 window/fullsize=true
 

@@ -132,34 +132,31 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("16_2ohpg")
 }],
-"loop": false,
+"loop": true,
 "name": &"run",
 "speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ht0jr"]
-size = Vector2(63.25, 107)
+size = Vector2(103, 117)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cnsyf"]
-size = Vector2(52.5, 51)
+size = Vector2(77.625, 51)
 
 [node name="Player" type="CharacterBody2D"]
-collision_mask = 6
+collision_mask = 2
 script = ExtResource("1_hejnc")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -7)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_eai12")
-animation = &"attack_animation"
+animation = &"run"
 script = ExtResource("17_cabpx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-33, 2)
+position = Vector2(-12.5, 2.5)
 shape = SubResource("RectangleShape2D_ht0jr")
-
-[node name="jump" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("22_yj68g")
 
 [node name="Audio" type="Node2D" parent="."]
 
@@ -176,6 +173,9 @@ volume_db = 12.0
 [node name="death" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("26_6cv16")
 
+[node name="jump" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("22_yj68g")
+
 [node name="HandPivot" type="Node2D" parent="."]
 position = Vector2(0, -7)
 
@@ -184,5 +184,5 @@ position = Vector2(0, -9)
 collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HandPivot/SwordArea"]
-position = Vector2(-19, 15)
+position = Vector2(21, 11)
 shape = SubResource("RectangleShape2D_cnsyf")
