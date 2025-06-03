@@ -7,7 +7,7 @@ var current_level = null
 var player = null
 
 @onready var level_container = $LevelContainer
-@onready var hud = $HUD
+@onready var hud = $HUD/Life
 
 var player_health = 40
 var player_max_health = 40
@@ -38,7 +38,7 @@ func load_level(path):
 	player.max_health = player_max_health
 	
 	# Conecta sinal para manter estado sincronizado
-	player.health_changed.disconnect_all()
+	#player.health_changed.disconnect_all()
 	player.health_changed.connect(_on_player_health_changed)
 
 	hud.set_player(player)
