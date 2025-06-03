@@ -1,6 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://bckaw12ogxpcg"]
+[gd_scene load_steps=9 format=3 uid="uid://brl3qke6uvgmj"]
 
-[ext_resource type="Script" uid="uid://dvon6fkuf8tw2" path="res://scenes/level3/level3.gd" id="1_vpf64"]
+[ext_resource type="Script" uid="uid://dvon6fkuf8tw2" path="res://scenes/level/level.gd" id="1_vpf64"]
 [ext_resource type="PackedScene" uid="uid://cy0yp8xplplpm" path="res://scenes/enemy_NightBorne/enemy.tscn" id="2_3p8pv"]
 [ext_resource type="Texture2D" uid="uid://c53okws4f28vr" path="res://Backgrounds/BackDrops/an orange city.png" id="2_llluu"]
 [ext_resource type="PackedScene" uid="uid://4iow6nruv8rm" path="res://scenes/hud/hud.tscn" id="3_hnne4"]
@@ -10,7 +10,7 @@
 size = Vector2(1907, 19)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hnne4"]
-size = Vector2(10, 400)
+size = Vector2(93, 400)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qkmgm"]
 size = Vector2(32.972, 586.361)
@@ -45,7 +45,7 @@ collision_layer = 2
 collision_mask = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
-position = Vector2(-919, 110)
+position = Vector2(-531, 168)
 shape = SubResource("RectangleShape2D_hnne4")
 
 [node name="Audio" type="Node2D" parent="."]

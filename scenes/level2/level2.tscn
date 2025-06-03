@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bckaw12ogxpcg"]
+[gd_scene load_steps=8 format=3 uid="uid://bdsfvn8ljs8oi"]
 
 [ext_resource type="Texture2D" uid="uid://cid3gyaix2f04" path="res://Backgrounds/BackDrops/Nightcity.png" id="1_s0xpa"]
 [ext_resource type="PackedScene" uid="uid://cy0yp8xplplpm" path="res://scenes/enemy_NightBorne/enemy.tscn" id="2_3p8pv"]
