@@ -1,18 +1,16 @@
 extends HBoxContainer
 
 @export var heart_texture: Texture2D
-
 var player: Node = null
 
-func _ready():
-	# Aguarda o Player aparecer na árvore
-	await get_tree().process_frame
-	player = get_tree().get_root().get_node("Level/Player") # Ajuste o caminho conforme sua estrutura
+func set_player(new_player):
+	if player:
+		player.health_changed.disconnect(_on_health_changed)
+	player = new_player
 	player.health_changed.connect(_on_health_changed)
 	_on_health_changed(player.health, player.max_health)
 
 func _on_health_changed(current: int, max: int) -> void:
-	# Limpa os corações antigos
 	for child in get_children():
 		child.queue_free()
 
@@ -27,6 +25,6 @@ func _on_health_changed(current: int, max: int) -> void:
 		heart.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 
 		if i >= full_hearts:
-			heart.modulate = Color(1, 1, 1, 0.3)  # Apagado
+			heart.modulate = Color(1, 1, 1, 0.3)
 
 		add_child(heart)

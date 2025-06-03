@@ -4,7 +4,7 @@ const SPEED = 500.0
 const JUMP_VELOCITY = -700.0
 const GRAVITY = 2000.0
 const ATTACK_DURATION = 0.35
-const ATTACK_COOLDOWN = 0.5
+const ATTACK_COOLDOWN = 0.55
 
 
 @export var max_health: int = 40
@@ -35,6 +35,7 @@ signal knockback_finished
 signal health_changed(current: int, max: int)
 
 func _ready() -> void:
+	z_index = 10
 	health = max_health
 	attack_area = $HandPivot/SwordArea
 	add_to_group("player")
