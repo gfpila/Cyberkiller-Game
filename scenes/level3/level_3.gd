@@ -8,17 +8,7 @@ extends Node2D
 func _ready():
 	exit_sprite.visible = false
 	exit_area.body_entered.connect(_on_exit_area_entered)
-
-func _process(delta):
-	if all_enemies_defeated():
-		activate_exit()
-		
-func all_enemies_defeated() -> bool:
-	var enemies = get_tree().get_nodes_in_group("enemies")
-	if enemies.size() == 0:
-		return true
-	else:
-		return false
+	activate_exit()
 	
 func activate_exit():
 	if not exit_sprite.visible:
@@ -29,4 +19,4 @@ func activate_exit():
 func _on_exit_area_entered(body):
 	# Só permite avançar se o player tocar na saída E ela estiver ativa
 	if (body.name == "Player" or body.is_in_group("player")) and exit_sprite.visible:
-		get_tree().root.get_node("Main").go_to_level('2')
+		get_tree().root.get_node("Main").go_to_level('4')

@@ -1,0 +1,70 @@
+[gd_scene load_steps=13 format=3 uid="uid://c6ykrdljvaluu"]
+
+[ext_resource type="Texture2D" uid="uid://jkmpoln8xt82" path="res://enemies/Bat/tile005.png" id="1_1vcy3"]
+[ext_resource type="Script" uid="uid://mo5jlvwqvprx" path="res://scenes/enemyBat/bat.gd" id="1_k2s1n"]
+[ext_resource type="Texture2D" uid="uid://de5x56bh3ajuc" path="res://enemies/Bat/tile006.png" id="2_k2s1n"]
+[ext_resource type="Texture2D" uid="uid://bdjt3nrcd7erw" path="res://enemies/Bat/tile009.png" id="3_703v3"]
+[ext_resource type="Texture2D" uid="uid://cllfquw88e8l8" path="res://enemies/Bat/tile010.png" id="4_huxug"]
+[ext_resource type="Texture2D" uid="uid://bdsgqwvs3hso6" path="res://enemies/Bat/tile011.png" id="5_73xxc"]
+[ext_resource type="Texture2D" uid="uid://dp23whks68qdo" path="res://enemies/Bat/tile014.png" id="6_0fdeb"]
+[ext_resource type="Texture2D" uid="uid://3qylqcpx23c3" path="res://enemies/Bat/tile015.png" id="7_arldi"]
+[ext_resource type="Texture2D" uid="uid://bixq0f8wsp244" path="res://enemies/Bat/tile016.png" id="8_ens22"]
+[ext_resource type="Texture2D" uid="uid://btiia330stc6o" path="res://enemies/Bat/tile017.png" id="9_gbqe3"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_p8mt8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_1vcy3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_k2s1n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_703v3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_huxug")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_73xxc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_0fdeb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_arldi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ens22")
+}, {
+"duration": 0.7,
+"texture": ExtResource("9_gbqe3")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m0qbf"]
+size = Vector2(62.5, 67.5)
+
+[node name="Bat" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_k2s1n")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_p8mt8")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-4.25, 5.25)
+shape = SubResource("RectangleShape2D_m0qbf")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-4.25, 5.25)
+shape = SubResource("RectangleShape2D_m0qbf")

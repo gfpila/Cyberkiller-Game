@@ -118,16 +118,19 @@ func start_attack() -> void:
 	await cooldown_timer.timeout
 	can_attack = true
 	
-func take_damage(amount: int, attack_origin: Vector2) -> void:
+func take_damage(amount: int, attack_origin: Vector2, knockback:=true) -> void:
 	if is_invulnerable or dead:
 		return
 		
 	health -= amount
 	emit_signal("health_changed", health, max_health)
 	GameEffects.request_hit_stop(0.4, animated_sprite, global_position)
-	init_knockback(attack_origin)
-	play_audio("hurt")
-	await knockback_finished
+	if knockback:
+		init_knockback(attack_origin)
+		play_audio("hurt")
+		await knockback_finished
+	else:
+		play_audio("hurt")
 	if health <= 0:
 		die()
 		return
