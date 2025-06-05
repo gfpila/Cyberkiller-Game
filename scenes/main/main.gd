@@ -1,7 +1,7 @@
 extends Node2D
 
 @export var level1_path = "res://scenes/level/level.tscn"
-@export var level2_path = "res://scenes/level2/level2.tscn"
+@export var level2_path = "res://scenes/level2/level_2.tscn"
 
 var current_level = null
 var player = null
@@ -9,8 +9,8 @@ var player = null
 @onready var level_container = $LevelContainer
 @onready var hud = $HUD/Life
 
-var player_health = 40
-var player_max_health = 40
+var player_health = 50
+var player_max_health = 50
 
 func _ready():
 	load_level(level1_path)
@@ -18,7 +18,12 @@ func _ready():
 func load_level(path):
 	# Limpa level anterior
 	if current_level:
-		current_level.queue_free()
+		# 1. Remove todos os filhos do container (incluindo o nível)
+		for child in level_container.get_children():
+			child.queue_free()
+		
+		await get_tree().process_frame
+		current_level = null
 	
 	# Carrega novo level e instancia no container
 	var level_scene = load(path)

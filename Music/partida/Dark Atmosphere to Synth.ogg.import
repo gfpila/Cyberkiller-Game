@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dflnuor135spx"
+path="res://.godot/imported/Dark Atmosphere to Synth.ogg-e7a948a49004c37060575f427ebebc9a.oggvorbisstr"
+
+[deps]
+
+source_file="res://Music/partida/Dark Atmosphere to Synth.ogg"
+dest_files=["res://.godot/imported/Dark Atmosphere to Synth.ogg-e7a948a49004c37060575f427ebebc9a.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

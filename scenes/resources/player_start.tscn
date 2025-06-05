@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://cqphseavdiiiy"]
+
+[node name="PlayerStart" type="Node2D"]
+physics_interpolation_mode = 2

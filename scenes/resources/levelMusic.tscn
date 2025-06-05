@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bsm3wepu1iadw"]
+
+[ext_resource type="AudioStream" uid="uid://burba5wswpvaw" path="res://Music/partida/DavidKBD - Pink Bloom Pack - 02 - Portal to Underworld.ogg" id="1_wvs42"]
+
+[node name="Audio" type="Node2D"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_wvs42")
+autoplay = true

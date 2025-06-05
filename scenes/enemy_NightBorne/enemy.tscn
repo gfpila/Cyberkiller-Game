@@ -62,13 +62,13 @@
 [sub_resource type="GDScript" id="GDScript_4g3ns"]
 script/source = "extends CharacterBody2D
 
-@export var max_health: int = 100
+@export var max_health: int = 50
 @export var knockback_force: float = 2000.0
 @export var friction: float = 0.8
 @export var move_speed: float = 300.0
 @export var attack_range: float = 120.0
 @export var detection_range: float = 400.0
-@export var attack_cooldown: float = 0.3
+@export var attack_cooldown: float = 0.35
 @export var gravity: float = 2000.0
 @export var knockback_duration: float = 0.25
 @export var vertical_knockback_factor: float = 0.3
@@ -132,7 +132,7 @@ func _physics_process(delta: float) -> void:
 	#Variação de movimento
 	speed_variation_timer += delta
 	var sin_factor = sin(speed_variation_timer * 2.0 + random_offset) * 0.2 + 1.0
-	move_speed = base_move_speed * sin_factor + 550
+	move_speed = base_move_speed * sin_factor + 400
 	
 	#Aplicar gravidade
 	if not is_on_floor():
@@ -506,7 +506,6 @@ size = Vector2(140.741, 136)
 radius = 400.0
 
 [node name="Enemy" type="CharacterBody2D"]
-position = Vector2(10, 5)
 collision_layer = 4
 collision_mask = 2
 script = SubResource("GDScript_4g3ns")

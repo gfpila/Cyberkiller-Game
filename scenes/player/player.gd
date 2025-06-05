@@ -1,13 +1,13 @@
 extends CharacterBody2D
 
 const SPEED = 500.0
-const JUMP_VELOCITY = -700.0
+const JUMP_VELOCITY = -900.0
 const GRAVITY = 2000.0
 const ATTACK_DURATION = 0.35
-const ATTACK_COOLDOWN = 0.55
+const ATTACK_COOLDOWN = 0.4
 
 
-@export var max_health: int = 40
+@export var max_health: int = 50
 @export var knockback_force: float = 2800.0
 @export var knockback_friction: float = 0.85
 @export var vertical_knockback_factor: float = 0.25

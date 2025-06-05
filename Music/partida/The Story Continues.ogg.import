@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://8ol2tur4tp0p"
+path="res://.godot/imported/The Story Continues.ogg-0bbaa41d5bb5b3a98eb670810423a94a.oggvorbisstr"
+
+[deps]
+
+source_file="res://Music/partida/The Story Continues.ogg"
+dest_files=["res://.godot/imported/The Story Continues.ogg-0bbaa41d5bb5b3a98eb670810423a94a.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

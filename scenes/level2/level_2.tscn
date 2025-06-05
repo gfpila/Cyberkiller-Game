@@ -1,0 +1,39 @@
+[gd_scene load_steps=9 format=3 uid="uid://dhrwcgnqadngg"]
+
+[ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_1ogr5"]
+[ext_resource type="Script" uid="uid://dba3arakcgqew" path="res://scenes/level2/level_2.gd" id="1_fbmi7"]
+[ext_resource type="Texture2D" uid="uid://cid3gyaix2f04" path="res://Backgrounds/BackDrops/Nightcity.png" id="2_fbmi7"]
+[ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="3_wkp85"]
+[ext_resource type="PackedScene" uid="uid://ddhmhfc5lmnjl" path="res://scenes/resources/ground.tscn" id="4_cetmx"]
+[ext_resource type="PackedScene" uid="uid://cqphseavdiiiy" path="res://scenes/resources/player_start.tscn" id="6_4gn32"]
+[ext_resource type="PackedScene" uid="uid://cy0yp8xplplpm" path="res://scenes/enemy_NightBorne/enemy.tscn" id="7_1ogr5"]
+[ext_resource type="PackedScene" uid="uid://cbyiwji00befa" path="res://scenes/resources/wall.tscn" id="7_ciepp"]
+
+[node name="Level2" type="Node2D"]
+script = ExtResource("1_fbmi7")
+
+[node name="Background" parent="." instance=ExtResource("1_1ogr5")]
+position = Vector2(966.25, 705)
+scale = Vector2(0.97375, 1.44)
+texture = ExtResource("2_fbmi7")
+
+[node name="ExitArea" parent="." instance=ExtResource("3_wkp85")]
+position = Vector2(1854, 917)
+
+[node name="StaticBody2D3" parent="." instance=ExtResource("7_ciepp")]
+position = Vector2(23, 833)
+
+[node name="StaticBody2D4" parent="." instance=ExtResource("7_ciepp")]
+position = Vector2(1900, 845)
+
+[node name="StaticBody2D" parent="." instance=ExtResource("4_cetmx")]
+position = Vector2(949, 1016)
+
+[node name="PlayerStart" parent="." instance=ExtResource("6_4gn32")]
+position = Vector2(101, 898)
+
+[node name="Enemy" parent="." instance=ExtResource("7_1ogr5")]
+position = Vector2(748, 974)
+
+[node name="Enemy2" parent="." instance=ExtResource("7_1ogr5")]
+position = Vector2(1021, 969)

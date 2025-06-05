@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bdvkar4hx2m2p"
+path="res://.godot/imported/The Protagonist.ogg-766c955aa4c302d451c752507bfaf1cd.oggvorbisstr"
+
+[deps]
+
+source_file="res://Music/partida/The Protagonist.ogg"
+dest_files=["res://.godot/imported/The Protagonist.ogg-766c955aa4c302d451c752507bfaf1cd.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
