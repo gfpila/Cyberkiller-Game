@@ -11,6 +11,12 @@ script = ExtResource("1_lquwl")
 [node name="LevelContainer" type="Node" parent="."]
 
 [node name="Player" parent="." instance=ExtResource("4_7mycd")]
+max_health = 50
+knockback_force = 2800.0
+knockback_friction = 0.85
+vertical_knockback_factor = 0.25
+knockback_duration = 0.4
+invulnerability_time = 0.5
 
 [node name="HUD" parent="." instance=ExtResource("5_272bh")]
 

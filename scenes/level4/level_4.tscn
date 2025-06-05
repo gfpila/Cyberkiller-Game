@@ -1,0 +1,70 @@
+[gd_scene load_steps=10 format=3 uid="uid://catouv6gq3enw"]
+
+[ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_w6nx2"]
+[ext_resource type="Texture2D" uid="uid://c53okws4f28vr" path="res://Backgrounds/BackDrops/an orange city.png" id="2_mmexc"]
+[ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="3_ttfji"]
+[ext_resource type="PackedScene" uid="uid://cqphseavdiiiy" path="res://scenes/resources/player_start.tscn" id="4_nofd8"]
+[ext_resource type="PackedScene" uid="uid://btmxtetd1llhq" path="res://scenes/enemyBlackDog/blackDog.tscn" id="4_ukca6"]
+[ext_resource type="PackedScene" uid="uid://cbyiwji00befa" path="res://scenes/resources/wall.tscn" id="5_ukca6"]
+
+[sub_resource type="GDScript" id="GDScript_mmexc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hkqfa"]
+size = Vector2(513, 101)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_13he0"]
+size = Vector2(277, 70.8058)
+
+[node name="Level4" type="Node2D"]
+script = SubResource("GDScript_mmexc")
+
+[node name="Background" parent="." instance=ExtResource("1_w6nx2")]
+position = Vector2(974, 571.801)
+scale = Vector2(0.970065, 1.1596)
+texture = ExtResource("2_mmexc")
+
+[node name="BlackDog" parent="." instance=ExtResource("4_ukca6")]
+position = Vector2(994, 772)
+
+[node name="ExitArea" parent="." instance=ExtResource("3_ttfji")]
+position = Vector2(1752, 702)
+
+[node name="PlayerStart" parent="." instance=ExtResource("4_nofd8")]
+position = Vector2(148, 850)
+
+[node name="StaticBody2D3" parent="." instance=ExtResource("5_ukca6")]
+position = Vector2(17, 773)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(269.5, 1028)
+shape = SubResource("RectangleShape2D_hkqfa")
+
+[node name="StaticBody2D5" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D5"]
+position = Vector2(1715, 839)
+shape = SubResource("RectangleShape2D_hkqfa")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4"]
+position = Vector2(1003, 862)
+shape = SubResource("RectangleShape2D_hkqfa")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(525, 516)
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2(133, 408)
+rotation = -0.654498
+shape = SubResource("RectangleShape2D_13he0")

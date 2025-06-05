@@ -1,0 +1,207 @@
+[gd_scene load_steps=38 format=3 uid="uid://btmxtetd1llhq"]
+
+[ext_resource type="Texture2D" uid="uid://cpdgahktru51m" path="res://enemies/BlackDog/tile000.png" id="1_s7wsm"]
+[ext_resource type="Texture2D" uid="uid://b5xu82oomp24w" path="res://enemies/BlackDog/tile001.png" id="2_pxnga"]
+[ext_resource type="Texture2D" uid="uid://cqa4h65qduomo" path="res://enemies/BlackDog/tile002.png" id="3_hjjox"]
+[ext_resource type="Texture2D" uid="uid://c5wuy7qwyifn3" path="res://enemies/BlackDog/tile003.png" id="4_483yx"]
+[ext_resource type="Texture2D" uid="uid://dl881srm17n8c" path="res://enemies/BlackDog/tile004.png" id="5_3ql2r"]
+[ext_resource type="Texture2D" uid="uid://bda8486n6layq" path="res://enemies/BlackDog/tile005.png" id="6_whhf1"]
+[ext_resource type="Texture2D" uid="uid://0fugh7d1tcjk" path="res://enemies/BlackDog/tile006.png" id="7_31eup"]
+[ext_resource type="Texture2D" uid="uid://xocf1mknb1s" path="res://enemies/BlackDog/death000.png" id="8_ch47l"]
+[ext_resource type="Texture2D" uid="uid://bk2nk4ym45c62" path="res://enemies/BlackDog/death001.png" id="9_7nrvj"]
+[ext_resource type="Texture2D" uid="uid://tae8pr212hc" path="res://enemies/BlackDog/death002.png" id="10_jl3vs"]
+[ext_resource type="Texture2D" uid="uid://gcs6vmsfj63s" path="res://enemies/BlackDog/death003.png" id="11_eoo3l"]
+[ext_resource type="Texture2D" uid="uid://cqejsqcuufdg1" path="res://enemies/BlackDog/death004.png" id="12_iu6c3"]
+[ext_resource type="Texture2D" uid="uid://bwine5lscx1a6" path="res://enemies/BlackDog/death005.png" id="13_xq62i"]
+[ext_resource type="Texture2D" uid="uid://basnkaviwx4t1" path="res://enemies/BlackDog/death006.png" id="14_12bq1"]
+[ext_resource type="Texture2D" uid="uid://bbic55qo5fmxm" path="res://enemies/BlackDog/death007.png" id="15_kje2c"]
+[ext_resource type="Texture2D" uid="uid://csxo5tv3axhd7" path="res://enemies/BlackDog/hit000.png" id="16_a0fsr"]
+[ext_resource type="Texture2D" uid="uid://bfv1hiwm56m37" path="res://enemies/BlackDog/hit001.png" id="17_0ag66"]
+[ext_resource type="Texture2D" uid="uid://b0k68njx7n05r" path="res://enemies/BlackDog/hit002.png" id="18_ukotp"]
+[ext_resource type="Texture2D" uid="uid://cicbcexo0r2tf" path="res://enemies/BlackDog/hit003.png" id="19_nxx52"]
+[ext_resource type="Texture2D" uid="uid://cirtqh1myuwcq" path="res://enemies/BlackDog/idle000.png" id="20_1qaey"]
+[ext_resource type="Texture2D" uid="uid://caolpb6njx02c" path="res://enemies/BlackDog/idle001.png" id="21_762ib"]
+[ext_resource type="Texture2D" uid="uid://ibmyg4e7200v" path="res://enemies/BlackDog/idle002.png" id="22_v6w3e"]
+[ext_resource type="Texture2D" uid="uid://ynry1vvxlmuo" path="res://enemies/BlackDog/idle003.png" id="23_71yvf"]
+[ext_resource type="Texture2D" uid="uid://oydf63iinuem" path="res://enemies/BlackDog/run000.png" id="24_0q5se"]
+[ext_resource type="Texture2D" uid="uid://bkiw33vkfmgc7" path="res://enemies/BlackDog/run001.png" id="25_jk23x"]
+[ext_resource type="Texture2D" uid="uid://bbki18pxynqqd" path="res://enemies/BlackDog/run002.png" id="26_1v0ut"]
+[ext_resource type="Texture2D" uid="uid://c00ckk3bl7n88" path="res://enemies/BlackDog/run003.png" id="27_gxbdo"]
+[ext_resource type="Texture2D" uid="uid://cu5l2xrhoh6o1" path="res://enemies/BlackDog/run004.png" id="28_01icj"]
+[ext_resource type="Texture2D" uid="uid://dbunhjtgeklhj" path="res://enemies/BlackDog/run005.png" id="29_n3ho8"]
+[ext_resource type="Script" uid="uid://cp3njqadog5ax" path="res://scenes/enemyBlackDog/blackDog.gd" id="30_3ql2r"]
+[ext_resource type="AudioStream" uid="uid://bdix4fxx5xxnj" path="res://Sound Effects/general/hit.wav" id="31_whhf1"]
+[ext_resource type="AudioStream" uid="uid://bc43h4d1o0jhp" path="res://scenes/enemyBlackDog/monster-bite-44538.mp3" id="32_3ql2r"]
+[ext_resource type="AudioStream" uid="uid://cm1y3gk3nr22o" path="res://Sound Effects/general/monster_sfx_pack/monster-8.wav" id="33_ch47l"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wa55q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_s7wsm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_pxnga")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_hjjox")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_483yx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_3ql2r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_whhf1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_31eup")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_ch47l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_7nrvj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_jl3vs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_eoo3l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_iu6c3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_xq62i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_12bq1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_kje2c")
+}],
+"loop": false,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("16_a0fsr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_0ag66")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_ukotp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_nxx52")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("20_1qaey")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_762ib")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_v6w3e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_71yvf")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("24_0q5se")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_jk23x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_1v0ut")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_gxbdo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_01icj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_n3ho8")
+}],
+"loop": false,
+"name": &"run",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cgp45"]
+size = Vector2(262, 147)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s7wsm"]
+size = Vector2(270.37, 157)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pxnga"]
+radius = 674.0
+
+[node name="BlackDog" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("30_3ql2r")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(3.5, 3.5)
+sprite_frames = SubResource("SpriteFrames_wa55q")
+animation = &"run"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_cgp45")
+
+[node name="HandPivot" type="Node2D" parent="."]
+position = Vector2(0, -20)
+scale = Vector2(1.08, 1)
+
+[node name="SwordArea" type="Area2D" parent="HandPivot"]
+position = Vector2(6.48132, -3)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HandPivot/SwordArea"]
+position = Vector2(-4.62947, 25)
+shape = SubResource("RectangleShape2D_s7wsm")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+position = Vector2(-11, -10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+position = Vector2(-13, -1)
+shape = SubResource("CircleShape2D_pxnga")
+metadata/_edit_lock_ = true
+
+[node name="Audio" type="Node2D" parent="."]
+position = Vector2(-11, -9)
+
+[node name="hit" type="AudioStreamPlayer2D" parent="Audio"]
+position = Vector2(-9, -8)
+stream = ExtResource("31_whhf1")
+
+[node name="attack" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("32_3ql2r")
+volume_db = 24.0
+
+[node name="death" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("33_ch47l")
+volume_db = 3.888

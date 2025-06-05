@@ -4,7 +4,7 @@ const SPEED = 500.0
 const JUMP_VELOCITY = -900.0
 const GRAVITY = 2000.0
 const ATTACK_DURATION = 0.35
-const ATTACK_COOLDOWN = 0.4
+const ATTACK_COOLDOWN = 0.5
 
 
 @export var max_health: int = 50
@@ -56,6 +56,9 @@ func _physics_process(delta: float) -> void:
 	handle_actions()
 	update_animations()
 	move_and_slide()
+	
+	if position.y > 1200:
+		die()
 
 func handle_knockback(delta: float) -> void:
 	velocity = knockback
@@ -187,8 +190,10 @@ func die() -> void:
 	get_tree().get_root().add_child(game_over_instance)
 
 	# Esperar 5 segundos e voltar para o menu
-	await get_tree().create_timer(2.0).timeout
-	get_tree().change_scene_to_file("res://scenes/main-menu/main_menu.tscn")
+	if is_inside_tree():
+		await get_tree().create_timer(2.0).timeout
+		if is_instance_valid(self):
+			get_tree().change_scene_to_file("res://scenes/main-menu/main_menu.tscn")
 	
 
 func update_attack_area_position() -> void:

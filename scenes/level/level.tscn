@@ -12,7 +12,8 @@
 script = ExtResource("1_vpf64")
 
 [node name="Background" parent="." instance=ExtResource("2_xv074")]
-position = Vector2(957, 551)
+position = Vector2(957, 544.501)
+scale = Vector2(1.25326, 1.0791)
 
 [node name="Enemy" parent="." instance=ExtResource("2_3p8pv")]
 position = Vector2(1242, 852)
