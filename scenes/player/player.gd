@@ -173,27 +173,25 @@ func die() -> void:
 	animated_sprite.modulate = Color.WHITE
 	set_collision_mask_value(1, false)
 	animated_sprite.play("death")
-	
-	#Primeiro: piscadas fortes
+
+	# Piscar antes de sumir
 	var tween = create_tween()
 	for i in range(3):
 		tween.tween_property(animated_sprite, "modulate", Color(2, 2, 2), 0.05)
-		tween.tween_property(animated_sprite, "modulate", Color.WHITE, 0.05) 
-	
+		tween.tween_property(animated_sprite, "modulate", Color.WHITE, 0.05)
 	tween.tween_property(animated_sprite, "modulate:a", 0.0, 2)
-	
 	await tween.finished
-	
-	# Mostrar tela de morte:
+
+	# Mostrar tela de game over
 	var game_over_scene = preload("res://scenes/gameOver/gameOver.tscn")
 	var game_over_instance = game_over_scene.instantiate()
-	get_tree().get_root().add_child(game_over_instance)
+	get_tree().root.add_child(game_over_instance)
 
-	# Esperar 5 segundos e voltar para o menu
-	if is_inside_tree():
-		await get_tree().create_timer(1.25).timeout
-		if is_instance_valid(self):
-			get_tree().change_scene_to_file("res://scenes/main-menu/main_menu.tscn")
+	# Esperar 1.25 segundos e mudar de cena, mas só se for seguro
+	await get_tree().create_timer(1.25).timeout
+
+	if is_instance_valid(get_tree()) and get_tree().root and is_inside_tree():
+		get_tree().change_scene_to_file("res://scenes/main-menu/main_menu.tscn")
 	
 
 func update_attack_area_position() -> void:

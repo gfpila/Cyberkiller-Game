@@ -72,7 +72,7 @@ script/source = "extends CharacterBody2D
 @export var gravity: float = 2000.0
 @export var knockback_duration: float = 0.25
 @export var vertical_knockback_factor: float = 0.3
-@export var separation_distance: float = 100.0
+@export var separation_distance: float = 80.0
 @export var separation_strength: float = 350.0
 
 
