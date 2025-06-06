@@ -1,15 +1,15 @@
 extends CharacterBody2D
 
 @export var max_health: int = 80
-@export var knockback_force: float = 2000.0
+@export var knockback_force: float = 3000.0
 @export var friction: float = 0.8
 @export var move_speed: float = 300.0
-@export var attack_range: float = 120.0
-@export var detection_range: float = 400.0
-@export var attack_cooldown: float = 0.25
+@export var attack_range: float = 150.0
+@export var detection_range: float = 500.0
+@export var attack_cooldown: float = 0.5
 @export var gravity: float = 2000.0
 @export var knockback_duration: float = 0.25
-@export var vertical_knockback_factor: float = 0.3
+@export var vertical_knockback_factor: float = 0.45
 @export var separation_distance: float = 100.0
 @export var separation_strength: float = 350.0
 

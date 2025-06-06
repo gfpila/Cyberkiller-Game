@@ -8,6 +8,39 @@
 [ext_resource type="PackedScene" uid="uid://cbyiwji00befa" path="res://scenes/resources/wall.tscn" id="5_ukca6"]
 
 [sub_resource type="GDScript" id="GDScript_mmexc"]
+script/source = "extends Node2D
+
+@onready var player = $Player
+@onready var exit_area = $ExitArea
+@onready var exit_sprite = $ExitArea/AnimatedSprite2D
+@onready var audio = $ExitArea/AudioStreamPlayer2D
+
+func _ready():
+	exit_sprite.visible = false
+	exit_area.body_entered.connect(_on_exit_area_entered)
+
+func _process(delta):
+	if all_enemies_defeated():
+		activate_exit()
+		
+func all_enemies_defeated() -> bool:
+	var enemies = get_tree().get_nodes_in_group(\"enemies\")
+	if enemies.size() == 0:
+		return true
+	else:
+		return false
+	
+func activate_exit():
+	if not exit_sprite.visible:
+		exit_sprite.visible = true
+		exit_sprite.play(\"default\")
+		audio.play()
+
+func _on_exit_area_entered(body):
+	# Só permite avançar se o player tocar na saída E ela estiver ativa
+	if (body.name == \"Player\" or body.is_in_group(\"player\")) and exit_sprite.visible:
+		get_tree().root.get_node(\"Main\").go_to_level('5')
+"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hkqfa"]
 size = Vector2(513, 101)

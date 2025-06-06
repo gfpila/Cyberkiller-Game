@@ -4,7 +4,7 @@ const SPEED = 500.0
 const JUMP_VELOCITY = -900.0
 const GRAVITY = 2000.0
 const ATTACK_DURATION = 0.35
-const ATTACK_COOLDOWN = 0.5
+const ATTACK_COOLDOWN = 0.6
 
 
 @export var max_health: int = 50
@@ -12,7 +12,7 @@ const ATTACK_COOLDOWN = 0.5
 @export var knockback_friction: float = 0.85
 @export var vertical_knockback_factor: float = 0.25
 @export var knockback_duration: float = 0.4
-@export var invulnerability_time: float = 0.5
+@export var invulnerability_time: float = 0.4
 
 
 var can_attack: bool = true
@@ -191,7 +191,7 @@ func die() -> void:
 
 	# Esperar 5 segundos e voltar para o menu
 	if is_inside_tree():
-		await get_tree().create_timer(2.0).timeout
+		await get_tree().create_timer(1.5).timeout
 		if is_instance_valid(self):
 			get_tree().change_scene_to_file("res://scenes/main-menu/main_menu.tscn")
 	

@@ -15,30 +15,30 @@ size = Vector2(32.972, 586.361)
 [sub_resource type="SpriteFrames" id="SpriteFrames_k2uck"]
 animations = [{
 "frames": [{
-"duration": 0.5,
+"duration": 1.0,
 "texture": ExtResource("1_t7i0g")
 }, {
-"duration": 0.5,
+"duration": 1.0,
 "texture": ExtResource("2_g0ysr")
 }, {
-"duration": 0.5,
+"duration": 1.0,
 "texture": ExtResource("3_j1r7n")
 }, {
-"duration": 0.5,
+"duration": 1.0,
 "texture": ExtResource("4_nyvaw")
 }, {
-"duration": 0.5,
+"duration": 1.0,
 "texture": ExtResource("5_0458e")
 }, {
-"duration": 0.5,
+"duration": 1.0,
 "texture": ExtResource("6_v1g30")
 }, {
-"duration": 0.5,
+"duration": 1.0,
 "texture": ExtResource("7_p2xb6")
 }],
 "loop": true,
 "name": &"default",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [node name="ExitArea" type="Area2D"]

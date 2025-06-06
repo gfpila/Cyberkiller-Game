@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ccwc5d4fhw8yk"
-path="res://.godot/imported/uEmbhh.png-36a4e2942e03a34dfa652c7628c36d76.ctex"
+uid="uid://c44lrimmkemiq"
+path="res://.godot/imported/mokazar-bg-cyberpunk-5.jpg-004fb5dae72ab772ffb8a2ac4afe076d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Backgrounds/uEmbhh.png"
-dest_files=["res://.godot/imported/uEmbhh.png-36a4e2942e03a34dfa652c7628c36d76.ctex"]
+source_file="res://Backgrounds/mokazar-bg-cyberpunk-5.jpg"
+dest_files=["res://.godot/imported/mokazar-bg-cyberpunk-5.jpg-004fb5dae72ab772ffb8a2ac4afe076d.ctex"]
 
 [params]
 

@@ -121,7 +121,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("23_71yvf")
 }],
-"loop": false,
+"loop": true,
 "name": &"idle",
 "speed": 5.0
 }, {
@@ -156,7 +156,7 @@ size = Vector2(262, 147)
 size = Vector2(270.37, 157)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pxnga"]
-radius = 674.0
+radius = 454.004
 
 [node name="BlackDog" type="CharacterBody2D"]
 collision_layer = 4
@@ -180,7 +180,7 @@ position = Vector2(6.48132, -3)
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HandPivot/SwordArea"]
-position = Vector2(-4.62947, 25)
+position = Vector2(-6.48132, 18)
 shape = SubResource("RectangleShape2D_s7wsm")
 
 [node name="DetectionArea" type="Area2D" parent="."]

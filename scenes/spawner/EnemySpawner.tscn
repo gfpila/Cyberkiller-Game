@@ -1,0 +1,56 @@
+[gd_scene load_steps=11 format=3 uid="uid://fy7mqh2hvga8"]
+
+[ext_resource type="Script" uid="uid://56lej0j5rtel" path="res://scenes/spawner/enemy_spawner.gd" id="1_7hdwr"]
+[ext_resource type="Texture2D" uid="uid://61ornkqcolo" path="res://items/portal1_frame_1.png" id="1_vqotl"]
+[ext_resource type="Texture2D" uid="uid://d1x53sd2ekqv0" path="res://items/portal1_frame_2.png" id="2_v4qtb"]
+[ext_resource type="Texture2D" uid="uid://3p3y2k05nr0v" path="res://items/portal1_frame_3.png" id="3_7hdwr"]
+[ext_resource type="Texture2D" uid="uid://puir7j6vblt0" path="res://items/portal1_frame_4.png" id="4_trprc"]
+[ext_resource type="Texture2D" uid="uid://6faipws0iv7" path="res://items/portal1_frame_5.png" id="5_phjyo"]
+[ext_resource type="Texture2D" uid="uid://dlvc5m5sxrgtw" path="res://items/portal1_frame_6.png" id="6_010cw"]
+[ext_resource type="Texture2D" uid="uid://dc7ci2e24vj2p" path="res://items/portal1_frame_7.png" id="7_7yhhk"]
+[ext_resource type="AudioStream" uid="uid://de5vv5w3sl81b" path="res://Sound Effects/general/portal-phase-jump-6355.mp3" id="9_trprc"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0aeyp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_vqotl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_v4qtb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_7hdwr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_trprc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_phjyo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_010cw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_7yhhk")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[node name="EnemySpawner" type="Node2D"]
+script = ExtResource("1_7hdwr")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+rotation = 1.5708
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_0aeyp")
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+
+[node name="Audio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_trprc")
+volume_db = 13.608
+
+[node name="SpawnTimer" type="Timer" parent="."]

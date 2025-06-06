@@ -4,7 +4,8 @@ extends Node2D
 	'1': "res://scenes/level/level.tscn",
 	'2': "res://scenes/level2/level_2.tscn",
 	'3': "res://scenes/level3/level_3.tscn",
-	'4': "res://scenes/level4/level_4.tscn"
+	'4': "res://scenes/level4/level_4.tscn",
+	'5': "res://scenes/level5/level_5.tscn"
 }
 
 var current_level = null
@@ -17,7 +18,7 @@ var player_health = 50
 var player_max_health = 50
 
 func _ready():
-	load_level(levels['4'])
+	load_level(levels['5'])
 
 func load_level(path):
 	# Limpa level anterior
