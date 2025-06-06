@@ -45,12 +45,14 @@ func run_waves() -> void:
 	await spawner2.wave_finished
 
 	# Leva 2: nightBorne em um portal, blackDog no outro
+	audio.play()
 	await spawner1.start_wave(["nightBorne"])
 	await spawner2.start_wave(["blackDog"])
 	await spawner1.wave_finished
 	await spawner2.wave_finished
 
 	# Leva 3: dois blackDogs (um em cada portal)
+	audio.play()
 	await spawner1.start_wave(["blackDog"])
 	await spawner2.start_wave(["blackDog"])
 	await spawner1.wave_finished
