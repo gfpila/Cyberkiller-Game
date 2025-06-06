@@ -191,7 +191,7 @@ func die() -> void:
 
 	# Esperar 5 segundos e voltar para o menu
 	if is_inside_tree():
-		await get_tree().create_timer(1.5).timeout
+		await get_tree().create_timer(1.25).timeout
 		if is_instance_valid(self):
 			get_tree().change_scene_to_file("res://scenes/main-menu/main_menu.tscn")
 	
