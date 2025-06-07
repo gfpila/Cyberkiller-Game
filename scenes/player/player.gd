@@ -3,9 +3,8 @@ extends CharacterBody2D
 const SPEED = 500.0
 const JUMP_VELOCITY = -900.0
 const GRAVITY = 2000.0
-const ATTACK_DURATION = 0.35
-const ATTACK_COOLDOWN = 0.6
-
+const ATTACK_DURATION = 0.4
+const ATTACK_COOLDOWN = 0.3
 
 @export var max_health: int = 50
 @export var knockback_force: float = 2800.0
@@ -13,6 +12,7 @@ const ATTACK_COOLDOWN = 0.6
 @export var vertical_knockback_factor: float = 0.25
 @export var knockback_duration: float = 0.4
 @export var invulnerability_time: float = 0.4
+@export var double_attack_unlocked: bool = false
 
 
 var can_attack: bool = true
@@ -23,12 +23,22 @@ var dead = false
 var attack_area: Area2D
 var health: int = max_health
 
+# Variáveis para o ataque duplo
+var last_attack_time: float = -10.0
+var double_attack_window: float = 0.5
+var attack_phase: int = 0  # 0 = normal, 1 = dash
+
+var dash_speed: float = 1500
+var dash_duration: float = 0.3
+
+@onready var aura = $Aura
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var audio_nodes = {
 	"jump": $Audio/jump,
 	"attack": $Audio/attack,
 	"rise": $Audio/rise,
-	"hurt": $Audio/hurt
+	"hurt": $Audio/hurt,
+	"special_attack": $Audio/special_attack
 }
 
 signal knockback_finished
@@ -44,19 +54,19 @@ func _ready() -> void:
 	play_audio("rise")
 
 func _physics_process(delta: float) -> void:
-	if dead == true:
+	if dead:
 		return
-	
+
 	if knockback != Vector2.ZERO:
 		knockback_timer += delta
 		handle_knockback(delta)
 		return
-	
+
 	handle_movement(delta)
 	handle_actions()
 	update_animations()
 	move_and_slide()
-	
+
 	if position.y > 1200:
 		die()
 
@@ -64,10 +74,8 @@ func handle_knockback(delta: float) -> void:
 	velocity = knockback
 	velocity.y += GRAVITY * delta
 	knockback *= knockback_friction
-	
 	move_and_slide()
-	
-	if knockback_timer >= knockback_duration || knockback.length() < 50 || is_on_wall():
+	if knockback_timer >= knockback_duration or knockback.length() < 50 or is_on_wall():
 		end_knockback()
 
 func handle_movement(delta: float) -> void:
@@ -75,7 +83,7 @@ func handle_movement(delta: float) -> void:
 		velocity.y += GRAVITY * delta
 	else:
 		velocity.y = 0
-	
+
 	var direction = Input.get_axis("left", "right")
 	velocity.x = direction * SPEED
 
@@ -83,48 +91,78 @@ func handle_actions() -> void:
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 		play_audio("jump")
-	
+
 	if Input.is_action_just_pressed("attack") and can_attack:
 		start_attack()
 
 func update_animations() -> void:
 	var direction = Input.get_axis("left", "right")
-	
+
 	if is_invulnerable:
 		animated_sprite.modulate = Color.RED
 	else:
 		animated_sprite.modulate = Color.WHITE
-	
+
 	if animated_sprite.animation == "attack_animation" and animated_sprite.is_playing():
 		return
-	
+
 	if not is_on_floor():
 		play_animation("jump")
 	elif direction != 0:
 		play_animation("run")
 	else:
 		play_animation("default")
-	
+
 	if direction != 0 and animated_sprite.animation != "attack_animation":
 		animated_sprite.flip_h = direction < 0
 		update_attack_area_position()
 
 func start_attack() -> void:
+	var now = Time.get_ticks_msec() / 1000.0
+
+	# Se passou da janela, resetamos
+	if now - last_attack_time > double_attack_window:
+		attack_phase = 0
+
+	last_attack_time = now
 	can_attack = false
+
 	play_audio("attack")
 	play_animation("attack_animation")
 	update_attack_area_position()
-	var cooldown_timer = get_tree().create_timer(ATTACK_COOLDOWN)
 	attack_area.monitoring = true
+
+	if attack_phase == 1 and double_attack_unlocked:
+		play_audio("special_attack")
+		await perform_dash_attack()
+
+	var cooldown_timer = get_tree().create_timer(ATTACK_COOLDOWN)
 	await get_tree().create_timer(ATTACK_DURATION - 0.2).timeout
 	attack_area.monitoring = false
 	await cooldown_timer.timeout
 	can_attack = true
-	
-func take_damage(amount: int, attack_origin: Vector2, knockback:=true) -> void:
+
+	# Após o dash, resetamos
+	attack_phase = (attack_phase + 1) % 2
+
+func perform_dash_attack() -> void:
+	var direction = -1 if animated_sprite.flip_h else 1
+	var dash_velocity = Vector2(dash_speed * direction, 0)
+	var dash_timer = 0.0
+	aura.visible = true
+	while dash_timer < dash_duration:
+		play_animation('dash_attack')
+		velocity = dash_velocity
+		move_and_slide()
+		await get_tree().process_frame
+		dash_timer += get_process_delta_time()
+	velocity = Vector2.ZERO
+	aura.visible = false
+
+func take_damage(amount: int, attack_origin: Vector2, knockback := true) -> void:
 	if is_invulnerable or dead:
 		return
-		
+
 	health -= amount
 	emit_signal("health_changed", health, max_health)
 	GameEffects.request_hit_stop(0.4, animated_sprite, global_position)
@@ -134,11 +172,13 @@ func take_damage(amount: int, attack_origin: Vector2, knockback:=true) -> void:
 		await knockback_finished
 	else:
 		play_audio("hurt")
+
 	if health <= 0:
 		die()
 		return
+
 	apply_invulnerability()
-	
+
 func init_knockback(attack_origin: Vector2) -> void:
 	var knockback_dir = (global_position - attack_origin).normalized()
 	knockback_dir.y *= vertical_knockback_factor
@@ -154,16 +194,15 @@ func end_knockback() -> void:
 
 func apply_invulnerability() -> void:
 	is_invulnerable = true
-	
-	# Sistema de piscar corrigido
+
 	var tween = create_tween()
 	tween.tween_property(animated_sprite, "modulate", Color(1, 0.5, 0.5), 0.1)
 	tween.tween_property(animated_sprite, "modulate", Color.WHITE, 0.1)
-	tween.set_loops(4)  # Configura loops no Tween principal
-	
+	tween.set_loops(4)
+
 	await tween.finished
 	is_invulnerable = false
-	
+
 func heal(amount: int) -> void:
 	health = min(health + amount, max_health)
 	emit_signal("health_changed", health, max_health)
@@ -174,7 +213,6 @@ func die() -> void:
 	set_collision_mask_value(1, false)
 	animated_sprite.play("death")
 
-	# Piscar antes de sumir
 	var tween = create_tween()
 	for i in range(3):
 		tween.tween_property(animated_sprite, "modulate", Color(2, 2, 2), 0.05)
@@ -182,17 +220,14 @@ func die() -> void:
 	tween.tween_property(animated_sprite, "modulate:a", 0.0, 2)
 	await tween.finished
 
-	# Mostrar tela de game over
 	var game_over_scene = preload("res://scenes/gameOver/gameOver.tscn")
 	var game_over_instance = game_over_scene.instantiate()
 	get_tree().root.add_child(game_over_instance)
 
-	# Esperar 1.25 segundos e mudar de cena, mas só se for seguro
 	await get_tree().create_timer(1.25).timeout
 
 	if is_instance_valid(get_tree()) and get_tree().root and is_inside_tree():
 		get_tree().change_scene_to_file("res://scenes/main-menu/main_menu.tscn")
-	
 
 func update_attack_area_position() -> void:
 	var offset = Vector2(50, 0) if !animated_sprite.flip_h else Vector2(-50, 0)

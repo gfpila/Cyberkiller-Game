@@ -1,39 +1,49 @@
-[gd_scene load_steps=9 format=3 uid="uid://2dlagxqs2rm8"]
+[gd_scene load_steps=11 format=3 uid="uid://ew0y81yyklm8"]
 
+[ext_resource type="Script" uid="uid://7dl5jcof4hiv" path="res://scenes/level5/level_5.gd" id="1_78pqw"]
 [ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_gdwof"]
-[ext_resource type="Script" uid="uid://d3lij1kojh34w" path="res://scenes/level5/level_5.gd" id="1_tn2u2"]
 [ext_resource type="PackedScene" uid="uid://ddhmhfc5lmnjl" path="res://scenes/resources/ground.tscn" id="3_tn2u2"]
-[ext_resource type="Texture2D" uid="uid://c44lrimmkemiq" path="res://Backgrounds/mokazar-bg-cyberpunk-5.jpg" id="3_xuja2"]
+[ext_resource type="Texture2D" uid="uid://gelm8uihqa75" path="res://Backgrounds/newLevels/cyberpunk-props-1920x1080.png" id="3_xuja2"]
 [ext_resource type="PackedScene" uid="uid://cqphseavdiiiy" path="res://scenes/resources/player_start.tscn" id="4_xuja2"]
 [ext_resource type="PackedScene" uid="uid://cbyiwji00befa" path="res://scenes/resources/wall.tscn" id="5_vu8dk"]
 [ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="6_704b0"]
-[ext_resource type="PackedScene" uid="uid://fy7mqh2hvga8" path="res://scenes/spawner/EnemySpawner.tscn" id="8_tn2u2"]
+[ext_resource type="Script" uid="uid://cnsqlrykh4ryy" path="res://scenes/level5/upgrade_area.gd" id="8_vu8dk"]
+[ext_resource type="Texture2D" uid="uid://b7ycw3nurp4rn" path="res://items/nqHuOF.png" id="9_704b0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c2kc3"]
+size = Vector2(110, 586.361)
 
 [node name="Level5" type="Node2D"]
-script = ExtResource("1_tn2u2")
+script = ExtResource("1_78pqw")
 
 [node name="Background" parent="." instance=ExtResource("1_gdwof")]
-position = Vector2(977, 523)
-scale = Vector2(1.03594, 1.04464)
+position = Vector2(991, 441)
+scale = Vector2(1.13073, 1.25727)
 texture = ExtResource("3_xuja2")
 
 [node name="StaticBody2D" parent="." instance=ExtResource("3_tn2u2")]
-position = Vector2(956, 922)
+position = Vector2(954, 1055)
 
 [node name="PlayerStart" parent="." instance=ExtResource("4_xuja2")]
-position = Vector2(137, 867)
+position = Vector2(133, 776)
 
 [node name="StaticBody2D3" parent="." instance=ExtResource("5_vu8dk")]
-position = Vector2(20, 713)
+position = Vector2(11, 851)
 
 [node name="StaticBody2D4" parent="." instance=ExtResource("5_vu8dk")]
-position = Vector2(1879, 716)
+position = Vector2(1903, 842)
 
 [node name="ExitArea" parent="." instance=ExtResource("6_704b0")]
-position = Vector2(1871, 848)
+position = Vector2(1806, 943)
 
-[node name="EnemySpawner" parent="." instance=ExtResource("8_tn2u2")]
-position = Vector2(323, 578)
+[node name="UpgradeArea" type="Area2D" parent="."]
+position = Vector2(955, 1008)
+script = ExtResource("8_vu8dk")
 
-[node name="EnemySpawner2" parent="." instance=ExtResource("8_tn2u2")]
-position = Vector2(1547, 578)
+[node name="Sprite2D" type="Sprite2D" parent="UpgradeArea"]
+texture = ExtResource("9_704b0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpgradeArea"]
+position = Vector2(-1, -202)
+shape = SubResource("RectangleShape2D_c2kc3")
+one_way_collision_margin = 0.0

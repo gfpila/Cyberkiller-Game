@@ -5,11 +5,13 @@ extends Node2D
 	'2': "res://scenes/level2/level_2.tscn",
 	'3': "res://scenes/level3/level_3.tscn",
 	'4': "res://scenes/level4/level_4.tscn",
-	'5': "res://scenes/level5/level_5.tscn"
+	'5': "res://scenes/level5/level_5.tscn",
+	'6': "res://scenes/level6/level_6.tscn"
 }
 
 var current_level = null
 var player = null
+var double_attack_unlocked = false
 
 @onready var level_container = $LevelContainer
 @onready var hud = $HUD/Life
@@ -37,7 +39,7 @@ func load_level(path):
 	
 	# Encontra o player dentro do novo level
 	player = $Player
-	
+	player.double_attack_unlocked = double_attack_unlocked
 	# Move o player para o ponto de início do novo level
 	var spawn_point = current_level.get_node_or_null("PlayerStart")
 	if spawn_point:
@@ -60,3 +62,9 @@ func _on_player_health_changed(current, max):
 
 func go_to_level(value):
 	load_level(levels[value])
+	
+func unlock_double_attack():
+	double_attack_unlocked = true
+	if player:
+		$WeaponUpgrade.play()
+		player.double_attack_unlocked = true

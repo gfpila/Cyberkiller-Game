@@ -68,6 +68,9 @@ position = Vector2(148, 850)
 [node name="StaticBody2D3" parent="." instance=ExtResource("5_ukca6")]
 position = Vector2(17, 773)
 
+[node name="StaticBody2D6" parent="." instance=ExtResource("5_ukca6")]
+position = Vector2(1814, 587)
+
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 collision_layer = 2
 collision_mask = 5

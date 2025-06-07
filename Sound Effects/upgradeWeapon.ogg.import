@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://b41cvblst0vqj"
+path="res://.godot/imported/upgradeWeapon.ogg-7b3b4704b51f0d32da988eabbd42094a.oggvorbisstr"
+
+[deps]
+
+source_file="res://Sound Effects/upgradeWeapon.ogg"
+dest_files=["res://.godot/imported/upgradeWeapon.ogg-7b3b4704b51f0d32da988eabbd42094a.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
