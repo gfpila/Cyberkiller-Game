@@ -3,8 +3,8 @@ extends CharacterBody2D
 const SPEED = 500.0
 const JUMP_VELOCITY = -900.0
 const GRAVITY = 2000.0
-const ATTACK_DURATION = 0.4
-const ATTACK_COOLDOWN = 0.3
+const ATTACK_DURATION = 0.43
+const ATTACK_COOLDOWN = 0.33
 
 @export var max_health: int = 50
 @export var knockback_force: float = 2800.0
@@ -243,4 +243,7 @@ func play_audio(audio: String) -> void:
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemies"):
-		body.take_damage(10, global_position)
+		var damage = 10
+		if attack_phase == 1 and double_attack_unlocked == true:
+			damage+=10
+		body.take_damage(damage, global_position)
