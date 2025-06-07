@@ -3,8 +3,9 @@ extends CharacterBody2D
 const SPEED = 500.0
 const JUMP_VELOCITY = -900.0
 const GRAVITY = 2000.0
-const ATTACK_DURATION = 0.43
-const ATTACK_COOLDOWN = 0.33
+const ATTACK_DURATION = 0.4
+const ATTACK_COOLDOWN = 0.4
+const DASH_COOLDOWN = 0.65
 
 @export var max_health: int = 50
 @export var knockback_force: float = 2800.0
@@ -14,7 +15,6 @@ const ATTACK_COOLDOWN = 0.33
 @export var invulnerability_time: float = 0.4
 @export var double_attack_unlocked: bool = false
 
-
 var can_attack: bool = true
 var is_invulnerable: bool = false
 var knockback: Vector2 = Vector2.ZERO
@@ -22,14 +22,10 @@ var knockback_timer: float = 0.0
 var dead = false
 var attack_area: Area2D
 var health: int = max_health
-
-# Variáveis para o ataque duplo
-var last_attack_time: float = -10.0
-var double_attack_window: float = 0.5
-var attack_phase: int = 0  # 0 = normal, 1 = dash
-
+var is_dash_attack: bool = false
 var dash_speed: float = 1500
 var dash_duration: float = 0.3
+var can_dash: bool = true
 
 @onready var aura = $Aura
 @onready var animated_sprite = $AnimatedSprite2D
@@ -95,6 +91,9 @@ func handle_actions() -> void:
 	if Input.is_action_just_pressed("attack") and can_attack:
 		start_attack()
 
+	if Input.is_action_just_pressed("special_attack") and can_attack and can_dash:
+		await perform_dash_attack()
+
 func update_animations() -> void:
 	var direction = Input.get_axis("left", "right")
 
@@ -118,13 +117,6 @@ func update_animations() -> void:
 		update_attack_area_position()
 
 func start_attack() -> void:
-	var now = Time.get_ticks_msec() / 1000.0
-
-	# Se passou da janela, resetamos
-	if now - last_attack_time > double_attack_window:
-		attack_phase = 0
-
-	last_attack_time = now
 	can_attack = false
 
 	play_audio("attack")
@@ -132,32 +124,39 @@ func start_attack() -> void:
 	update_attack_area_position()
 	attack_area.monitoring = true
 
-	if attack_phase == 1 and double_attack_unlocked:
-		play_audio("special_attack")
-		await perform_dash_attack()
-
 	var cooldown_timer = get_tree().create_timer(ATTACK_COOLDOWN)
 	await get_tree().create_timer(ATTACK_DURATION - 0.2).timeout
 	attack_area.monitoring = false
 	await cooldown_timer.timeout
 	can_attack = true
 
-	# Após o dash, resetamos
-	attack_phase = (attack_phase + 1) % 2
-
 func perform_dash_attack() -> void:
+	if not double_attack_unlocked:
+		return
+	can_attack = false
+	play_audio("special_attack")
+	is_dash_attack = true
+	attack_area.monitoring = true
 	var direction = -1 if animated_sprite.flip_h else 1
 	var dash_velocity = Vector2(dash_speed * direction, 0)
 	var dash_timer = 0.0
 	aura.visible = true
+
 	while dash_timer < dash_duration:
 		play_animation('dash_attack')
 		velocity = dash_velocity
 		move_and_slide()
 		await get_tree().process_frame
 		dash_timer += get_process_delta_time()
+
 	velocity = Vector2.ZERO
+	is_dash_attack = false
 	aura.visible = false
+	can_attack = true
+	can_dash = false
+	await get_tree().create_timer(DASH_COOLDOWN).timeout
+	can_dash = true  # libera dash novamente
+	attack_area.monitoring = false
 
 func take_damage(amount: int, attack_origin: Vector2, knockback := true) -> void:
 	if is_invulnerable or dead:
@@ -243,7 +242,5 @@ func play_audio(audio: String) -> void:
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemies"):
-		var damage = 10
-		if attack_phase == 1 and double_attack_unlocked == true:
-			damage+=10
+		var damage = 20 if is_dash_attack else 10
 		body.take_damage(damage, global_position)
