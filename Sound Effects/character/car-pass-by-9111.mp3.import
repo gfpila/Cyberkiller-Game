@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cic1l20rsvo48"
+path="res://.godot/imported/car-pass-by-9111.mp3-692a616273299479a3e11e041e0eb6c9.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/character/car-pass-by-9111.mp3"
+dest_files=["res://.godot/imported/car-pass-by-9111.mp3-692a616273299479a3e11e041e0eb6c9.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

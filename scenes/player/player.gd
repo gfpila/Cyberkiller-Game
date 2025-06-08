@@ -5,7 +5,7 @@ const JUMP_VELOCITY = -900.0
 const GRAVITY = 2000.0
 const ATTACK_DURATION = 0.4
 const ATTACK_COOLDOWN = 0.4
-const DASH_COOLDOWN = 0.55
+const DASH_COOLDOWN = 0.45
 
 @export var max_health: int = 50
 @export var knockback_force: float = 2800.0
@@ -23,7 +23,7 @@ var dead = false
 var attack_area: Area2D
 var health: int = max_health
 var is_dash_attack: bool = false
-var dash_speed: float = 1500
+var dash_speed: float = 1800
 var dash_duration: float = 0.3
 var can_dash: bool = true
 
@@ -255,5 +255,5 @@ func play_audio(audio: String) -> void:
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemies"):
-		var damage = 20 if is_dash_attack else 10
+		var damage = 30 if is_dash_attack else 10
 		body.take_damage(damage, global_position)

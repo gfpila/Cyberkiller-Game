@@ -1,0 +1,67 @@
+[gd_scene load_steps=10 format=3 uid="uid://dlsww0cob5pm8"]
+
+[ext_resource type="Texture2D" uid="uid://dxumlbdcx13i1" path="res://enemies/Car/car-running1.png" id="2_wykfw"]
+[ext_resource type="Texture2D" uid="uid://bl21yde16hk4y" path="res://enemies/Car/car-running2.png" id="3_1a0a8"]
+[ext_resource type="Texture2D" uid="uid://ds2w67icarf07" path="res://enemies/Car/car-running3.png" id="4_5rto1"]
+[ext_resource type="Texture2D" uid="uid://dh1rti7sqmqv7" path="res://enemies/Car/car-running4.png" id="5_hieke"]
+[ext_resource type="Texture2D" uid="uid://500j1qh7ap7u" path="res://enemies/Car/car-running5.png" id="6_pj7pm"]
+[ext_resource type="Script" uid="uid://48mk78ace7dw" path="res://scenes/enemyCar/car.gd" id="6_vjsvk"]
+[ext_resource type="AudioStream" uid="uid://cic1l20rsvo48" path="res://Sound Effects/character/car-pass-by-9111.mp3" id="7_wykfw"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_arexy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_wykfw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_1a0a8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_5rto1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_hieke")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_pj7pm")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bkc8d"]
+size = Vector2(238.313, 43.7676)
+
+[node name="Car" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("6_vjsvk")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-10.1875, 0.96875)
+scale = Vector2(1.44769, 1.58915)
+sprite_frames = SubResource("SpriteFrames_arexy")
+animation = &"idle"
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-6.15625, 10.8838)
+shape = SubResource("RectangleShape2D_bkc8d")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(19.375, 8)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-27.6875, 4.64648)
+shape = SubResource("RectangleShape2D_bkc8d")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="Audio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_wykfw")
+volume_db = 21.54
+pitch_scale = 1.96

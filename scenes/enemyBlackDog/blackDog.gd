@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@export var max_health: int = 80
+@export var max_health: int = 70
 @export var knockback_force: float = 3000.0
 @export var friction: float = 0.8
 @export var move_speed: float = 300.0
@@ -69,7 +69,7 @@ func _physics_process(delta: float) -> void:
 	#Variação de movimento
 	speed_variation_timer += delta
 	var sin_factor = sin(speed_variation_timer * 2.0 + random_offset) * 0.2 + 1.0
-	move_speed = base_move_speed * sin_factor + 800
+	move_speed = base_move_speed * sin_factor + 600
 	
 	#Aplicar gravidade
 	if not is_on_floor():
