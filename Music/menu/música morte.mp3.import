@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dp4ldmgmgook1"
+path="res://.godot/imported/música morte.mp3-10efda993a77524326f05d1cea7dad9d.mp3str"
+
+[deps]
+
+source_file="res://Music/menu/música morte.mp3"
+dest_files=["res://.godot/imported/música morte.mp3-10efda993a77524326f05d1cea7dad9d.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

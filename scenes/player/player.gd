@@ -5,7 +5,7 @@ const JUMP_VELOCITY = -900.0
 const GRAVITY = 2000.0
 const ATTACK_DURATION = 0.4
 const ATTACK_COOLDOWN = 0.4
-const DASH_COOLDOWN = 0.65
+const DASH_COOLDOWN = 0.55
 
 @export var max_health: int = 50
 @export var knockback_force: float = 2800.0
@@ -149,6 +149,7 @@ func perform_dash_attack() -> void:
 		await get_tree().process_frame
 		dash_timer += get_process_delta_time()
 
+	attack_area.monitoring = false
 	velocity = Vector2.ZERO
 	is_dash_attack = false
 	aura.visible = false
@@ -156,7 +157,7 @@ func perform_dash_attack() -> void:
 	can_dash = false
 	await get_tree().create_timer(DASH_COOLDOWN).timeout
 	can_dash = true  # libera dash novamente
-	attack_area.monitoring = false
+	
 
 func take_damage(amount: int, attack_origin: Vector2, knockback := true) -> void:
 	if is_invulnerable or dead:
@@ -208,6 +209,18 @@ func heal(amount: int) -> void:
 
 func die() -> void:
 	dead = true
+	remove_from_group("player")
+	for child in get_children():
+		if child is CollisionShape2D:
+			child.disabled = true
+	# Para música de fundo
+	if $"../LevelMusic".playing:
+		$"../LevelMusic".stop()
+
+	# Toca música da morte
+	if $"../DeathSong":
+		$"../DeathSong".play()
+		
 	animated_sprite.modulate = Color.WHITE
 	set_collision_mask_value(1, false)
 	animated_sprite.play("death")
@@ -223,7 +236,7 @@ func die() -> void:
 	var game_over_instance = game_over_scene.instantiate()
 	get_tree().root.add_child(game_over_instance)
 
-	await get_tree().create_timer(1.25).timeout
+	await get_tree().create_timer(3).timeout
 
 	if is_instance_valid(get_tree()) and get_tree().root and is_inside_tree():
 		get_tree().change_scene_to_file("res://scenes/main-menu/main_menu.tscn")

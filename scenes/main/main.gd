@@ -59,6 +59,9 @@ func load_level(path):
 func _on_player_health_changed(current, max):
 	player_health = current
 	player_max_health = max
+	
+	if current <= 0:
+		stop_enemies_attack()
 
 func go_to_level(value):
 	load_level(levels[value])
@@ -68,3 +71,10 @@ func unlock_double_attack():
 	if player:
 		$WeaponUpgrade.play()
 		player.double_attack_unlocked = true
+		
+
+func stop_enemies_attack():
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	for enemy in enemies:
+			if enemy.attack_cooldown:
+				enemy.attack_cooldown = 9999  # Valor grande para congelar ataques

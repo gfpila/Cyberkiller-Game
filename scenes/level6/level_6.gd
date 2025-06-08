@@ -13,7 +13,11 @@ var waves_done = false
 func _ready():
 	exit_sprite.visible = false
 	exit_area.body_entered.connect(_on_exit_area_entered)
-
+	var main = get_tree().root.get_node("Main")
+	var music_player = main.get_node("LevelMusic")
+	music_player.stream = load("res://Music/partida/2 eletro battle.mp3")
+	music_player.volume_db = -8
+	music_player.play()
 	run_waves()
 
 func _process(delta):
@@ -55,6 +59,13 @@ func run_waves() -> void:
 	audio.play()
 	await spawner1.start_wave(["blackDog"])
 	await spawner2.start_wave(["blackDog"])
+	await spawner1.wave_finished
+	await spawner2.wave_finished
+	
+	# Leva 4:
+	audio.play()
+	await spawner1.start_wave(["nightBorne", "nightBorne", "nightBorne"])
+	await spawner2.start_wave(["nightBorne", "nightBorne", "nightBorne"])
 	await spawner1.wave_finished
 	await spawner2.wave_finished
 

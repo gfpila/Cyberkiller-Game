@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://ew0y81yyklm8"]
+[gd_scene load_steps=12 format=3 uid="uid://ew0y81yyklm8"]
 
 [ext_resource type="Script" uid="uid://7dl5jcof4hiv" path="res://scenes/level5/level_5.gd" id="1_78pqw"]
 [ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_gdwof"]
 [ext_resource type="PackedScene" uid="uid://ddhmhfc5lmnjl" path="res://scenes/resources/ground.tscn" id="3_tn2u2"]
 [ext_resource type="Texture2D" uid="uid://gelm8uihqa75" path="res://Backgrounds/newLevels/cyberpunk-props-1920x1080.png" id="3_xuja2"]
+[ext_resource type="Texture2D" uid="uid://epytva5byhwa" path="res://hud/rightClick.png" id="4_vu8dk"]
 [ext_resource type="PackedScene" uid="uid://cqphseavdiiiy" path="res://scenes/resources/player_start.tscn" id="4_xuja2"]
 [ext_resource type="PackedScene" uid="uid://cbyiwji00befa" path="res://scenes/resources/wall.tscn" id="5_vu8dk"]
 [ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="6_704b0"]
@@ -17,9 +18,20 @@ size = Vector2(110, 586.361)
 script = ExtResource("1_78pqw")
 
 [node name="Background" parent="." instance=ExtResource("1_gdwof")]
-position = Vector2(991, 441)
+position = Vector2(1022, 466)
 scale = Vector2(1.13073, 1.25727)
 texture = ExtResource("3_xuja2")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Hint" type="TextureRect" parent="CanvasLayer"]
+visible = false
+offset_left = 887.0
+offset_top = 545.0
+offset_right = 1102.0
+offset_bottom = 769.0
+texture = ExtResource("4_vu8dk")
+expand_mode = 1
 
 [node name="StaticBody2D" parent="." instance=ExtResource("3_tn2u2")]
 position = Vector2(954, 1055)

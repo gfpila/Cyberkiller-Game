@@ -150,7 +150,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cgp45"]
-size = Vector2(262, 147)
+size = Vector2(262, 122.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s7wsm"]
 size = Vector2(270.37, 157)
@@ -169,6 +169,7 @@ sprite_frames = SubResource("SpriteFrames_wa55q")
 animation = &"run"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -12.25)
 shape = SubResource("RectangleShape2D_cgp45")
 
 [node name="HandPivot" type="Node2D" parent="."]
