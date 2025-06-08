@@ -17,7 +17,7 @@ func _ready():
 	music_player.play()
 
 func _process(delta):
-	if player.position.x > 1000 and hint_showed == false:
+	if player.position.x > 900 and hint_showed == false:
 		activate_exit()
 		
 

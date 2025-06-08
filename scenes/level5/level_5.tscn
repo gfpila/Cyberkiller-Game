@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ew0y81yyklm8"]
+[gd_scene load_steps=13 format=3 uid="uid://ew0y81yyklm8"]
 
 [ext_resource type="Script" uid="uid://7dl5jcof4hiv" path="res://scenes/level5/level_5.gd" id="1_78pqw"]
 [ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_gdwof"]
@@ -9,7 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://cbyiwji00befa" path="res://scenes/resources/wall.tscn" id="5_vu8dk"]
 [ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="6_704b0"]
 [ext_resource type="Script" uid="uid://cnsqlrykh4ryy" path="res://scenes/level5/upgrade_area.gd" id="8_vu8dk"]
-[ext_resource type="Texture2D" uid="uid://b7ycw3nurp4rn" path="res://items/nqHuOF.png" id="9_704b0"]
+[ext_resource type="Texture2D" uid="uid://dl2k0yu7yq2kt" path="res://items/upgrade.png" id="10_vu8dk"]
+[ext_resource type="Script" uid="uid://dx5olphy8fb58" path="res://scenes/level5/sprite_2d.gd" id="11_704b0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c2kc3"]
 size = Vector2(110, 586.361)
@@ -18,8 +19,8 @@ size = Vector2(110, 586.361)
 script = ExtResource("1_78pqw")
 
 [node name="Background" parent="." instance=ExtResource("1_gdwof")]
-position = Vector2(1022, 466)
-scale = Vector2(1.13073, 1.25727)
+position = Vector2(952, 519)
+scale = Vector2(1.13073, 1.08326)
 texture = ExtResource("3_xuja2")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -34,26 +35,31 @@ texture = ExtResource("4_vu8dk")
 expand_mode = 1
 
 [node name="StaticBody2D" parent="." instance=ExtResource("3_tn2u2")]
-position = Vector2(954, 1055)
+position = Vector2(960, 1042)
 
 [node name="PlayerStart" parent="." instance=ExtResource("4_xuja2")]
-position = Vector2(133, 776)
+position = Vector2(139, 763)
 
 [node name="StaticBody2D3" parent="." instance=ExtResource("5_vu8dk")]
-position = Vector2(11, 851)
+position = Vector2(17, 838)
 
 [node name="StaticBody2D4" parent="." instance=ExtResource("5_vu8dk")]
-position = Vector2(1903, 842)
+position = Vector2(1909, 829)
 
 [node name="ExitArea" parent="." instance=ExtResource("6_704b0")]
-position = Vector2(1806, 943)
+position = Vector2(1812, 930)
 
 [node name="UpgradeArea" type="Area2D" parent="."]
-position = Vector2(955, 1008)
+position = Vector2(949, 967)
 script = ExtResource("8_vu8dk")
 
 [node name="Sprite2D" type="Sprite2D" parent="UpgradeArea"]
-texture = ExtResource("9_704b0")
+position = Vector2(3, -28.5)
+rotation = -1.5708
+scale = Vector2(2.78788, 4.05556)
+skew = 1.56905
+texture = ExtResource("10_vu8dk")
+script = ExtResource("11_704b0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UpgradeArea"]
 position = Vector2(-1, -202)
