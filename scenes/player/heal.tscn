@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cuv0h3p36bfmp"]
+
+[ext_resource type="AudioStream" uid="uid://c7ultjcyakhwh" path="res://Sound Effects/character/heal.mp3" id="1_6vxow"]
+[ext_resource type="Script" uid="uid://n78lm2qnair8" path="res://scenes/player/healNode.gd" id="1_stawj"]
+
+[node name="Heal" type="Node2D"]
+script = ExtResource("1_stawj")
+
+[node name="Audio" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(0, -3)
+stream = ExtResource("1_6vxow")
+volume_db = 13.608
+
+[node name="SpawnPoint" type="Marker2D" parent="."]

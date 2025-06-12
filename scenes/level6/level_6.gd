@@ -30,6 +30,7 @@ func all_enemies_defeated() -> bool:
 
 func activate_exit():
 	if not exit_sprite.visible:
+		$Heal.spawn_heals(4)
 		exit_sprite.visible = true
 		exit_sprite.play("default")
 		audio.play()

@@ -1,0 +1,100 @@
+[gd_scene load_steps=22 format=3 uid="uid://0fjifnf6421b"]
+
+[ext_resource type="Script" uid="uid://p3h7eur0q5r5" path="res://scenes/player/heal_area.gd" id="1_quyhb"]
+[ext_resource type="Texture2D" uid="uid://df2wqaxop8snd" path="res://hud/heart.png" id="2_yosny"]
+[ext_resource type="Script" uid="uid://cva08846u24m6" path="res://scenes/player/heal.gd" id="3_brpno"]
+[ext_resource type="Texture2D" uid="uid://jdiyrvop0drx" path="res://items/sparkleHeal/sparkle004.png" id="4_88ei4"]
+[ext_resource type="Texture2D" uid="uid://cunjklsxqolky" path="res://items/sparkleHeal/sparkle005.png" id="5_yk4xm"]
+[ext_resource type="Texture2D" uid="uid://ceegf4kyuukio" path="res://items/sparkleHeal/sparkle006.png" id="6_gvhea"]
+[ext_resource type="Texture2D" uid="uid://b8l65brg871hj" path="res://items/sparkleHeal/sparkle007.png" id="7_kkeai"]
+[ext_resource type="Texture2D" uid="uid://cfbo3h7fwuv3i" path="res://items/sparkleHeal/sparkle012.png" id="8_y3ow5"]
+[ext_resource type="Texture2D" uid="uid://b22cuilib25in" path="res://items/sparkleHeal/sparkle013.png" id="9_maf8h"]
+[ext_resource type="Texture2D" uid="uid://nsom8ghf7oyv" path="res://items/sparkleHeal/sparkle014.png" id="10_eh15m"]
+[ext_resource type="Texture2D" uid="uid://cd7h7yopv2v8w" path="res://items/sparkleHeal/sparkle015.png" id="11_uyj4i"]
+[ext_resource type="Texture2D" uid="uid://5ip01bpqwls8" path="res://items/sparkleHeal/sparkle020.png" id="12_v2y41"]
+[ext_resource type="Texture2D" uid="uid://co85b7kr71uvy" path="res://items/sparkleHeal/sparkle021.png" id="13_oyqsy"]
+[ext_resource type="Texture2D" uid="uid://4ckboafafimk" path="res://items/sparkleHeal/sparkle022.png" id="14_eabo6"]
+[ext_resource type="Texture2D" uid="uid://4rinmp6q0rn1" path="res://items/sparkleHeal/sparkle023.png" id="15_5yxy1"]
+[ext_resource type="Texture2D" uid="uid://q5s6rklywajc" path="res://items/sparkleHeal/sparkle028.png" id="16_6i4ks"]
+[ext_resource type="Texture2D" uid="uid://w1nwob0visgf" path="res://items/sparkleHeal/sparkle029.png" id="17_51bfb"]
+[ext_resource type="Texture2D" uid="uid://c84svd8ulse7q" path="res://items/sparkleHeal/sparkle030.png" id="18_6ytmt"]
+[ext_resource type="Texture2D" uid="uid://6patorgq5jap" path="res://items/sparkleHeal/sparkle031.png" id="19_8683f"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uw7tb"]
+size = Vector2(110, 117)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8y3ln"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_88ei4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_yk4xm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_gvhea")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_kkeai")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_y3ow5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_maf8h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_eh15m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_uyj4i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_v2y41")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_oyqsy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_eabo6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_5yxy1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_6i4ks")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_51bfb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_6ytmt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_8683f")
+}],
+"loop": true,
+"name": &"default",
+"speed": 28.0
+}]
+
+[node name="HealArea" type="Area2D"]
+script = ExtResource("1_quyhb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_uw7tb")
+one_way_collision_margin = 0.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2, 0)
+scale = Vector2(1.5, 2.183)
+texture = ExtResource("2_yosny")
+script = ExtResource("3_brpno")
+
+[node name="Sparkle" type="AnimatedSprite2D" parent="Sprite2D"]
+position = Vector2(-5.96046e-08, 1.37426)
+scale = Vector2(0.703125, 0.515346)
+sprite_frames = SubResource("SpriteFrames_8y3ln")
+autoplay = "default"
+frame_progress = 0.694681

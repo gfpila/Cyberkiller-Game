@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://2dlagxqs2rm8"]
+[gd_scene load_steps=10 format=3 uid="uid://2dlagxqs2rm8"]
 
 [ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_gdwof"]
 [ext_resource type="Script" uid="uid://d3lij1kojh34w" path="res://scenes/level6/level_6.gd" id="1_tn2u2"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cbyiwji00befa" path="res://scenes/resources/wall.tscn" id="5_vu8dk"]
 [ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="6_704b0"]
 [ext_resource type="PackedScene" uid="uid://fy7mqh2hvga8" path="res://scenes/spawner/EnemySpawner.tscn" id="8_tn2u2"]
+[ext_resource type="PackedScene" uid="uid://cuv0h3p36bfmp" path="res://scenes/player/heal.tscn" id="9_b6nps"]
 
 [node name="Level6" type="Node2D"]
 script = ExtResource("1_tn2u2")
@@ -16,6 +17,9 @@ script = ExtResource("1_tn2u2")
 position = Vector2(977, 523)
 scale = Vector2(1.03594, 1.04464)
 texture = ExtResource("3_xuja2")
+
+[node name="Heal" parent="." instance=ExtResource("9_b6nps")]
+position = Vector2(1578, 848)
 
 [node name="StaticBody2D" parent="." instance=ExtResource("3_tn2u2")]
 position = Vector2(956, 922)
