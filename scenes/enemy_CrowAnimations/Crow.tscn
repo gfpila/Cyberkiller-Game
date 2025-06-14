@@ -1,0 +1,451 @@
+[gd_scene load_steps=36 format=3 uid="uid://gkex5f5q7y0i"]
+
+[ext_resource type="Texture2D" uid="uid://bi0w1mbpr5b7r" path="res://enemies/Crow_Animations/attack/1.png" id="1_q7yxd"]
+[ext_resource type="Texture2D" uid="uid://sr5wymbr6130" path="res://enemies/Crow_Animations/attack/2.png" id="2_ylfv4"]
+[ext_resource type="Texture2D" uid="uid://df4nwxoqnk7it" path="res://enemies/Crow_Animations/attack/3.png" id="3_k3021"]
+[ext_resource type="Texture2D" uid="uid://cuhxgst56gw11" path="res://enemies/Crow_Animations/attack/4.png" id="4_x6d8k"]
+[ext_resource type="Texture2D" uid="uid://cs37qqqmtq1dh" path="res://enemies/Crow_Animations/attack/5.png" id="5_wm0mg"]
+[ext_resource type="Texture2D" uid="uid://jnd42ujpejnv" path="res://enemies/Crow_Animations/dealth/1.png" id="6_b8emp"]
+[ext_resource type="Texture2D" uid="uid://dwvex2omeufc6" path="res://enemies/Crow_Animations/dealth/2.png" id="7_i4mw0"]
+[ext_resource type="Texture2D" uid="uid://b85jsogpme7jd" path="res://enemies/Crow_Animations/dealth/3.png" id="8_qqmo1"]
+[ext_resource type="Texture2D" uid="uid://bsa20ljmplfkp" path="res://enemies/Crow_Animations/dealth/4.png" id="9_fr7mf"]
+[ext_resource type="Texture2D" uid="uid://cq7wbxh3lt55o" path="res://enemies/Crow_Animations/dealth/5.png" id="10_5xaq3"]
+[ext_resource type="Texture2D" uid="uid://dfg6vh1bne0p8" path="res://enemies/Crow_Animations/damage/1.png" id="11_qwx3j"]
+[ext_resource type="Texture2D" uid="uid://bfaf65444syji" path="res://enemies/Crow_Animations/damage/2.png" id="12_vhb0b"]
+[ext_resource type="Texture2D" uid="uid://yh7xybulnw28" path="res://enemies/Crow_Animations/damage/3.png" id="13_ryacq"]
+[ext_resource type="Texture2D" uid="uid://curshr2hcwjya" path="res://enemies/Crow_Animations/iddle/1.png" id="14_fotv0"]
+[ext_resource type="Texture2D" uid="uid://bkmccrwqr7dtf" path="res://enemies/Crow_Animations/iddle/2.png" id="15_hn13c"]
+[ext_resource type="Texture2D" uid="uid://cyhesrxv0ktxj" path="res://enemies/Crow_Animations/iddle/3.png" id="16_nn4lk"]
+[ext_resource type="Texture2D" uid="uid://sr1htgdkenpj" path="res://enemies/Crow_Animations/iddle/4.png" id="17_hi1yf"]
+[ext_resource type="Texture2D" uid="uid://c0l0tbxawf71e" path="res://enemies/Crow_Animations/jump/1.png" id="18_tq22t"]
+[ext_resource type="Texture2D" uid="uid://dvc51hd5qetnt" path="res://enemies/Crow_Animations/jump/2.png" id="19_tkfor"]
+[ext_resource type="Texture2D" uid="uid://d3aqlpm6sh332" path="res://enemies/Crow_Animations/jump/3.png" id="20_fycgf"]
+[ext_resource type="Texture2D" uid="uid://dl4ge2kj6ti0x" path="res://enemies/Crow_Animations/jump/4.png" id="21_1cxax"]
+[ext_resource type="Texture2D" uid="uid://d10ulnsq5ek6p" path="res://enemies/Crow_Animations/jump/5.png" id="22_6h4t2"]
+[ext_resource type="Texture2D" uid="uid://perfwaccuia3" path="res://enemies/Crow_Animations/jump/6.png" id="23_vagby"]
+[ext_resource type="Texture2D" uid="uid://rhfr2pv0a1sg" path="res://enemies/Crow_Animations/walk/1.png" id="24_bh1vv"]
+[ext_resource type="Texture2D" uid="uid://bos8w6ad870bu" path="res://enemies/Crow_Animations/walk/2.png" id="25_qkccf"]
+[ext_resource type="Texture2D" uid="uid://dk3jugk2eetlv" path="res://enemies/Crow_Animations/walk/3.png" id="26_otdhl"]
+[ext_resource type="Texture2D" uid="uid://b1xvlwfpo0lf5" path="res://enemies/Crow_Animations/walk/4.png" id="27_g2kfy"]
+[ext_resource type="AudioStream" uid="uid://bdix4fxx5xxnj" path="res://Sound Effects/general/hit.wav" id="28_2bl2v"]
+[ext_resource type="AudioStream" uid="uid://cu703jgignuy6" path="res://Sound Effects/general/monster_attack.mp3" id="29_mkmmk"]
+[ext_resource type="AudioStream" uid="uid://cm1y3gk3nr22o" path="res://Sound Effects/general/monster_sfx_pack/monster-8.wav" id="30_eo6x7"]
+
+[sub_resource type="GDScript" id="GDScript_4g3ns"]
+script/source = "extends CharacterBody2D
+
+@export var max_health: int = 50
+@export var knockback_force: float = 2000.0
+@export var friction: float = 0.8
+@export var move_speed: float = 300.0
+@export var attack_range: float = 120.0
+@export var detection_range: float = 400.0
+@export var attack_cooldown: float = 0.35
+@export var gravity: float = 2000.0
+@export var knockback_duration: float = 0.25
+@export var vertical_knockback_factor: float = 0.3
+@export var separation_distance: float = 80.0
+@export var separation_strength: float = 350.0
+
+
+var health: int
+enum State { IDLE, CHASE, ATTACK, HURT, DEAD }
+var current_state: State = State.IDLE
+var base_move_speed: float
+var speed_variation_timer: float = 0.0
+var random_offset: float = 0.0
+var target: Node2D = null
+var has_target: bool = false
+var knockback: Vector2 = Vector2.ZERO
+var can_attack: bool = true
+var random_direction_offset: Vector2
+
+@onready var animated_sprite = $AnimatedSprite2D
+@onready var collision_shape = $CollisionShape2D
+@onready var hand_pivot = $HandPivot
+@onready var attack_area: Area2D = $HandPivot/SwordArea
+@onready var detection_area = $DetectionArea
+@onready var audio_nodes = {
+	\"hit\": $Audio/hit,
+	\"attack\": $Audio/attack,
+	\"death\": $Audio/death
+}
+
+func _ready() -> void:
+	set_collision_mask_value(3, false)
+	health = max_health
+	add_to_group(\"enemies\")
+	setup_detection_area()
+	
+	attack_area.monitoring = false
+	attack_area.body_entered.connect(_on_attack_area_body_entered)
+	
+	current_state = State.IDLE
+	animated_sprite.play(\"idle\")
+	
+	# Inicializar valores para variação
+	random_offset = randf_range(0.0, TAU)
+	base_move_speed = move_speed + randf_range(-30.0, 30.0)
+
+	# Gera um pequeno vetor de desvio aleatório
+	random_direction_offset = Vector2(randf_range(-0.5, 0.5), 0).normalized()
+
+
+func setup_detection_area() -> void:
+	var shape = CircleShape2D.new()
+	shape.radius = detection_range
+	detection_area.get_node(\"CollisionShape2D\").shape = shape
+	detection_area.body_entered.connect(_on_detection_area_body_entered)
+
+func _physics_process(delta: float) -> void:
+	if current_state == State.DEAD:
+		return
+		
+	#Variação de movimento
+	speed_variation_timer += delta
+	var sin_factor = sin(speed_variation_timer * 2.0 + random_offset) * 0.2 + 1.0
+	move_speed = base_move_speed * sin_factor + 400
+	
+	#Aplicar gravidade
+	if not is_on_floor():
+		velocity.y += gravity * delta
+	else:
+		velocity.y = 0
+
+	if current_state == State.ATTACK:
+		move_and_slide()
+		return
+
+	if knockback != Vector2.ZERO:
+		handle_knockback(delta)
+	elif has_target and is_instance_valid(target):
+		handle_combat()
+	else:
+		current_state = State.IDLE
+		velocity.x = 0
+
+	handle_animations()
+	move_and_slide()
+
+
+func handle_animations() -> void:
+	match current_state:
+		State.DEAD:
+			animated_sprite.play(\"death\")
+		State.HURT:
+			animated_sprite.play(\"hurt\")
+		State.ATTACK:
+			animated_sprite.play(\"attack\")
+		State.CHASE:
+			if not is_on_floor():
+				animated_sprite.play(\"jump\")
+			elif abs(velocity.x) > 0:
+				animated_sprite.play(\"run\")
+			else:
+				animated_sprite.play(\"idle\")
+		State.IDLE:
+			if not is_on_floor():
+				animated_sprite.play(\"jump\")
+			elif abs(velocity.x) > 0:
+				animated_sprite.play(\"run\")
+			else:
+				animated_sprite.play(\"idle\")
+
+
+func handle_knockback(delta: float) -> void:
+	velocity = knockback
+	velocity.y += gravity * delta
+	knockback *= friction
+	
+	# Interromper knockback se colidir com parede ou força for pequena
+	if knockback.length() < 50 or is_on_wall():
+		knockback = Vector2.ZERO
+		if health > 0:
+			current_state = State.CHASE if has_target else State.IDLE
+
+
+func apply_separation_force() -> Vector2:
+	var separation_force = Vector2.ZERO
+	var enemies = get_tree().get_nodes_in_group(\"enemies\")
+
+	for other in enemies:
+		if other == self:
+			continue
+		if not other is CharacterBody2D:
+			continue
+		if other.knockback != Vector2.ZERO or other.current_state == State.HURT:
+			continue  # Ignora inimigos em knockback ou em estado de dano
+
+		var distance = global_position.distance_to(other.global_position)
+		if distance < separation_distance and distance > 0:
+			var push_dir = (global_position - other.global_position).normalized()
+			var strength = (separation_distance - distance) / separation_distance
+			separation_force += push_dir * strength
+
+	return separation_force.normalized() * separation_strength
+
+
+func handle_combat() -> void:
+	var direction = (target.global_position - global_position).normalized()
+	direction += random_direction_offset * 0.4  # Adiciona leve desvio
+	direction = direction.normalized()
+	var distance = global_position.distance_to(target.global_position)
+
+	animated_sprite.flip_h = direction.x < 0
+	update_attack_area_position()
+
+	if distance <= attack_range and can_attack:
+		start_attack()
+	else:
+		current_state = State.CHASE
+		var separation = apply_separation_force()
+		var final_direction = (direction + separation).normalized()
+		velocity.x = final_direction.x * move_speed
+
+
+func take_damage(amount: int, attack_origin: Vector2) -> void:
+	if current_state == State.DEAD:
+		return
+
+	# Calcular direção do knockback
+	var knockback_dir = (global_position - attack_origin).normalized()
+	knockback_dir.y *= vertical_knockback_factor
+	knockback = knockback_dir * knockback_force
+
+	health -= amount
+	current_state = State.HURT
+	audio_nodes[\"hit\"].play()
+	GameEffects.request_hit_stop(0.4, animated_sprite, global_position)
+	
+	# Tempo mínimo de knockback
+	var knockback_timer = get_tree().create_timer(knockback_duration)
+	await knockback_timer.timeout
+	
+	knockback = Vector2.ZERO
+	
+	if health <= 0:
+		die()
+	else:
+		current_state = State.CHASE if has_target else State.IDLE
+
+
+func start_attack() -> void:
+	if !can_attack: 
+		return
+
+	can_attack = false
+	current_state = State.ATTACK
+	await get_tree().create_timer(0.15).timeout
+	audio_nodes[\"attack\"].play()
+
+	update_attack_area_position()
+	attack_area.monitoring = true
+
+	await animated_sprite.animation_finished
+	attack_area.monitoring = false
+	current_state = State.CHASE if has_target else State.IDLE
+	
+	await get_tree().create_timer(attack_cooldown).timeout
+	can_attack = true
+
+
+func update_attack_area_position() -> void:
+	var offset = Vector2(attack_range * 0.8, 0)  # Ajuste fino na posição
+	attack_area.position = offset if not animated_sprite.flip_h else -offset
+
+
+func die() -> void:
+	audio_nodes[\"death\"].play()
+	collision_shape.set_deferred(\"disabled\", true)
+	current_state = State.DEAD
+	animated_sprite.play(\"death\")
+	await animated_sprite.animation_finished
+	queue_free()
+
+
+func _on_detection_area_body_entered(body: Node2D) -> void:
+	if body.is_in_group(\"player\"):
+		target = body
+		has_target = true
+		current_state = State.CHASE
+
+
+func _on_attack_area_body_entered(body: Node2D) -> void:
+	if body.is_in_group(\"player\") and current_state == State.ATTACK:
+		body.take_damage(10, global_position)
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_opd48"]
+size = Vector2(101, 106.156)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_iv7se"]
+animations = [{
+"frames": [{
+"duration": 20.0,
+"texture": ExtResource("1_q7yxd")
+}, {
+"duration": 20.0,
+"texture": ExtResource("2_ylfv4")
+}, {
+"duration": 20.0,
+"texture": ExtResource("3_k3021")
+}, {
+"duration": 20.0,
+"texture": ExtResource("4_x6d8k")
+}, {
+"duration": 20.0,
+"texture": ExtResource("5_wm0mg")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 22.0
+}, {
+"frames": [{
+"duration": 20.0,
+"texture": ExtResource("6_b8emp")
+}, {
+"duration": 20.0,
+"texture": ExtResource("7_i4mw0")
+}, {
+"duration": 20.0,
+"texture": ExtResource("8_qqmo1")
+}, {
+"duration": 20.0,
+"texture": ExtResource("9_fr7mf")
+}, {
+"duration": 20.0,
+"texture": ExtResource("10_5xaq3")
+}],
+"loop": false,
+"name": &"death",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 20.0,
+"texture": ExtResource("11_qwx3j")
+}, {
+"duration": 20.0,
+"texture": ExtResource("12_vhb0b")
+}, {
+"duration": 20.0,
+"texture": ExtResource("13_ryacq")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 20.0,
+"texture": ExtResource("14_fotv0")
+}, {
+"duration": 20.0,
+"texture": ExtResource("15_hn13c")
+}, {
+"duration": 20.0,
+"texture": ExtResource("16_nn4lk")
+}, {
+"duration": 20.0,
+"texture": ExtResource("17_hi1yf")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 20.0,
+"texture": ExtResource("18_tq22t")
+}, {
+"duration": 20.0,
+"texture": ExtResource("19_tkfor")
+}, {
+"duration": 20.0,
+"texture": ExtResource("20_fycgf")
+}, {
+"duration": 20.0,
+"texture": ExtResource("21_1cxax")
+}, {
+"duration": 20.0,
+"texture": ExtResource("22_6h4t2")
+}, {
+"duration": 20.0,
+"texture": ExtResource("23_vagby")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 20.0,
+"texture": ExtResource("24_bh1vv")
+}, {
+"duration": 20.0,
+"texture": ExtResource("25_qkccf")
+}, {
+"duration": 20.0,
+"texture": ExtResource("26_otdhl")
+}, {
+"duration": 20.0,
+"texture": ExtResource("27_g2kfy")
+}],
+"loop": false,
+"name": &"run",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e5e7g"]
+size = Vector2(140.741, 136)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_e5e7g"]
+radius = 238.21
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 2
+script = SubResource("GDScript_4g3ns")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-14.5, -14.0781)
+shape = SubResource("RectangleShape2D_opd48")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-12, -13)
+scale = Vector2(4.60364, 4.67658)
+sprite_frames = SubResource("SpriteFrames_iv7se")
+animation = &"attack"
+frame = 4
+frame_progress = 1.0
+
+[node name="Audio" type="Node2D" parent="."]
+position = Vector2(-11, -9)
+
+[node name="hit" type="AudioStreamPlayer2D" parent="Audio"]
+position = Vector2(-9, -8)
+stream = ExtResource("28_2bl2v")
+
+[node name="attack" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("29_mkmmk")
+volume_db = 24.0
+
+[node name="death" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("30_eo6x7")
+volume_db = 3.888
+
+[node name="HandPivot" type="Node2D" parent="."]
+position = Vector2(0, -20)
+scale = Vector2(1.08, 1)
+
+[node name="SwordArea" type="Area2D" parent="HandPivot"]
+position = Vector2(6.48132, -3)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HandPivot/SwordArea"]
+position = Vector2(-17.5924, 9)
+shape = SubResource("RectangleShape2D_e5e7g")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+position = Vector2(-11, -10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+position = Vector2(-13, -1)
+shape = SubResource("CircleShape2D_e5e7g")
+metadata/_edit_lock_ = true
