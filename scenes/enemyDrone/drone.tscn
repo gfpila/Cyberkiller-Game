@@ -1,0 +1,190 @@
+[gd_scene load_steps=39 format=3 uid="uid://c41b2rjoasjrc"]
+
+[ext_resource type="Script" uid="uid://b3wvsqhaq725l" path="res://scenes/enemyDrone/drone.gd" id="1_adipj"]
+[ext_resource type="Texture2D" uid="uid://gq0tsht1ayr4" path="res://enemies/Drone/attack000.png" id="2_0vol3"]
+[ext_resource type="Texture2D" uid="uid://bcqlpxmyckc8v" path="res://enemies/Drone/attack001.png" id="3_toeop"]
+[ext_resource type="Texture2D" uid="uid://bvnoaaa68x1cn" path="res://enemies/Drone/attack002.png" id="4_2n2ud"]
+[ext_resource type="Texture2D" uid="uid://cn34tovgnnl00" path="res://enemies/Drone/attack003.png" id="5_yemlx"]
+[ext_resource type="Texture2D" uid="uid://5xxn4mym717s" path="res://enemies/Drone/attack004.png" id="6_ga7x0"]
+[ext_resource type="Texture2D" uid="uid://cvirstnx0skcw" path="res://enemies/Drone/attack005.png" id="7_rjeno"]
+[ext_resource type="Texture2D" uid="uid://c5u4rpp1kt0ng" path="res://enemies/Drone/attack006.png" id="8_2cut6"]
+[ext_resource type="Texture2D" uid="uid://bb53y5upg5u5n" path="res://enemies/Drone/attack007.png" id="9_uk5qh"]
+[ext_resource type="Texture2D" uid="uid://dsva2pfrjsw4x" path="res://enemies/Drone/death000.png" id="10_umwcc"]
+[ext_resource type="Texture2D" uid="uid://d34p5q50qq74k" path="res://enemies/Drone/death001.png" id="11_g1l3e"]
+[ext_resource type="Texture2D" uid="uid://o0liptr6lw0d" path="res://enemies/Drone/death002.png" id="12_jba20"]
+[ext_resource type="Texture2D" uid="uid://ctotqtduiofat" path="res://enemies/Drone/death003.png" id="13_qpkxc"]
+[ext_resource type="Texture2D" uid="uid://baxq066eqgveu" path="res://enemies/Drone/death004.png" id="14_21j8o"]
+[ext_resource type="Texture2D" uid="uid://co8b4s3w11p1m" path="res://enemies/Drone/death005.png" id="15_tps3y"]
+[ext_resource type="Texture2D" uid="uid://ckpwny3wxd6og" path="res://enemies/Drone/death006.png" id="16_moegy"]
+[ext_resource type="Texture2D" uid="uid://dyy74f6foxa5l" path="res://enemies/Drone/death007.png" id="17_y3mm8"]
+[ext_resource type="Texture2D" uid="uid://ckkgi434ta6ad" path="res://enemies/Drone/death008.png" id="18_ba3jn"]
+[ext_resource type="Texture2D" uid="uid://c2nwrmm864p6p" path="res://enemies/Drone/death009.png" id="19_e0hky"]
+[ext_resource type="Texture2D" uid="uid://ulf25wl8iyor" path="res://enemies/Drone/death010.png" id="20_hvlv6"]
+[ext_resource type="Texture2D" uid="uid://vutxndy1bad2" path="res://enemies/Drone/death011.png" id="21_8gw5k"]
+[ext_resource type="Texture2D" uid="uid://daosuyjbwp7st" path="res://enemies/Drone/idle0.png" id="22_euvm3"]
+[ext_resource type="Texture2D" uid="uid://b6xs1kas2jma0" path="res://enemies/Drone/idle1.png" id="23_c7uhu"]
+[ext_resource type="Texture2D" uid="uid://wcoffkftrffi" path="res://enemies/Drone/idle2.png" id="24_grhwu"]
+[ext_resource type="Texture2D" uid="uid://ciaf8ajyemt5g" path="res://enemies/Drone/idle3.png" id="25_twdtx"]
+[ext_resource type="Texture2D" uid="uid://d31twkss1nou1" path="res://enemies/Drone/idle4.png" id="26_vhpya"]
+[ext_resource type="Texture2D" uid="uid://c0hks64mma0it" path="res://enemies/Drone/idle5.png" id="27_q7mwi"]
+[ext_resource type="Texture2D" uid="uid://c44vmf02wrq7w" path="res://enemies/Drone/idle6.png" id="28_6jbke"]
+[ext_resource type="Texture2D" uid="uid://ifn2wcff6n68" path="res://enemies/Drone/walk0.png" id="29_c5smd"]
+[ext_resource type="Texture2D" uid="uid://cxu0omwcpg33s" path="res://enemies/Drone/walk1.png" id="30_7r2mv"]
+[ext_resource type="Texture2D" uid="uid://b28rl0bm16lr2" path="res://enemies/Drone/walk2.png" id="31_sakfm"]
+[ext_resource type="Texture2D" uid="uid://c7u0jirgumhjm" path="res://enemies/Drone/walk3.png" id="32_j634l"]
+[ext_resource type="Texture2D" uid="uid://cnhxpnserdwf5" path="res://enemies/Drone/walk4.png" id="33_exrw7"]
+[ext_resource type="AudioStream" uid="uid://bdix4fxx5xxnj" path="res://Sound Effects/general/hit.wav" id="34_tdqht"]
+[ext_resource type="AudioStream" uid="uid://cu703jgignuy6" path="res://Sound Effects/general/monster_attack.mp3" id="35_pro85"]
+[ext_resource type="AudioStream" uid="uid://cm1y3gk3nr22o" path="res://Sound Effects/general/monster_sfx_pack/monster-8.wav" id="36_c5mpt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3xsao"]
+size = Vector2(96, 95.9999)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_c1oaa"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_0vol3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_toeop")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_2n2ud")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_yemlx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ga7x0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_rjeno")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_2cut6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_uk5qh")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_umwcc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_g1l3e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_jba20")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_qpkxc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_21j8o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_tps3y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_moegy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_y3mm8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_ba3jn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_e0hky")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_hvlv6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_8gw5k")
+}],
+"loop": false,
+"name": &"death",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("22_euvm3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_c7uhu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_grhwu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_twdtx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_vhpya")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_q7mwi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_6jbke")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("29_c5smd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_7r2mv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_sakfm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_j634l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_exrw7")
+}],
+"loop": false,
+"name": &"run",
+"speed": 5.0
+}]
+
+[node name="Drone" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_adipj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, -5.99997)
+shape = SubResource("RectangleShape2D_3xsao")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-5.04, -1.048)
+scale = Vector2(1.08082, 0.988701)
+sprite_frames = SubResource("SpriteFrames_c1oaa")
+animation = &"idle"
+
+[node name="Audio" type="Node2D" parent="."]
+position = Vector2(-11, -9)
+
+[node name="hit" type="AudioStreamPlayer2D" parent="Audio"]
+position = Vector2(-9, -8)
+stream = ExtResource("34_tdqht")
+
+[node name="attack" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("35_pro85")
+volume_db = 24.0
+
+[node name="death" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("36_c5mpt")
+volume_db = 3.888

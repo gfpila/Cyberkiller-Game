@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=3 uid="uid://bubifo7e8g2gd"]
+
+[ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_t6dlq"]
+[ext_resource type="PackedScene" uid="uid://ddhmhfc5lmnjl" path="res://scenes/resources/ground.tscn" id="2_4ssdh"]
+[ext_resource type="PackedScene" uid="uid://cqphseavdiiiy" path="res://scenes/resources/player_start.tscn" id="3_53xj5"]
+[ext_resource type="PackedScene" uid="uid://cbyiwji00befa" path="res://scenes/resources/wall.tscn" id="4_vq62n"]
+[ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="5_6qxid"]
+[ext_resource type="PackedScene" uid="uid://c41b2rjoasjrc" path="res://scenes/enemyDrone/drone.tscn" id="6_4ssdh"]
+
+[node name="Level8" type="Node2D"]
+
+[node name="Background" parent="." instance=ExtResource("1_t6dlq")]
+position = Vector2(957, 544.501)
+scale = Vector2(1.25326, 1.0791)
+
+[node name="StaticBody2D" parent="." instance=ExtResource("2_4ssdh")]
+position = Vector2(956, 922)
+
+[node name="PlayerStart" parent="." instance=ExtResource("3_53xj5")]
+position = Vector2(137, 867)
+
+[node name="StaticBody2D3" parent="." instance=ExtResource("4_vq62n")]
+position = Vector2(20, 713)
+
+[node name="StaticBody2D4" parent="." instance=ExtResource("4_vq62n")]
+position = Vector2(1879, 716)
+
+[node name="ExitArea" parent="." instance=ExtResource("5_6qxid")]
+position = Vector2(1871, 848)
+
+[node name="Drone" parent="." instance=ExtResource("6_4ssdh")]
+position = Vector2(691, 307)
