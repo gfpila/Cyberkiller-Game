@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=3 uid="uid://mel0qn0h8f4w"]
+
+[ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_21ewi"]
+[ext_resource type="PackedScene" uid="uid://ddhmhfc5lmnjl" path="res://scenes/resources/ground.tscn" id="2_f1563"]
+[ext_resource type="PackedScene" uid="uid://cqphseavdiiiy" path="res://scenes/resources/player_start.tscn" id="3_8rdii"]
+[ext_resource type="PackedScene" uid="uid://cbyiwji00befa" path="res://scenes/resources/wall.tscn" id="4_773pc"]
+[ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="5_gbfju"]
+[ext_resource type="PackedScene" uid="uid://bx2kvly7q7pye" path="res://scenes/enemy_Shadow/Shadow.tscn" id="6_q1ymo"]
+
+[node name="Level10" type="Node2D"]
+
+[node name="Background" parent="." instance=ExtResource("1_21ewi")]
+position = Vector2(957, 544.501)
+scale = Vector2(1.25326, 1.0791)
+
+[node name="StaticBody2D" parent="." instance=ExtResource("2_f1563")]
+position = Vector2(948, 891)
+
+[node name="PlayerStart" parent="." instance=ExtResource("3_8rdii")]
+position = Vector2(145, 854)
+
+[node name="StaticBody2D3" parent="." instance=ExtResource("4_773pc")]
+position = Vector2(20, 713)
+
+[node name="StaticBody2D4" parent="." instance=ExtResource("4_773pc")]
+position = Vector2(1879, 716)
+
+[node name="ExitArea" parent="." instance=ExtResource("5_gbfju")]
+position = Vector2(1871, 848)
+
+[node name="Enemy" parent="." instance=ExtResource("6_q1ymo")]
+position = Vector2(1141, 775)
