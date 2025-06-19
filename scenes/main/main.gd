@@ -24,7 +24,7 @@ var player_health = 50
 var player_max_health = 50
 
 func _ready():
-	load_level(levels['10'])
+	load_level(levels['9'])
 
 func load_level(path):
 	# Limpa level anterior

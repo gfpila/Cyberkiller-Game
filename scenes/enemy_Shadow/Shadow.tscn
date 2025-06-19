@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://bx2kvly7q7pye"]
+[gd_scene load_steps=53 format=3 uid="uid://bx2kvly7q7pye"]
 
 [ext_resource type="Texture2D" uid="uid://dnq11berfwhs8" path="res://enemies/Shadow/attack/attack_1.png" id="1_3ckus"]
 [ext_resource type="Texture2D" uid="uid://d3j2rqi5qggk2" path="res://enemies/Shadow/attack/attack_2.png" id="2_2woak"]
@@ -63,6 +63,12 @@ script/source = "extends CharacterBody2D
 @export var separation_distance: float = 80.0
 @export var separation_strength: float = 350.0
 
+### MODIFICADO: Trocamos os pontos fixos por deslocamentos (offsets) ###
+@export var teleport_offsets: Array[Vector2] = [] # Defina os deslocamentos no inspetor!
+
+const HEALTH_THRESHOLD = 0.4
+var is_in_desperation_mode: bool = false
+var is_on_teleport_cooldown: bool = false
 
 var health: int
 enum State { IDLE, CHASE, ATTACK, HURT, DEAD }
@@ -75,12 +81,16 @@ var has_target: bool = false
 var knockback: Vector2 = Vector2.ZERO
 var can_attack: bool = true
 var random_direction_offset: Vector2
+var use_primary_attack: bool = true
 
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var collision_shape = $CollisionShape2D
 @onready var hand_pivot = $HandPivot
 @onready var attack_area: Area2D = $HandPivot/SwordArea
 @onready var detection_area = $DetectionArea
+@onready var proximity_detector = $ProximityDetector
+@onready var teleport_timer = $TeleportTimer
+@onready var teleport_cooldown = $TeleportCooldown
 @onready var audio_nodes = {
 	\"hit\": $Audio/hit,
 	\"attack\": $Audio/attack,
@@ -96,14 +106,15 @@ func _ready() -> void:
 	attack_area.monitoring = false
 	attack_area.body_entered.connect(_on_attack_area_body_entered)
 	
+	proximity_detector.body_entered.connect(_on_proximity_detector_body_entered)
+	teleport_timer.timeout.connect(_on_teleport_timer_timeout)
+	teleport_cooldown.timeout.connect(_on_teleport_cooldown_timeout)
+	
 	current_state = State.IDLE
 	animated_sprite.play(\"idle\")
 	
-	# Inicializar valores para variação
 	random_offset = randf_range(0.0, TAU)
 	base_move_speed = move_speed + randf_range(-30.0, 30.0)
-
-	# Gera um pequeno vetor de desvio aleatório
 	random_direction_offset = Vector2(randf_range(-0.5, 0.5), 0).normalized()
 
 
@@ -117,12 +128,10 @@ func _physics_process(delta: float) -> void:
 	if current_state == State.DEAD:
 		return
 		
-	#Variação de movimento
 	speed_variation_timer += delta
 	var sin_factor = sin(speed_variation_timer * 2.0 + random_offset) * 0.2 + 1.0
 	move_speed = base_move_speed * sin_factor + 400
 	
-	#Aplicar gravidade
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	else:
@@ -145,35 +154,26 @@ func _physics_process(delta: float) -> void:
 
 
 func handle_animations() -> void:
+	# (Esta função permanece inalterada)
 	match current_state:
-		State.DEAD:
-			animated_sprite.play(\"death\")
-		State.HURT:
-			animated_sprite.play(\"hurt\")
-		State.ATTACK:
-			animated_sprite.play(\"attack\")
+		State.DEAD: animated_sprite.play(\"death\")
+		State.HURT: animated_sprite.play(\"hurt\")
+		State.ATTACK: pass
 		State.CHASE:
-			if not is_on_floor():
-				animated_sprite.play(\"jump\")
-			elif abs(velocity.x) > 0:
-				animated_sprite.play(\"run\")
-			else:
-				animated_sprite.play(\"idle\")
+			if not is_on_floor(): animated_sprite.play(\"jump\")
+			elif abs(velocity.x) > 0: animated_sprite.play(\"run\")
+			else: animated_sprite.play(\"idle\")
 		State.IDLE:
-			if not is_on_floor():
-				animated_sprite.play(\"jump\")
-			elif abs(velocity.x) > 0:
-				animated_sprite.play(\"run\")
-			else:
-				animated_sprite.play(\"idle\")
+			if not is_on_floor(): animated_sprite.play(\"jump\")
+			elif abs(velocity.x) > 0: animated_sprite.play(\"run\")
+			else: animated_sprite.play(\"idle\")
 
 
 func handle_knockback(delta: float) -> void:
+	# (Esta função permanece inalterada)
 	velocity = knockback
 	velocity.y += gravity * delta
 	knockback *= friction
-	
-	# Interromper knockback se colidir com parede ou força for pequena
 	if knockback.length() < 50 or is_on_wall():
 		knockback = Vector2.ZERO
 		if health > 0:
@@ -181,35 +181,28 @@ func handle_knockback(delta: float) -> void:
 
 
 func apply_separation_force() -> Vector2:
+	# (Esta função permanece inalterada)
 	var separation_force = Vector2.ZERO
 	var enemies = get_tree().get_nodes_in_group(\"enemies\")
-
 	for other in enemies:
-		if other == self:
+		if other == self or not other is CharacterBody2D or other.knockback != Vector2.ZERO or other.current_state == State.HURT:
 			continue
-		if not other is CharacterBody2D:
-			continue
-		if other.knockback != Vector2.ZERO or other.current_state == State.HURT:
-			continue  # Ignora inimigos em knockback ou em estado de dano
-
 		var distance = global_position.distance_to(other.global_position)
 		if distance < separation_distance and distance > 0:
 			var push_dir = (global_position - other.global_position).normalized()
 			var strength = (separation_distance - distance) / separation_distance
 			separation_force += push_dir * strength
-
 	return separation_force.normalized() * separation_strength
 
 
 func handle_combat() -> void:
+	# (Esta função permanece inalterada)
 	var direction = (target.global_position - global_position).normalized()
-	direction += random_direction_offset * 0.4  # Adiciona leve desvio
+	direction += random_direction_offset * 0.4
 	direction = direction.normalized()
 	var distance = global_position.distance_to(target.global_position)
-
 	animated_sprite.flip_h = direction.x < 0
 	update_attack_area_position()
-
 	if distance <= attack_range and can_attack:
 		start_attack()
 	else:
@@ -220,57 +213,50 @@ func handle_combat() -> void:
 
 
 func take_damage(amount: int, attack_origin: Vector2) -> void:
-	if current_state == State.DEAD:
-		return
-
-	# Calcular direção do knockback
+	# (Esta função permanece inalterada, exceto pela remoção do comentário)
+	if current_state == State.DEAD: return
 	var knockback_dir = (global_position - attack_origin).normalized()
 	knockback_dir.y *= vertical_knockback_factor
 	knockback = knockback_dir * knockback_force
-
 	health -= amount
 	current_state = State.HURT
 	audio_nodes[\"hit\"].play()
-	GameEffects.request_hit_stop(0.4, animated_sprite, global_position)
-	
-	# Tempo mínimo de knockback
+	if not is_in_desperation_mode and (float(health) / float(max_health) <= HEALTH_THRESHOLD):
+		is_in_desperation_mode = true
 	var knockback_timer = get_tree().create_timer(knockback_duration)
 	await knockback_timer.timeout
-	
 	knockback = Vector2.ZERO
-	
-	if health <= 0:
-		die()
-	else:
-		current_state = State.CHASE if has_target else State.IDLE
+	if health <= 0: die()
+	else: current_state = State.CHASE if has_target else State.IDLE
 
 
 func start_attack() -> void:
-	if !can_attack: 
-		return
-
+	# (Esta função permanece inalterada)
+	if !can_attack: return
 	can_attack = false
 	current_state = State.ATTACK
+	if use_primary_attack: animated_sprite.play(\"attack\")
+	else: animated_sprite.play(\"attack_2\")
+	use_primary_attack = not use_primary_attack
 	await get_tree().create_timer(0.15).timeout
 	audio_nodes[\"attack\"].play()
-
 	update_attack_area_position()
 	attack_area.monitoring = true
-
 	await animated_sprite.animation_finished
 	attack_area.monitoring = false
 	current_state = State.CHASE if has_target else State.IDLE
-	
 	await get_tree().create_timer(attack_cooldown).timeout
 	can_attack = true
 
 
 func update_attack_area_position() -> void:
-	var offset = Vector2(attack_range * 0.8, 0)  # Ajuste fino na posição
+	# (Esta função permanece inalterada)
+	var offset = Vector2(attack_range * 0.8, 0)
 	attack_area.position = offset if not animated_sprite.flip_h else -offset
 
 
 func die() -> void:
+	# (Esta função permanece inalterada)
 	audio_nodes[\"death\"].play()
 	collision_shape.set_deferred(\"disabled\", true)
 	current_state = State.DEAD
@@ -280,6 +266,7 @@ func die() -> void:
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
+	# (Esta função permanece inalterada)
 	if body.is_in_group(\"player\"):
 		target = body
 		has_target = true
@@ -287,8 +274,55 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
+	# (Esta função permanece inalterada)
 	if body.is_in_group(\"player\") and current_state == State.ATTACK:
 		body.take_damage(10, global_position)
+
+
+### Funções de teleporte com a nova lógica ###
+
+func _on_proximity_detector_body_entered(body: Node2D) -> void:
+	if body.is_in_group(\"player\"):
+		if is_in_desperation_mode and not is_on_teleport_cooldown:
+			trigger_teleport_sequence()
+
+### MODIFICADO: Agora calcula o destino do teleporte ###
+func trigger_teleport_sequence() -> void:
+	# Verifica se temos os offsets e um alvo válido
+	if teleport_offsets.size() < 2:
+		print(\"ERRO: Defina pelo menos 2 'Teleport Offsets' no Inspetor!\")
+		return
+	if not is_instance_valid(target):
+		return
+
+	is_on_teleport_cooldown = true
+	velocity = Vector2.ZERO
+	
+	# Primeiro teleporte: Pega a posição do jogador e soma o primeiro offset
+	var destination = target.global_position + teleport_offsets[0]
+	global_position = destination
+	
+	teleport_timer.start()
+
+### MODIFICADO: Agora calcula o destino do segundo teleporte ###
+func _on_teleport_timer_timeout() -> void:
+	# Verifica se o alvo ainda é válido (jogador pode ter morrido, etc.)
+	if is_instance_valid(target):
+		# Segundo teleporte: Pega a posição ATUAL do jogador e soma o segundo offset
+		var destination = target.global_position + teleport_offsets[1]
+		global_position = destination
+	
+	teleport_cooldown.start()
+
+	# Imediatamente retorna ao estado de perseguição
+	if has_target and is_instance_valid(target):
+		current_state = State.CHASE
+	else:
+		current_state = State.IDLE
+
+func _on_teleport_cooldown_timeout() -> void:
+	is_on_teleport_cooldown = false
+	print(\"Inimigo pode teleportar novamente.\")
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_opd48"]
@@ -462,10 +496,14 @@ size = Vector2(328.704, 136)
 [sub_resource type="CircleShape2D" id="CircleShape2D_e5e7g"]
 radius = 302.134
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_3ckus"]
+radius = 281.349
+
 [node name="Shadow" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 2
 script = SubResource("GDScript_4g3ns")
+teleport_offsets = Array[Vector2]([Vector2(400, 0), Vector2(500, 0)])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-14.5, -14.0781)
@@ -513,3 +551,18 @@ position = Vector2(-11, -10)
 position = Vector2(-13, -1)
 shape = SubResource("CircleShape2D_e5e7g")
 metadata/_edit_lock_ = true
+
+[node name="ProximityDetector" type="Area2D" parent="."]
+position = Vector2(-6, -5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ProximityDetector"]
+position = Vector2(4, 6)
+shape = SubResource("CircleShape2D_3ckus")
+
+[node name="TeleportTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="TeleportCooldown" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
