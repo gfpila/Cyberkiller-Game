@@ -417,6 +417,7 @@ script = ExtResource("1_hejnc")
 position = Vector2(0, -7)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_eai12")
+animation = &"attack_animation"
 script = ExtResource("17_cabpx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

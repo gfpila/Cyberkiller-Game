@@ -37,8 +37,8 @@ script/source = "extends CharacterBody2D
 @export var max_health: int = 50
 @export var knockback_force: float = 2000.0
 @export var friction: float = 0.8
-@export var move_speed: float = 300.0
-@export var attack_range: float = 120.0
+@export var move_speed: float = 80.0 
+@export var attack_range: float = 250.0 
 @export var detection_range: float = 400.0
 @export var attack_cooldown: float = 0.35
 @export var gravity: float = 2000.0
@@ -47,18 +47,26 @@ script/source = "extends CharacterBody2D
 @export var separation_distance: float = 80.0
 @export var separation_strength: float = 350.0
 
+# --- NOVAS VARIÁVEIS PARA O STUN ---
+@export_group(\"Stun\")
+@export var stun_duration: float = 100 # NOVO: Duração do atordoamento em segundos
+@export var consecutive_hit_window: float = 2 # NOVO: Janela de tempo para o 2º hit
 
 var health: int
-enum State { IDLE, CHASE, ATTACK, HURT, DEAD }
+# ALTERADO: Adicionado o estado STUNNED
+enum State { IDLE, CHASE, ATTACK, HURT, STUNNED, DEAD }
 var current_state: State = State.IDLE
-var base_move_speed: float
-var speed_variation_timer: float = 0.0
+
 var random_offset: float = 0.0
 var target: Node2D = null
 var has_target: bool = false
 var knockback: Vector2 = Vector2.ZERO
 var can_attack: bool = true
 var random_direction_offset: Vector2
+
+# NOVO: Variáveis para controlar o Stun
+var consecutive_hits: int = 0
+var consecutive_hit_timer: Timer
 
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var collision_shape = $CollisionShape2D
@@ -83,12 +91,15 @@ func _ready() -> void:
 	current_state = State.IDLE
 	animated_sprite.play(\"idle\")
 	
-	# Inicializar valores para variação
 	random_offset = randf_range(0.0, TAU)
-	base_move_speed = move_speed + randf_range(-30.0, 30.0)
-
-	# Gera um pequeno vetor de desvio aleatório
 	random_direction_offset = Vector2(randf_range(-0.5, 0.5), 0).normalized()
+
+	# NOVO: Configuração do Timer para o Stun
+	consecutive_hit_timer = Timer.new()
+	consecutive_hit_timer.one_shot = true
+	consecutive_hit_timer.wait_time = consecutive_hit_window
+	consecutive_hit_timer.timeout.connect(_on_consecutive_hit_timer_timeout)
+	add_child(consecutive_hit_timer)
 
 
 func setup_detection_area() -> void:
@@ -100,12 +111,13 @@ func setup_detection_area() -> void:
 func _physics_process(delta: float) -> void:
 	if current_state == State.DEAD:
 		return
-		
-	#Variação de movimento
-	speed_variation_timer += delta
-	var sin_factor = sin(speed_variation_timer * 2.0 + random_offset) * 0.2 + 1.0
-	move_speed = base_move_speed * sin_factor + 400
 	
+	# NOVO: Lógica para o estado STUNNED
+	if current_state == State.STUNNED:
+		velocity = Vector2.ZERO # Garante que o inimigo não se mova
+		move_and_slide()
+		return
+		
 	#Aplicar gravidade
 	if not is_on_floor():
 		velocity.y += gravity * delta
@@ -132,6 +144,9 @@ func handle_animations() -> void:
 	match current_state:
 		State.DEAD:
 			animated_sprite.play(\"death\")
+		# ALTERADO: Adicionado o estado STUNNED (reutiliza a animação 'hurt')
+		State.STUNNED:
+			animated_sprite.play(\"hurt\")
 		State.HURT:
 			animated_sprite.play(\"hurt\")
 		State.ATTACK:
@@ -152,48 +167,104 @@ func handle_animations() -> void:
 				animated_sprite.play(\"idle\")
 
 
+# ALTERADO: Função `take_damage` reestruturada para priorizar o Stun
+func take_damage(amount: int, attack_origin: Vector2) -> void:
+	# Não pode tomar dano ou ser atordoado se já estiver morto ou atordoado
+	if current_state == State.DEAD or current_state == State.STUNNED:
+		return
+
+	health -= amount
+	audio_nodes[\"hit\"].play()
+
+	# Se a vida acabou, morre e não processa o resto
+	if health <= 0:
+		die()
+		return
+
+	# Lógica do Stun
+	consecutive_hits += 1
+	consecutive_hit_timer.start() # Reinicia o timer a cada hit
+
+	# Verifica se a condição de stun foi atingida
+	if consecutive_hits >= 2:
+		consecutive_hits = 0 # Reseta o contador
+		consecutive_hit_timer.stop() # Para o timer pois o stun foi ativado
+		
+		# Como atordoou, o inimigo para no lugar (sem knockback) e entra no estado de stun
+		knockback = Vector2.ZERO
+		start_stun() # Inicia o stun
+	else:
+		# Lógica normal de dano (sem stun)
+		current_state = State.HURT
+		
+		# Lógica do knockback
+		var knockback_dir = (global_position - attack_origin).normalized()
+		knockback_dir.y *= vertical_knockback_factor
+		knockback = knockback_dir * knockback_force
+
+		var knockback_timer = get_tree().create_timer(knockback_duration)
+		await knockback_timer.timeout
+		
+		knockback = Vector2.ZERO
+		
+		# Se ainda estiver no estado HURT (e não foi atordoado nesse meio tempo), volta ao normal
+		if current_state == State.HURT:
+			current_state = State.CHASE if has_target else State.IDLE
+
+
+# NOVO: Função para iniciar e controlar a duração do Stun
+func start_stun() -> void:
+	current_state = State.STUNNED
+	print(\"Inimigo Atordoado!\") # Para debug
+	
+	await get_tree().create_timer(stun_duration).timeout
+	
+	# Verifica se o inimigo ainda está vivo e no estado de stun antes de mudar de estado
+	if health > 0 and current_state == State.STUNNED:
+		print(\"Stun acabou.\") # Para debug
+		current_state = State.CHASE if has_target else State.IDLE
+		# Pequeno cooldown para não atacar imediatamente após o stun
+		can_attack = false
+		await get_tree().create_timer(0.5).timeout
+		can_attack = true
+
+
+# NOVO: Função chamada quando o timer de hits consecutivos termina
+func _on_consecutive_hit_timer_timeout() -> void:
+	# Se o tempo acabar, reseta a contagem de hits
+	consecutive_hits = 0
+
+
+# Funções restantes (sem alterações)
 func handle_knockback(delta: float) -> void:
 	velocity = knockback
 	velocity.y += gravity * delta
 	knockback *= friction
-	
-	# Interromper knockback se colidir com parede ou força for pequena
 	if knockback.length() < 50 or is_on_wall():
 		knockback = Vector2.ZERO
-		if health > 0:
+		if health > 0 and current_state != State.STUNNED:
 			current_state = State.CHASE if has_target else State.IDLE
-
 
 func apply_separation_force() -> Vector2:
 	var separation_force = Vector2.ZERO
 	var enemies = get_tree().get_nodes_in_group(\"enemies\")
-
 	for other in enemies:
-		if other == self:
+		if other == self or not other is CharacterBody2D or other.knockback != Vector2.ZERO or other.current_state == State.HURT:
 			continue
-		if not other is CharacterBody2D:
-			continue
-		if other.knockback != Vector2.ZERO or other.current_state == State.HURT:
-			continue  # Ignora inimigos em knockback ou em estado de dano
-
 		var distance = global_position.distance_to(other.global_position)
 		if distance < separation_distance and distance > 0:
 			var push_dir = (global_position - other.global_position).normalized()
 			var strength = (separation_distance - distance) / separation_distance
 			separation_force += push_dir * strength
-
 	return separation_force.normalized() * separation_strength
-
 
 func handle_combat() -> void:
 	var direction = (target.global_position - global_position).normalized()
-	direction += random_direction_offset * 0.4  # Adiciona leve desvio
+	direction += random_direction_offset * 0.4
 	direction = direction.normalized()
 	var distance = global_position.distance_to(target.global_position)
-
 	animated_sprite.flip_h = direction.x < 0
 	update_attack_area_position()
-
 	if distance <= attack_range and can_attack:
 		start_attack()
 	else:
@@ -202,57 +273,24 @@ func handle_combat() -> void:
 		var final_direction = (direction + separation).normalized()
 		velocity.x = final_direction.x * move_speed
 
-
-func take_damage(amount: int, attack_origin: Vector2) -> void:
-	if current_state == State.DEAD:
-		return
-
-	# Calcular direção do knockback
-	var knockback_dir = (global_position - attack_origin).normalized()
-	knockback_dir.y *= vertical_knockback_factor
-	knockback = knockback_dir * knockback_force
-
-	health -= amount
-	current_state = State.HURT
-	audio_nodes[\"hit\"].play()
-	GameEffects.request_hit_stop(0.4, animated_sprite, global_position)
-	
-	# Tempo mínimo de knockback
-	var knockback_timer = get_tree().create_timer(knockback_duration)
-	await knockback_timer.timeout
-	
-	knockback = Vector2.ZERO
-	
-	if health <= 0:
-		die()
-	else:
-		current_state = State.CHASE if has_target else State.IDLE
-
-
 func start_attack() -> void:
-	if !can_attack: 
-		return
-
+	if !can_attack: return
 	can_attack = false
 	current_state = State.ATTACK
 	await get_tree().create_timer(0.15).timeout
 	audio_nodes[\"attack\"].play()
-
 	update_attack_area_position()
 	attack_area.monitoring = true
-
 	await animated_sprite.animation_finished
 	attack_area.monitoring = false
-	current_state = State.CHASE if has_target else State.IDLE
-	
+	if current_state != State.STUNNED:
+		current_state = State.CHASE if has_target else State.IDLE
 	await get_tree().create_timer(attack_cooldown).timeout
 	can_attack = true
 
-
 func update_attack_area_position() -> void:
-	var offset = Vector2(attack_range * 0.8, 0)  # Ajuste fino na posição
+	var offset = Vector2(attack_range * 0.8, 0)
 	attack_area.position = offset if not animated_sprite.flip_h else -offset
-
 
 func die() -> void:
 	audio_nodes[\"death\"].play()
@@ -262,13 +300,12 @@ func die() -> void:
 	await animated_sprite.animation_finished
 	queue_free()
 
-
 func _on_detection_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group(\"player\"):
 		target = body
 		has_target = true
-		current_state = State.CHASE
-
+		if current_state != State.STUNNED:
+			current_state = State.CHASE
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group(\"player\") and current_state == State.ATTACK:
@@ -276,24 +313,24 @@ func _on_attack_area_body_entered(body: Node2D) -> void:
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_opd48"]
-size = Vector2(101, 106.156)
+size = Vector2(388, 512)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_iv7se"]
 animations = [{
 "frames": [{
-"duration": 6.0,
+"duration": 8.0,
 "texture": ExtResource("1_q7yxd")
 }, {
-"duration": 6.0,
+"duration": 8.0,
 "texture": ExtResource("2_ylfv4")
 }, {
-"duration": 6.0,
+"duration": 8.0,
 "texture": ExtResource("3_k3021")
 }, {
-"duration": 6.0,
+"duration": 8.0,
 "texture": ExtResource("4_x6d8k")
 }, {
-"duration": 6.0,
+"duration": 8.0,
 "texture": ExtResource("5_wm0mg")
 }],
 "loop": false,
@@ -393,27 +430,28 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e5e7g"]
-size = Vector2(140.741, 136)
+size = Vector2(632.87, 558.5)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e5e7g"]
-radius = 238.21
+radius = 641.05
 
 [node name="Crow" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 2
 script = SubResource("GDScript_4g3ns")
+max_health = 200
+move_speed = 100.0
+attack_range = 230.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-14.5, -14.0781)
+position = Vector2(129, -150)
 shape = SubResource("RectangleShape2D_opd48")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(-12, -13)
-scale = Vector2(4.60364, 4.67658)
+position = Vector2(126.529, -149.5)
+scale = Vector2(16.6496, 17.6897)
 sprite_frames = SubResource("SpriteFrames_iv7se")
-animation = &"run"
-frame = 3
-frame_progress = 1.0
+animation = &"attack"
 
 [node name="Audio" type="Node2D" parent="."]
 position = Vector2(-11, -9)
@@ -435,11 +473,11 @@ position = Vector2(0, -20)
 scale = Vector2(1.08, 1)
 
 [node name="SwordArea" type="Area2D" parent="HandPivot"]
-position = Vector2(6.48132, -3)
+position = Vector2(0, 19)
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HandPivot/SwordArea"]
-position = Vector2(-17.5924, 9)
+position = Vector2(267.593, -127.75)
 shape = SubResource("RectangleShape2D_e5e7g")
 
 [node name="DetectionArea" type="Area2D" parent="."]
