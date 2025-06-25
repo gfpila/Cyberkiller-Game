@@ -118,7 +118,8 @@ func _ready() -> void:
 	add_child(hurt_state_timer)
 
 
-# ALTERADO: A lógica de `take_damage` agora usa um Timer para o estado HURT
+# ALTERADO: Removida a linha que tocava a animação diretamente.
+# ALTERADO: Reintroduzida a chamada para tocar a animação de dano no estado STUNNED.
 func take_damage(amount: int, attack_origin: Vector2) -> void:
 	if current_state == State.DEAD:
 		return
@@ -131,6 +132,8 @@ func take_damage(amount: int, attack_origin: Vector2) -> void:
 		return
 
 	if current_state == State.STUNNED:
+		# Toca a animação 'hurt' como um evento único.
+		# A lógica em handle_animations() garantirá que ela não entre em loop.
 		animated_sprite.play(\"hurt\")
 		return
 
@@ -144,11 +147,8 @@ func take_damage(amount: int, attack_origin: Vector2) -> void:
 			start_stun()
 			return
 
-	# Lógica de dano normal (sem knockback e sem 'await')
-	# Apenas define o estado e inicia um timer rápido para sair dele.
-	# Isso garante que a animação de 'hurt' sempre toque.
 	current_state = State.HURT
-	hurt_state_timer.start(0.3) # Duração do estado 'hurt' em segundos
+	hurt_state_timer.start(0.3)
 
 
 # ALTERADO: `perform_empowered_attack` agora toca a animação mesmo se defendido
@@ -198,37 +198,77 @@ func _on_hurt_state_timer_timeout() -> void:
 
 # --- O resto do código permanece o mesmo ---
 
+# ALTERADO: Adicionado o estado HURT à verificação inicial
 func _physics_process(delta: float) -> void:
-	if current_state == State.DEAD:
-		return
-	
-	if current_state == State.STUNNED:
-		velocity = Vector2.ZERO
-		move_and_slide()
-		return
-		
+	# 1. Primeiro, aplicamos a gravidade, que afeta todos os estados.
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	else:
-		velocity.y = 0
+		# Uma pequena força para baixo para manter o personagem no chão de forma estável
+		velocity.y = 5 
 
-	if current_state == State.ATTACK:
-		move_and_slide()
-		return
+	# 2. Em seguida, executamos a lógica do estado atual (que definirá a velocidade X)
+	process_state_logic(delta)
 
-	if has_target and is_instance_valid(target):
-		handle_combat()
-	else:
-		current_state = State.IDLE
-		velocity.x = 0
-
+	# 3. Depois, atualizamos a animação com base no estado final deste frame.
 	handle_animations()
-	move_and_slide()
 
+	# 4. Finalmente, aplicamos o movimento.
+	move_and_slide()
+	
+func process_state_logic(delta: float) -> void:
+	match current_state:
+		State.IDLE:
+			velocity.x = move_toward(velocity.x, 0, move_speed) # Desacelera até parar
+			if has_target and is_instance_valid(target):
+				current_state = State.CHASE
+
+		State.HURT:
+			# A única tarefa deste estado é parar o inimigo.
+			# A saída do estado é controlada pelo _on_hurt_state_timer_timeout.
+			velocity.x = move_toward(velocity.x, 0, move_speed * 2) # Para mais rápido
+
+		State.STUNNED:
+			# Mesma coisa que HURT, mas a saída é controlada pela função start_stun
+			velocity.x = move_toward(velocity.x, 0, move_speed * 2)
+
+		State.ATTACK:
+			# O ataque é controlado por sua própria função com 'await', então aqui só paramos o movimento.
+			velocity.x = 0
+
+		State.CHASE:
+			if not has_target or not is_instance_valid(target):
+				current_state = State.IDLE
+				return
+
+			var distance = global_position.distance_to(target.global_position)
+			
+			if distance <= attack_range and can_attack:
+				start_attack() # start_attack mudará o estado para ATTACK
+			else:
+				# Lógica de movimento de perseguição
+				var direction = (target.global_position - global_position).normalized()
+				animated_sprite.flip_h = direction.x < 0
+				update_attack_area_position()
+				
+				var separation = apply_separation_force()
+				var final_direction = (direction + separation).normalized()
+				velocity.x = final_direction.x * move_speed
+		
+		State.DEAD:
+			velocity.x = 0
+
+# ALTERADO: Lógica do estado STUNNED para evitar o loop de animação.
 func handle_animations() -> void:
 	match current_state:
 		State.DEAD: animated_sprite.play(\"death\")
-		State.STUNNED: animated_sprite.play(\"hurt\")
+		
+		State.STUNNED:
+			# Se a animação 'hurt' não estiver tocando, fique na animação 'idle'.
+			# Isso permite que 'hurt' toque uma vez quando acionada e depois pare.
+			if animated_sprite.animation != \"hurt\" or not animated_sprite.is_playing():
+				animated_sprite.play(\"idle\")
+
 		State.HURT: animated_sprite.play(\"hurt\")
 		State.ATTACK: animated_sprite.play(\"attack\")
 		State.CHASE:
@@ -256,14 +296,18 @@ func is_player_defending(player: Node2D) -> bool:
 
 	return false
 
+# ALTERADO: Adicionada verificação de 'target' para mais robustez
 func start_stun() -> void:
 	current_state = State.STUNNED
 	print(\"Inimigo Atordoado!\")
 	
 	await get_tree().create_timer(stun_duration).timeout
 	
-	if health > 0 and current_state == State.STUNNED:
+	# Só contra-ataca se ainda tiver vida e um alvo válido
+	if health > 0 and current_state == State.STUNNED and is_instance_valid(target):
 		print(\"Stun acabou. Preparando contra-ataque!\")
+		
+		# A função perform_empowered_attack já lida com a virada de direção
 		await perform_empowered_attack()
 		
 		print(\"Inimigo agora está imune a stun por %s segundos.\" % stun_immunity_duration)
@@ -271,6 +315,8 @@ func start_stun() -> void:
 		stun_immunity_timer.start()
 		
 		current_state = State.CHASE if has_target else State.IDLE
+	elif health > 0: # Se o alvo sumiu, apenas volta ao estado normal
+		current_state = State.IDLE
 
 func _on_consecutive_hit_timer_timeout() -> void:
 	consecutive_hits = 0
@@ -499,7 +545,7 @@ position = Vector2(129, -150)
 shape = SubResource("RectangleShape2D_opd48")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(126.529, -149.5)
+position = Vector2(130, -152)
 scale = Vector2(16.6496, 17.6897)
 sprite_frames = SubResource("SpriteFrames_iv7se")
 animation = &"attack"
@@ -524,15 +570,15 @@ position = Vector2(0, -20)
 scale = Vector2(1.08, 1)
 
 [node name="SwordArea" type="Area2D" parent="HandPivot"]
-position = Vector2(0, 19)
+position = Vector2(129.63, -110)
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HandPivot/SwordArea"]
-position = Vector2(267.593, -127.75)
+position = Vector2(128.704, -40)
 shape = SubResource("RectangleShape2D_e5e7g")
 
 [node name="DetectionArea" type="Area2D" parent="."]
-position = Vector2(-11, -10)
+position = Vector2(135, -144)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
 position = Vector2(-13, -1)
