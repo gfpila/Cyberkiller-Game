@@ -47,7 +47,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m0qbf"]
-size = Vector2(62.5, 67.5)
+size = Vector2(41.5625, 51.375)
 
 [node name="Bat" type="CharacterBody2D"]
 collision_layer = 4
@@ -55,16 +55,17 @@ collision_mask = 2
 script = ExtResource("1_k2s1n")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 3)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_p8mt8")
 animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-4.25, 5.25)
+position = Vector2(0, 9)
 shape = SubResource("RectangleShape2D_m0qbf")
 
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-4.25, 5.25)
+position = Vector2(-1.78125, 8)
 shape = SubResource("RectangleShape2D_m0qbf")

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dhieicqt4u0j4"
+path="res://.godot/imported/space-attack-45505.mp3-7f6a2caec7783df4353cc84c91eaf833.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/drone/space-attack-45505.mp3"
+dest_files=["res://.godot/imported/space-attack-45505.mp3-7f6a2caec7783df4353cc84c91eaf833.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,32 +1,81 @@
-[gd_scene load_steps=7 format=3 uid="uid://bubifo7e8g2gd"]
+[gd_scene load_steps=11 format=3 uid="uid://bubifo7e8g2gd"]
 
 [ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_t6dlq"]
-[ext_resource type="PackedScene" uid="uid://ddhmhfc5lmnjl" path="res://scenes/resources/ground.tscn" id="2_4ssdh"]
+[ext_resource type="Script" uid="uid://d0ft5ku8mf83x" path="res://scenes/level8/level_8.gd" id="1_vq62n"]
+[ext_resource type="Texture2D" uid="uid://c6310t2crc261" path="res://Backgrounds/cyberpunk-city-1920x1080.png" id="2_4ssdh"]
 [ext_resource type="PackedScene" uid="uid://cqphseavdiiiy" path="res://scenes/resources/player_start.tscn" id="3_53xj5"]
 [ext_resource type="PackedScene" uid="uid://cbyiwji00befa" path="res://scenes/resources/wall.tscn" id="4_vq62n"]
 [ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="5_6qxid"]
 [ext_resource type="PackedScene" uid="uid://c41b2rjoasjrc" path="res://scenes/enemyDrone/drone.tscn" id="6_4ssdh"]
+[ext_resource type="PackedScene" uid="uid://c6ykrdljvaluu" path="res://scenes/enemyBat/bat.tscn" id="7_53xj5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_53xj5"]
+size = Vector2(506, 93)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vq62n"]
+size = Vector2(693.312, 109)
 
 [node name="Level8" type="Node2D"]
+script = ExtResource("1_vq62n")
 
 [node name="Background" parent="." instance=ExtResource("1_t6dlq")]
-position = Vector2(957, 544.501)
-scale = Vector2(1.25326, 1.0791)
-
-[node name="StaticBody2D" parent="." instance=ExtResource("2_4ssdh")]
-position = Vector2(956, 922)
+position = Vector2(1008, 602.451)
+scale = Vector2(1.07321, 1.16935)
+texture = ExtResource("2_4ssdh")
 
 [node name="PlayerStart" parent="." instance=ExtResource("3_53xj5")]
-position = Vector2(137, 867)
+position = Vector2(154, 611)
 
 [node name="StaticBody2D3" parent="." instance=ExtResource("4_vq62n")]
-position = Vector2(20, 713)
+position = Vector2(48, 507)
+
+[node name="StaticBody2D5" parent="." instance=ExtResource("4_vq62n")]
+position = Vector2(48, 507)
 
 [node name="StaticBody2D4" parent="." instance=ExtResource("4_vq62n")]
-position = Vector2(1879, 716)
+position = Vector2(1905, 408)
 
 [node name="ExitArea" parent="." instance=ExtResource("5_6qxid")]
-position = Vector2(1871, 848)
+position = Vector2(1897, 540)
 
 [node name="Drone" parent="." instance=ExtResource("6_4ssdh")]
-position = Vector2(691, 307)
+position = Vector2(552, 377)
+
+[node name="Drone2" parent="." instance=ExtResource("6_4ssdh")]
+position = Vector2(1272, 536)
+
+[node name="Bat" parent="." instance=ExtResource("7_53xj5")]
+position = Vector2(1562, 521)
+collision_layer = 0
+
+[node name="Bat2" parent="." instance=ExtResource("7_53xj5")]
+position = Vector2(808, 598)
+collision_layer = 0
+collision_mask = 0
+
+[node name="Drone3" parent="." instance=ExtResource("6_4ssdh")]
+position = Vector2(1684, 131)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(316, 746)
+shape = SubResource("RectangleShape2D_53xj5")
+
+[node name="StaticBody2D6" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D6"]
+position = Vector2(1754, 737)
+shape = SubResource("RectangleShape2D_53xj5")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2(983, 893)
+shape = SubResource("RectangleShape2D_vq62n")

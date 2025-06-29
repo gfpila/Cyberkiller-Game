@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://2gtuxi2he8bm"
+path="res://.godot/imported/Death.wav-71e8d6a03b20228b4ccc45f3a7898af1.sample"
+
+[deps]
+
+source_file="res://Sound Effects/crow/Death.wav"
+dest_files=["res://.godot/imported/Death.wav-71e8d6a03b20228b4ccc45f3a7898af1.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

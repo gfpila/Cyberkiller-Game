@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://c41b2rjoasjrc"]
+[gd_scene load_steps=38 format=3 uid="uid://c41b2rjoasjrc"]
 
 [ext_resource type="Script" uid="uid://b3wvsqhaq725l" path="res://scenes/enemyDrone/drone.gd" id="1_adipj"]
 [ext_resource type="Texture2D" uid="uid://gq0tsht1ayr4" path="res://enemies/Drone/attack000.png" id="2_0vol3"]
@@ -33,9 +33,8 @@
 [ext_resource type="Texture2D" uid="uid://b28rl0bm16lr2" path="res://enemies/Drone/walk2.png" id="31_sakfm"]
 [ext_resource type="Texture2D" uid="uid://c7u0jirgumhjm" path="res://enemies/Drone/walk3.png" id="32_j634l"]
 [ext_resource type="Texture2D" uid="uid://cnhxpnserdwf5" path="res://enemies/Drone/walk4.png" id="33_exrw7"]
-[ext_resource type="AudioStream" uid="uid://bdix4fxx5xxnj" path="res://Sound Effects/general/hit.wav" id="34_tdqht"]
-[ext_resource type="AudioStream" uid="uid://cu703jgignuy6" path="res://Sound Effects/general/monster_attack.mp3" id="35_pro85"]
-[ext_resource type="AudioStream" uid="uid://cm1y3gk3nr22o" path="res://Sound Effects/general/monster_sfx_pack/monster-8.wav" id="36_c5mpt"]
+[ext_resource type="AudioStream" uid="uid://b56oqnfoc8b3j" path="res://Sound Effects/drone/laser-zap-90575.mp3" id="34_t3umo"]
+[ext_resource type="AudioStream" uid="uid://ua00t0a20uyi" path="res://Sound Effects/drone/machinedeath_hq.wav" id="35_t3umo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3xsao"]
 size = Vector2(96, 95.9999)
@@ -177,14 +176,11 @@ animation = &"idle"
 [node name="Audio" type="Node2D" parent="."]
 position = Vector2(-11, -9)
 
-[node name="hit" type="AudioStreamPlayer2D" parent="Audio"]
-position = Vector2(-9, -8)
-stream = ExtResource("34_tdqht")
-
 [node name="attack" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("35_pro85")
-volume_db = 24.0
+stream = ExtResource("34_t3umo")
+volume_db = 2.557
 
 [node name="death" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("36_c5mpt")
-volume_db = 3.888
+stream = ExtResource("35_t3umo")
+volume_db = -3.216
+pitch_scale = 1.16

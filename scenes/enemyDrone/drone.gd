@@ -13,6 +13,7 @@ enum State {
 @export var shoot_cooldown: float = 0.1
 @export var shoot_delay: float = 0.25
 @export var align_threshold: float = 5.0
+@export var attack_cooldown: float = 0.35
 
 var bullet_scene = preload("res://scenes/enemyDrone/bulltet.tscn")
 var start_y: float
@@ -20,9 +21,15 @@ var top_y: float = 300.0
 var current_state: State = State.IDLE
 var can_shoot: bool = true
 var is_pausing_in_air: bool = false
+var knockback: Vector2 = Vector2.ZERO
 
 @onready var player: Node2D = null
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var audio_nodes = {
+	"death": $Audio/death,
+	"attack": $Audio/attack,
+}
+
 
 func _ready() -> void:
 	add_to_group("enemies")
@@ -43,8 +50,7 @@ func _physics_process(delta: float) -> void:
 	if current_state == State.DEAD:
 		velocity = Vector2.ZERO
 		play_animation("death")
-		if sprite.is_playing():
-			return
+		await get_tree().create_timer(2.0).timeout
 		queue_free()
 		return
 		
@@ -63,6 +69,8 @@ func _physics_process(delta: float) -> void:
 			move_and_slide()
 
 func _handle_ascend(delta: float) -> void:
+	if current_state == State.DEAD:
+		return
 	if is_pausing_in_air:
 		return
 	velocity = Vector2(0, -ascend_speed)
@@ -82,6 +90,8 @@ func _handle_ascend(delta: float) -> void:
 	move_and_slide()
 
 func _handle_descend(delta: float) -> void:
+	if current_state == State.DEAD:
+		return
 	velocity = Vector2(0, descend_speed)
 	var collision = move_and_collide(velocity * delta)
 	if collision:
@@ -94,6 +104,8 @@ func _handle_descend(delta: float) -> void:
 	move_and_slide()
 
 func _handle_shoot(delta: float) -> void:
+	if current_state == State.DEAD:
+		return
 	velocity = Vector2.ZERO
 	move_and_slide()
 	if can_shoot:
@@ -105,9 +117,12 @@ func _handle_shoot(delta: float) -> void:
 		can_shoot = true
 
 func _shoot() -> void:
+	if current_state == State.DEAD:
+		return
 	if not player:
 		return
-	await get_tree().create_timer(shoot_delay).timeout	
+	await get_tree().create_timer(shoot_delay).timeout
+	play_audio('attack')
 	var bullet = bullet_scene.instantiate()
 	bullet.global_position = global_position
 	var dir = (player.global_position - global_position).normalized()
@@ -115,9 +130,18 @@ func _shoot() -> void:
 	get_parent().add_child(bullet)
 
 func _pause_in_air() -> void:
+	if current_state == State.DEAD:
+		return
 	await get_tree().create_timer(1.0).timeout
 	is_pausing_in_air = false
 	current_state = State.DESCEND
 
 func take_damage(amount: int, attack_origin: Vector2) -> void:
 	current_state = State.DEAD
+	play_audio('death')
+	await get_tree().create_timer(1.0).timeout
+	return
+	
+func play_audio(audio: String) -> void:
+	if audio_nodes.has(audio):
+		audio_nodes[audio].play()

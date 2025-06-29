@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://5bidd3oknqno"
-path="res://.godot/imported/cyberpunk-city-2-back-preview.png-fdc48662a2f03e069294094219cc4cb1.ctex"
+uid="uid://bfbdfqcoip8o8"
+path="res://.godot/imported/1.png-423595b50d8f34bcd0574f8093b24b52.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Backgrounds/cyberpunk-city-2-back-preview.png"
-dest_files=["res://.godot/imported/cyberpunk-city-2-back-preview.png-fdc48662a2f03e069294094219cc4cb1.ctex"]
+source_file="res://Backgrounds/1.png"
+dest_files=["res://.godot/imported/1.png-423595b50d8f34bcd0574f8093b24b52.ctex"]
 
 [params]
 

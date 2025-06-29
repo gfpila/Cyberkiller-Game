@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://b8ys41c7ogbfx"
+path="res://.godot/imported/Ghost_Death.ogg-ad1cc8c585cfa1bad759448604690d45.oggvorbisstr"
+
+[deps]
+
+source_file="res://Sound Effects/Ghost_Death.ogg"
+dest_files=["res://.godot/imported/Ghost_Death.ogg-ad1cc8c585cfa1bad759448604690d45.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

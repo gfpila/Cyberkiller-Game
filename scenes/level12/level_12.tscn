@@ -1,0 +1,64 @@
+[gd_scene load_steps=10 format=3 uid="uid://bji2jdsufnytc"]
+
+[ext_resource type="Script" uid="uid://cexoykkppi336" path="res://scenes/level12/level_12.gd" id="1_3166k"]
+[ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="2_sijfk"]
+[ext_resource type="Texture2D" uid="uid://r5udtjkex2ig" path="res://Backgrounds/mokazar-bg-cyberpunk-1.jpg" id="3_7c4b2"]
+[ext_resource type="PackedScene" uid="uid://cqphseavdiiiy" path="res://scenes/resources/player_start.tscn" id="4_alrlm"]
+[ext_resource type="PackedScene" uid="uid://cbyiwji00befa" path="res://scenes/resources/wall.tscn" id="5_h5hjb"]
+[ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="6_jdinq"]
+[ext_resource type="PackedScene" uid="uid://gkex5f5q7y0i" path="res://scenes/enemy_CrowAnimations/Crow.tscn" id="7_m1rb7"]
+[ext_resource type="PackedScene" uid="uid://bx2kvly7q7pye" path="res://scenes/enemy_Shadow/Shadow.tscn" id="8_6515p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dx2bb"]
+size = Vector2(1873.75, 199)
+
+[node name="level_12" type="Node2D"]
+script = ExtResource("1_3166k")
+
+[node name="Background" parent="." instance=ExtResource("2_sijfk")]
+position = Vector2(964, 543.5)
+scale = Vector2(1.00937, 1.0213)
+texture = ExtResource("3_7c4b2")
+
+[node name="PlayerStart" parent="." instance=ExtResource("4_alrlm")]
+position = Vector2(134, 884)
+
+[node name="StaticBody2D3" parent="." instance=ExtResource("5_h5hjb")]
+position = Vector2(17, 730)
+
+[node name="StaticBody2D4" parent="." instance=ExtResource("5_h5hjb")]
+position = Vector2(1876, 733)
+
+[node name="ExitArea" parent="." instance=ExtResource("6_jdinq")]
+position = Vector2(1873, 837)
+
+[node name="StaticBody2D5" type="StaticBody2D" parent="."]
+position = Vector2(107, -143)
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D5"]
+position = Vector2(846, 1193)
+shape = SubResource("RectangleShape2D_dx2bb")
+
+[node name="StaticBody2D6" type="StaticBody2D" parent="."]
+position = Vector2(107, -143)
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D6"]
+position = Vector2(209, 1636)
+shape = SubResource("RectangleShape2D_dx2bb")
+
+[node name="Crow" parent="." instance=ExtResource("7_m1rb7")]
+position = Vector2(842, 821)
+
+[node name="Shadow" parent="." instance=ExtResource("8_6515p")]
+position = Vector2(1732, 860)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -12.0
+offset_top = 943.0
+offset_right = 1968.0
+offset_bottom = 1140.0
+color = Color(0, 0, 0, 1)

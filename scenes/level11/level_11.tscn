@@ -1,0 +1,45 @@
+[gd_scene load_steps=9 format=3 uid="uid://cwlrhops7e2kv"]
+
+[ext_resource type="Script" uid="uid://cia3tpmkjvbaq" path="res://scenes/level11/level_11.gd" id="1_15of5"]
+[ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_l7suh"]
+[ext_resource type="Texture2D" uid="uid://blt3hikdhmmps" path="res://Backgrounds/img 5.png" id="2_15of5"]
+[ext_resource type="PackedScene" uid="uid://cqphseavdiiiy" path="res://scenes/resources/player_start.tscn" id="3_l1ad6"]
+[ext_resource type="PackedScene" uid="uid://cbyiwji00befa" path="res://scenes/resources/wall.tscn" id="4_0w7cs"]
+[ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="5_m3w6u"]
+[ext_resource type="PackedScene" uid="uid://gkex5f5q7y0i" path="res://scenes/enemy_CrowAnimations/Crow.tscn" id="6_w01es"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aqoip"]
+size = Vector2(1909.75, 199)
+
+[node name="level_11" type="Node2D"]
+position = Vector2(-5, 13)
+script = ExtResource("1_15of5")
+
+[node name="Background" parent="." instance=ExtResource("1_l7suh")]
+position = Vector2(971.218, 506.094)
+scale = Vector2(1.00394, 0.881103)
+texture = ExtResource("2_15of5")
+
+[node name="PlayerStart" parent="." instance=ExtResource("3_l1ad6")]
+position = Vector2(134, 884)
+
+[node name="StaticBody2D3" parent="." instance=ExtResource("4_0w7cs")]
+position = Vector2(17, 730)
+
+[node name="StaticBody2D4" parent="." instance=ExtResource("4_0w7cs")]
+position = Vector2(1925, 733)
+
+[node name="ExitArea" parent="." instance=ExtResource("5_m3w6u")]
+position = Vector2(1842, 811)
+
+[node name="StaticBody2D5" type="StaticBody2D" parent="."]
+position = Vector2(107, -143)
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D5"]
+position = Vector2(869.125, 1174)
+shape = SubResource("RectangleShape2D_aqoip")
+
+[node name="Crow" parent="." instance=ExtResource("6_w01es")]
+position = Vector2(842, 821)

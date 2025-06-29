@@ -1,20 +1,27 @@
-[gd_scene load_steps=7 format=3 uid="uid://70ee6q3ogesa"]
+[gd_scene load_steps=12 format=3 uid="uid://70ee6q3ogesa"]
 
 [ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_3dfac"]
-[ext_resource type="PackedScene" uid="uid://ddhmhfc5lmnjl" path="res://scenes/resources/ground.tscn" id="2_0a01g"]
+[ext_resource type="Script" uid="uid://bj3mdkeeqk6tx" path="res://scenes/level9/level_9.gd" id="1_fqmg8"]
+[ext_resource type="Texture2D" uid="uid://ccuttfmaglg0h" path="res://Backgrounds/newLevels/mokazar-bg-cyberpunk-4.jpg" id="2_ultn6"]
 [ext_resource type="PackedScene" uid="uid://cqphseavdiiiy" path="res://scenes/resources/player_start.tscn" id="3_es8sl"]
 [ext_resource type="PackedScene" uid="uid://cbyiwji00befa" path="res://scenes/resources/wall.tscn" id="4_3g1vc"]
 [ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="5_043op"]
-[ext_resource type="PackedScene" uid="uid://gkex5f5q7y0i" path="res://scenes/enemy_CrowAnimations/Crow.tscn" id="6_27bom"]
+[ext_resource type="PackedScene" uid="uid://dlsww0cob5pm8" path="res://scenes/enemyCar/enemyCar.tscn" id="6_11psg"]
+[ext_resource type="PackedScene" uid="uid://c41b2rjoasjrc" path="res://scenes/enemyDrone/drone.tscn" id="7_fqmg8"]
+[ext_resource type="PackedScene" uid="uid://cy0yp8xplplpm" path="res://scenes/enemy_NightBorne/enemy.tscn" id="9_me4nw"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_27bom"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_11psg"]
+size = Vector2(1932, 77)
 
 [node name="Level9" type="Node2D"]
+script = ExtResource("1_fqmg8")
 
 [node name="Background" parent="." instance=ExtResource("1_3dfac")]
-position = Vector2(957, 544.501)
-scale = Vector2(1.25326, 1.0791)
-
-[node name="StaticBody2D" parent="." instance=ExtResource("2_0a01g")]
-position = Vector2(956, 922)
+position = Vector2(956.5, 538.929)
+scale = Vector2(1.00781, 0.983201)
+texture = ExtResource("2_ultn6")
 
 [node name="PlayerStart" parent="." instance=ExtResource("3_es8sl")]
 position = Vector2(137, 867)
@@ -28,5 +35,33 @@ position = Vector2(1879, 716)
 [node name="ExitArea" parent="." instance=ExtResource("5_043op")]
 position = Vector2(1871, 848)
 
-[node name="Enemy" parent="." instance=ExtResource("6_27bom")]
-position = Vector2(1276, 847)
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+material = SubResource("CanvasItemMaterial_27bom")
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(962, 1024.5)
+shape = SubResource("RectangleShape2D_11psg")
+
+[node name="ColorRect" type="ColorRect" parent="StaticBody2D"]
+offset_left = -9.0
+offset_top = 981.0
+offset_right = 1955.0
+offset_bottom = 1087.0
+color = Color(0, 0, 0, 1)
+
+[node name="Car" parent="." instance=ExtResource("6_11psg")]
+position = Vector2(1477, 948)
+
+[node name="Drone" parent="." instance=ExtResource("7_fqmg8")]
+position = Vector2(1705, 817)
+
+[node name="Drone2" parent="." instance=ExtResource("7_fqmg8")]
+position = Vector2(234, 85)
+
+[node name="Drone4" parent="." instance=ExtResource("7_fqmg8")]
+position = Vector2(661, 367)
+
+[node name="Enemy" parent="." instance=ExtResource("9_me4nw")]
+position = Vector2(929, 936)

@@ -1,32 +1,97 @@
-[gd_scene load_steps=7 format=3 uid="uid://mel0qn0h8f4w"]
+[gd_scene load_steps=14 format=3 uid="uid://mel0qn0h8f4w"]
 
 [ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_21ewi"]
-[ext_resource type="PackedScene" uid="uid://ddhmhfc5lmnjl" path="res://scenes/resources/ground.tscn" id="2_f1563"]
+[ext_resource type="Script" uid="uid://4gj715xnr3rf" path="res://scenes/level10/level_10.gd" id="1_hvkqq"]
+[ext_resource type="Texture2D" uid="uid://bfbdfqcoip8o8" path="res://Backgrounds/1.png" id="2_ik47t"]
 [ext_resource type="PackedScene" uid="uid://cqphseavdiiiy" path="res://scenes/resources/player_start.tscn" id="3_8rdii"]
 [ext_resource type="PackedScene" uid="uid://cbyiwji00befa" path="res://scenes/resources/wall.tscn" id="4_773pc"]
 [ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="5_gbfju"]
 [ext_resource type="PackedScene" uid="uid://bx2kvly7q7pye" path="res://scenes/enemy_Shadow/Shadow.tscn" id="6_q1ymo"]
+[ext_resource type="PackedScene" uid="uid://c41b2rjoasjrc" path="res://scenes/enemyDrone/drone.tscn" id="7_3depk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3depk"]
+size = Vector2(1963.63, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hvkqq"]
+size = Vector2(132.875, 149.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_12gip"]
+size = Vector2(159.5, 121.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_557c8"]
+size = Vector2(861, 168)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kv7bg"]
+size = Vector2(209.75, 199)
 
 [node name="Level10" type="Node2D"]
+script = ExtResource("1_hvkqq")
 
 [node name="Background" parent="." instance=ExtResource("1_21ewi")]
-position = Vector2(957, 544.501)
-scale = Vector2(1.25326, 1.0791)
-
-[node name="StaticBody2D" parent="." instance=ExtResource("2_f1563")]
-position = Vector2(948, 891)
+position = Vector2(953.311, 472.07)
+scale = Vector2(0.837403, 0.947423)
+texture = ExtResource("2_ik47t")
 
 [node name="PlayerStart" parent="." instance=ExtResource("3_8rdii")]
-position = Vector2(145, 854)
+position = Vector2(96, 899)
 
 [node name="StaticBody2D3" parent="." instance=ExtResource("4_773pc")]
-position = Vector2(20, 713)
+position = Vector2(-11, 783)
 
 [node name="StaticBody2D4" parent="." instance=ExtResource("4_773pc")]
-position = Vector2(1879, 716)
+position = Vector2(1930, 811)
 
 [node name="ExitArea" parent="." instance=ExtResource("5_gbfju")]
-position = Vector2(1871, 848)
+position = Vector2(1863, 884)
 
 [node name="Enemy" parent="." instance=ExtResource("6_q1ymo")]
-position = Vector2(1141, 775)
+position = Vector2(1038, 791)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(960.188, 1066)
+shape = SubResource("RectangleShape2D_3depk")
+
+[node name="Blocks" type="Node" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Blocks"]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blocks/StaticBody2D"]
+position = Vector2(1875, 1066)
+shape = SubResource("RectangleShape2D_hvkqq")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="Blocks"]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Blocks/StaticBody2D2"]
+position = Vector2(91.25, 1039)
+shape = SubResource("RectangleShape2D_12gip")
+
+[node name="StaticBody2D12" type="StaticBody2D" parent="Blocks"]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Blocks/StaticBody2D12"]
+position = Vector2(808.5, 966)
+shape = SubResource("RectangleShape2D_557c8")
+
+[node name="StaticBody2D5" type="StaticBody2D" parent="Blocks"]
+position = Vector2(107, -143)
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Blocks/StaticBody2D5"]
+position = Vector2(1392, 1170)
+shape = SubResource("RectangleShape2D_kv7bg")
+
+[node name="Drone" parent="." instance=ExtResource("7_3depk")]
+position = Vector2(1461, 618)
+
+[node name="Drone2" parent="." instance=ExtResource("7_3depk")]
+position = Vector2(537, 154)

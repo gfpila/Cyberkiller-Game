@@ -38,7 +38,7 @@ func activate_exit():
 func _on_exit_area_entered(body):
 	# Só permite avançar se o player tocar na saída E ela estiver ativa
 	if (body.name == "Player" or body.is_in_group("player")) and exit_sprite.visible:
-		get_tree().root.get_node("Main").go_to_level('7')
+		get_tree().root.get_node("Main").go_to_level('8')
 
 func run_waves() -> void:
 	await get_tree().process_frame  # Aguarda tudo carregar

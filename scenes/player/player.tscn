@@ -216,7 +216,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ht0jr"]
-size = Vector2(103, 117)
+size = Vector2(83, 117)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cnsyf"]
 size = Vector2(77.625, 51)
@@ -421,7 +421,7 @@ animation = &"attack_animation"
 script = ExtResource("17_cabpx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-12.5, 2.5)
+position = Vector2(-11.5, 2.5)
 shape = SubResource("RectangleShape2D_ht0jr")
 
 [node name="Audio" type="Node2D" parent="."]
@@ -441,6 +441,7 @@ stream = ExtResource("26_6cv16")
 
 [node name="jump" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("22_yj68g")
+volume_db = 10.721
 
 [node name="special_attack" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("29_uniwh")
