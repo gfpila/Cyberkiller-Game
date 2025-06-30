@@ -89,3 +89,4 @@ metadata/_edit_lock_ = true
 
 [connection signal="pressed" from="Jogar" to="." method="_on_jogar_pressed"]
 [connection signal="pressed" from="Sair" to="." method="_on_sair_pressed"]
+[connection signal="pressed" from="Opcoes" to="." method="_on_opcoes_pressed"]
