@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://gkex5f5q7y0i"]
+[gd_scene load_steps=37 format=3 uid="uid://gkex5f5q7y0i"]
 
 [ext_resource type="Texture2D" uid="uid://bi0w1mbpr5b7r" path="res://enemies/Crow_Animations/attack/1.png" id="1_q7yxd"]
 [ext_resource type="Texture2D" uid="uid://sr5wymbr6130" path="res://enemies/Crow_Animations/attack/2.png" id="2_ylfv4"]
@@ -24,6 +24,7 @@
 [ext_resource type="Texture2D" uid="uid://d10ulnsq5ek6p" path="res://enemies/Crow_Animations/jump/5.png" id="22_6h4t2"]
 [ext_resource type="Texture2D" uid="uid://perfwaccuia3" path="res://enemies/Crow_Animations/jump/6.png" id="23_vagby"]
 [ext_resource type="Texture2D" uid="uid://rhfr2pv0a1sg" path="res://enemies/Crow_Animations/walk/1.png" id="24_bh1vv"]
+[ext_resource type="Texture2D" uid="uid://d1lh3i138ow1d" path="res://enemies/Crow_Animations/supercharge/1.png" id="24_ylfv4"]
 [ext_resource type="Texture2D" uid="uid://bos8w6ad870bu" path="res://enemies/Crow_Animations/walk/2.png" id="25_qkccf"]
 [ext_resource type="Texture2D" uid="uid://dk3jugk2eetlv" path="res://enemies/Crow_Animations/walk/3.png" id="26_otdhl"]
 [ext_resource type="Texture2D" uid="uid://b1xvlwfpo0lf5" path="res://enemies/Crow_Animations/walk/4.png" id="27_g2kfy"]
@@ -61,7 +62,7 @@ script/source = "extends CharacterBody2D
 
 
 var health: int
-enum State { IDLE, CHASE, ATTACK, HURT, STUNNED, DEAD }
+enum State { IDLE, CHASE, ATTACK, HURT, STUNNED,PREPARE_ATTACK, DEAD }
 var current_state: State = State.IDLE
 
 var target: Node2D = null
@@ -75,6 +76,9 @@ var stun_immunity_timer: Timer
 var hurt_state_timer: Timer # NOVO: Timer para o estado HURT
 var is_stun_immune: bool = false
 var is_empowered_attack: bool = false
+var stored_damage_for_retaliation: int = 0 # <-- ADICIONE ESTA LINHA
+var is_preparing_attack: bool = false # <-- Nossa nova trava
+
 
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var collision_shape = $CollisionShape2D
@@ -124,6 +128,7 @@ func take_damage(amount: int, attack_origin: Vector2) -> void:
 	if current_state == State.DEAD:
 		return
 
+	# Lógica de dano simplificada
 	health -= amount
 	audio_nodes[\"hit\"].play()
 
@@ -131,12 +136,14 @@ func take_damage(amount: int, attack_origin: Vector2) -> void:
 		die()
 		return
 
+	# Lógica de dano durante o stun (para o ataque retaliador)
 	if current_state == State.STUNNED:
-		# Toca a animação 'hurt' como um evento único.
-		# A lógica em handle_animations() garantirá que ela não entre em loop.
+		stored_damage_for_retaliation += amount
+		print(\"Dano armazenado: \", stored_damage_for_retaliation)
 		animated_sprite.play(\"hurt\")
 		return
 
+	# Lógica para contar acertos para o stun
 	if not is_stun_immune:
 		consecutive_hits += 1
 		consecutive_hit_timer.start()
@@ -147,6 +154,7 @@ func take_damage(amount: int, attack_origin: Vector2) -> void:
 			start_stun()
 			return
 
+	# Lógica do estado de \"hurt\"
 	current_state = State.HURT
 	hurt_state_timer.start(0.3)
 
@@ -160,9 +168,6 @@ func perform_empowered_attack() -> void:
 	
 	# Verifica a defesa ANTES de qualquer outra coisa
 	var was_defended = is_player_defending(target)
-	
-	if was_defended:
-		print(\"Ataque fortalecido defendido pelo jogador!\")
 
 	# A lógica de ataque e animação acontece de qualquer forma
 	current_state = State.ATTACK
@@ -235,6 +240,15 @@ func process_state_logic(delta: float) -> void:
 		State.ATTACK:
 			# O ataque é controlado por sua própria função com 'await', então aqui só paramos o movimento.
 			velocity.x = 0
+			
+		# NOVO ESTADO
+		State.PREPARE_ATTACK:
+			velocity.x = 0 # Fica parado enquanto carrega
+			
+			# Usa a trava para chamar a sequência apenas uma vez
+			if not is_preparing_attack:
+				is_preparing_attack = true
+				_start_empowered_sequence()
 
 		State.CHASE:
 			if not has_target or not is_instance_valid(target):
@@ -269,6 +283,10 @@ func handle_animations() -> void:
 			if animated_sprite.animation != \"hurt\" or not animated_sprite.is_playing():
 				animated_sprite.play(\"idle\")
 
+		# NOVO ESTADO DE ANIMAÇÃO
+		State.PREPARE_ATTACK:
+			animated_sprite.play(\"overload\")
+
 		State.HURT: animated_sprite.play(\"hurt\")
 		State.ATTACK: animated_sprite.play(\"attack\")
 		State.CHASE:
@@ -299,23 +317,15 @@ func is_player_defending(player: Node2D) -> bool:
 # ALTERADO: Adicionada verificação de 'target' para mais robustez
 func start_stun() -> void:
 	current_state = State.STUNNED
-	print(\"Inimigo Atordoado!\")
+	stored_damage_for_retaliation = 0
+	is_preparing_attack = false # <-- RESETA A TRAVA AQUI
 	
 	await get_tree().create_timer(stun_duration).timeout
 	
-	# Só contra-ataca se ainda tiver vida e um alvo válido
+	# Ao final do stun, se ainda for válido, apenas muda o estado para preparar o ataque.
 	if health > 0 and current_state == State.STUNNED and is_instance_valid(target):
-		print(\"Stun acabou. Preparando contra-ataque!\")
-		
-		# A função perform_empowered_attack já lida com a virada de direção
-		await perform_empowered_attack()
-		
-		print(\"Inimigo agora está imune a stun por %s segundos.\" % stun_immunity_duration)
-		is_stun_immune = true
-		stun_immunity_timer.start()
-		
-		current_state = State.CHASE if has_target else State.IDLE
-	elif health > 0: # Se o alvo sumiu, apenas volta ao estado normal
+		current_state = State.PREPARE_ATTACK
+	elif health > 0:
 		current_state = State.IDLE
 
 func _on_consecutive_hit_timer_timeout() -> void:
@@ -323,14 +333,21 @@ func _on_consecutive_hit_timer_timeout() -> void:
 
 func _on_stun_immunity_timer_timeout() -> void:
 	is_stun_immune = false
-	print(\"Inimigo não está mais imune a stun.\")
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group(\"player\") and current_state == State.ATTACK:
 		var damage_to_deal = base_attack_damage
+		# Se for o ataque pós-stun...
 		if is_empowered_attack:
-			damage_to_deal *= 2
-			print(\"Ataque fortalecido acertou!\")
+			# Verifica se houve dano armazenado
+			if stored_damage_for_retaliation > 0:
+				# Usa o dano armazenado como dano do ataque
+				damage_to_deal = stored_damage_for_retaliation
+				print(\"Retaliando com %d de dano!\" % damage_to_deal)
+			else:
+				# Fallback: Se não tomou dano, duplica o dano base
+				damage_to_deal *= 2
+				print(\"Ataque fortalecido com dano duplicado!\")
 		
 		body.take_damage(damage_to_deal, global_position)
 
@@ -405,27 +422,38 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 		has_target = true
 		if current_state != State.STUNNED and current_state != State.ATTACK:
 			current_state = State.CHASE
+			
+# Adicione esta nova função em qualquer lugar do seu script
+
+# Esta é a versão CORRETA para Godot 4
+func _start_empowered_sequence() -> void:
+	# USA \"await\"
+	await get_tree().create_timer(0.5).timeout
+	
+	if current_state == State.PREPARE_ATTACK:
+		# USA \"await\"
+		await perform_empowered_attack()
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_opd48"]
-size = Vector2(388, 512)
+size = Vector2(388, 452)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_iv7se"]
 animations = [{
 "frames": [{
-"duration": 8.0,
+"duration": 7.0,
 "texture": ExtResource("1_q7yxd")
 }, {
-"duration": 8.0,
+"duration": 7.0,
 "texture": ExtResource("2_ylfv4")
 }, {
-"duration": 8.0,
+"duration": 7.0,
 "texture": ExtResource("3_k3021")
 }, {
-"duration": 8.0,
+"duration": 7.0,
 "texture": ExtResource("4_x6d8k")
 }, {
-"duration": 8.0,
+"duration": 7.0,
 "texture": ExtResource("5_wm0mg")
 }],
 "loop": false,
@@ -507,6 +535,14 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
+"duration": 10.0,
+"texture": ExtResource("24_ylfv4")
+}],
+"loop": true,
+"name": &"overload",
+"speed": 5.0
+}, {
+"frames": [{
 "duration": 1.0,
 "texture": ExtResource("24_bh1vv")
 }, {
@@ -525,7 +561,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e5e7g"]
-size = Vector2(632.87, 558.5)
+size = Vector2(632.87, 456.25)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e5e7g"]
 radius = 641.05
@@ -539,16 +575,17 @@ move_speed = 100.0
 attack_range = 230.0
 hits_for_stun = 2
 consecutive_hit_window = 2.0
+stun_immunity_duration = 3.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(129, -150)
+position = Vector2(129, -120)
 shape = SubResource("RectangleShape2D_opd48")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(130, -152)
-scale = Vector2(16.6496, 17.6897)
+position = Vector2(130, -120.25)
+scale = Vector2(16.6496, 15.5)
 sprite_frames = SubResource("SpriteFrames_iv7se")
-animation = &"attack"
+animation = &"overload"
 
 [node name="Audio" type="Node2D" parent="."]
 position = Vector2(-11, -9)
@@ -574,7 +611,7 @@ position = Vector2(129.63, -110)
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HandPivot/SwordArea"]
-position = Vector2(128.704, -40)
+position = Vector2(125.926, 12.125)
 shape = SubResource("RectangleShape2D_e5e7g")
 
 [node name="DetectionArea" type="Area2D" parent="."]

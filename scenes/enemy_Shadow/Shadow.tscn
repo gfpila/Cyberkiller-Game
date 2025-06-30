@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://bx2kvly7q7pye"]
+[gd_scene load_steps=54 format=3 uid="uid://bx2kvly7q7pye"]
 
 [ext_resource type="Texture2D" uid="uid://dnq11berfwhs8" path="res://enemies/Shadow/attack/attack_1.png" id="1_3ckus"]
 [ext_resource type="Texture2D" uid="uid://d3j2rqi5qggk2" path="res://enemies/Shadow/attack/attack_2.png" id="2_2woak"]
@@ -62,9 +62,9 @@ script/source = "extends CharacterBody2D
 @export var vertical_knockback_factor: float = 0.3
 @export var separation_distance: float = 80.0
 @export var separation_strength: float = 350.0
-
-### MODIFICADO: Trocamos os pontos fixos por deslocamentos (offsets) ###
-@export var teleport_offsets: Array[Vector2] = [] # Defina os deslocamentos no inspetor!
+@export var teleport_offsets: Array[Vector2] = []
+@export var pit_respawn_offset: Vector2 = Vector2(0, -250) # <--- MODIFICADO
+@export var fixed_respawn_point_path: NodePath # <-- Caminho para o ponto fixo
 
 const HEALTH_THRESHOLD = 0.4
 var is_in_desperation_mode: bool = false
@@ -82,6 +82,11 @@ var knockback: Vector2 = Vector2.ZERO
 var can_attack: bool = true
 var random_direction_offset: Vector2
 var use_primary_attack: bool = true
+var last_safe_on_floor_position: Vector2
+var is_teleporting_from_pit: bool = false # <-- ADICIONE ESTA LINHA
+var pit_fall_counter: int = 0 # <-- Contador de quedas
+var fixed_respawn_point: Marker2D # <-- ADICIONE ESTA LINHA
+
 
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var collision_shape = $CollisionShape2D
@@ -91,6 +96,9 @@ var use_primary_attack: bool = true
 @onready var proximity_detector = $ProximityDetector
 @onready var teleport_timer = $TeleportTimer
 @onready var teleport_cooldown = $TeleportCooldown
+@onready var pit_detector = $PitDetector
+@onready var pit_teleport_timer = $PitTeleportTimer # <-- ADICIONE ESTA LINHa
+@onready var pit_counter_reset_timer = $PitCounterResetTimer # <-- Referência ao novo timer
 @onready var audio_nodes = {
 	\"hit\": $Audio/hit,
 	\"attack\": $Audio/attack,
@@ -109,6 +117,9 @@ func _ready() -> void:
 	proximity_detector.body_entered.connect(_on_proximity_detector_body_entered)
 	teleport_timer.timeout.connect(_on_teleport_timer_timeout)
 	teleport_cooldown.timeout.connect(_on_teleport_cooldown_timeout)
+	pit_detector.area_entered.connect(_on_pit_detector_area_entered)
+	pit_teleport_timer.timeout.connect(teleport_to_safe_spot) # <-- ADICIONE ESTA LINHA
+	pit_counter_reset_timer.timeout.connect(_on_pit_counter_reset_timer_timeout) # <-- Conecta o novo timer
 	
 	current_state = State.IDLE
 	animated_sprite.play(\"idle\")
@@ -116,6 +127,7 @@ func _ready() -> void:
 	random_offset = randf_range(0.0, TAU)
 	base_move_speed = move_speed + randf_range(-30.0, 30.0)
 	random_direction_offset = Vector2(randf_range(-0.5, 0.5), 0).normalized()
+	last_safe_on_floor_position = global_position
 
 
 func setup_detection_area() -> void:
@@ -136,6 +148,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y += gravity * delta
 	else:
 		velocity.y = 0
+		last_safe_on_floor_position = global_position
 
 	if current_state == State.ATTACK:
 		move_and_slide()
@@ -154,7 +167,6 @@ func _physics_process(delta: float) -> void:
 
 
 func handle_animations() -> void:
-	# (Esta função permanece inalterada)
 	match current_state:
 		State.DEAD: animated_sprite.play(\"death\")
 		State.HURT: animated_sprite.play(\"hurt\")
@@ -170,7 +182,6 @@ func handle_animations() -> void:
 
 
 func handle_knockback(delta: float) -> void:
-	# (Esta função permanece inalterada)
 	velocity = knockback
 	velocity.y += gravity * delta
 	knockback *= friction
@@ -181,7 +192,6 @@ func handle_knockback(delta: float) -> void:
 
 
 func apply_separation_force() -> Vector2:
-	# (Esta função permanece inalterada)
 	var separation_force = Vector2.ZERO
 	var enemies = get_tree().get_nodes_in_group(\"enemies\")
 	for other in enemies:
@@ -196,7 +206,6 @@ func apply_separation_force() -> Vector2:
 
 
 func handle_combat() -> void:
-	# (Esta função permanece inalterada)
 	var direction = (target.global_position - global_position).normalized()
 	direction += random_direction_offset * 0.4
 	direction = direction.normalized()
@@ -213,7 +222,6 @@ func handle_combat() -> void:
 
 
 func take_damage(amount: int, attack_origin: Vector2) -> void:
-	# (Esta função permanece inalterada, exceto pela remoção do comentário)
 	if current_state == State.DEAD: return
 	var knockback_dir = (global_position - attack_origin).normalized()
 	knockback_dir.y *= vertical_knockback_factor
@@ -231,7 +239,6 @@ func take_damage(amount: int, attack_origin: Vector2) -> void:
 
 
 func start_attack() -> void:
-	# (Esta função permanece inalterada)
 	if !can_attack: return
 	can_attack = false
 	current_state = State.ATTACK
@@ -250,13 +257,11 @@ func start_attack() -> void:
 
 
 func update_attack_area_position() -> void:
-	# (Esta função permanece inalterada)
 	var offset = Vector2(attack_range * 0.8, 0)
 	attack_area.position = offset if not animated_sprite.flip_h else -offset
 
 
 func die() -> void:
-	# (Esta função permanece inalterada)
 	audio_nodes[\"death\"].play()
 	collision_shape.set_deferred(\"disabled\", true)
 	current_state = State.DEAD
@@ -266,7 +271,6 @@ func die() -> void:
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
-	# (Esta função permanece inalterada)
 	if body.is_in_group(\"player\"):
 		target = body
 		has_target = true
@@ -274,23 +278,17 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
-	# (Esta função permanece inalterada)
 	if body.is_in_group(\"player\") and current_state == State.ATTACK:
 		body.take_damage(10, global_position)
 
-
-### Funções de teleporte com a nova lógica ###
 
 func _on_proximity_detector_body_entered(body: Node2D) -> void:
 	if body.is_in_group(\"player\"):
 		if is_in_desperation_mode and not is_on_teleport_cooldown:
 			trigger_teleport_sequence()
 
-### MODIFICADO: Agora calcula o destino do teleporte ###
 func trigger_teleport_sequence() -> void:
-	# Verifica se temos os offsets e um alvo válido
 	if teleport_offsets.size() < 2:
-		print(\"ERRO: Defina pelo menos 2 'Teleport Offsets' no Inspetor!\")
 		return
 	if not is_instance_valid(target):
 		return
@@ -298,23 +296,18 @@ func trigger_teleport_sequence() -> void:
 	is_on_teleport_cooldown = true
 	velocity = Vector2.ZERO
 	
-	# Primeiro teleporte: Pega a posição do jogador e soma o primeiro offset
 	var destination = target.global_position + teleport_offsets[0]
 	global_position = destination
 	
 	teleport_timer.start()
 
-### MODIFICADO: Agora calcula o destino do segundo teleporte ###
 func _on_teleport_timer_timeout() -> void:
-	# Verifica se o alvo ainda é válido (jogador pode ter morrido, etc.)
 	if is_instance_valid(target):
-		# Segundo teleporte: Pega a posição ATUAL do jogador e soma o segundo offset
 		var destination = target.global_position + teleport_offsets[1]
 		global_position = destination
 	
 	teleport_cooldown.start()
 
-	# Imediatamente retorna ao estado de perseguição
 	if has_target and is_instance_valid(target):
 		current_state = State.CHASE
 	else:
@@ -322,7 +315,59 @@ func _on_teleport_timer_timeout() -> void:
 
 func _on_teleport_cooldown_timeout() -> void:
 	is_on_teleport_cooldown = false
-	print(\"Inimigo pode teleportar novamente.\")
+
+# --- NOVAS FUNÇÕES PARA QUEDA ---
+func teleport_to_safe_spot() -> void:
+	animated_sprite.visible = true
+	collision_shape.set_deferred(\"disabled\", false)
+	
+	# VERIFICAÇÃO PRINCIPAL: O contador de quedas atingiu o limite?
+	if pit_fall_counter >= 2:
+		if fixed_respawn_point:
+			global_position = fixed_respawn_point.global_position
+		else:
+			# Fallback caso o ponto fixo não esteja configurado
+			global_position = last_safe_on_floor_position
+		
+		current_state = State.IDLE
+		pit_fall_counter = 0 # Zera o contador após a ação de emergência
+	else:
+		# LÓGICA NORMAL (Contador < 2)
+		if has_target and is_instance_valid(target):
+			global_position = target.global_position + pit_respawn_offset
+			current_state = State.CHASE
+		else:
+			global_position = last_safe_on_floor_position
+			current_state = State.IDLE
+		
+		# Inicia o timer para resetar o contador, já que foi um teleporte normal
+		pit_counter_reset_timer.start()
+
+	velocity = Vector2.ZERO
+	knockback = Vector2.ZERO
+	is_teleporting_from_pit = false
+
+func _on_pit_detector_area_entered(area: Area2D) -> void:
+	# Verifica se a área é a correta E se já não estamos no meio de um teleporte
+	if area.is_in_group(\"fall_pit\") and not is_teleporting_from_pit:
+		is_teleporting_from_pit = true # Ativa a trava para não executar de novo
+		
+		# Para o timer de reset, pois o inimigo não está mais seguro
+		pit_counter_reset_timer.stop()
+		
+		# Incrementa o contador de quedas
+		pit_fall_counter += 1
+		
+		velocity = Vector2.ZERO
+		current_state = State.IDLE
+		animated_sprite.visible = false
+		collision_shape.set_deferred(\"disabled\", true)
+		
+		pit_teleport_timer.start()
+
+# ADICIONE ESTA NOVA FUNÇÃO AO SEU SCRIPT
+func _on_pit_counter_reset_timer_timeout() -> void:
+	pit_fall_counter = 0
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_opd48"]
@@ -499,11 +544,16 @@ radius = 302.134
 [sub_resource type="CircleShape2D" id="CircleShape2D_3ckus"]
 radius = 281.349
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_2woak"]
+radius = 89.2861
+
 [node name="Shadow" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 2
 script = SubResource("GDScript_4g3ns")
+max_health = 100
 teleport_offsets = Array[Vector2]([Vector2(400, 0), Vector2(500, 0)])
+pit_respawn_offset = Vector2(-100, -250)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-14.5, -14.0781)
@@ -566,3 +616,18 @@ one_shot = true
 [node name="TeleportCooldown" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
+
+[node name="PitDetector" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PitDetector"]
+shape = SubResource("CircleShape2D_2woak")
+
+[node name="PitTeleportTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="PitCounterResetTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="area_entered" from="PitDetector" to="." method="_on_pit_detector_area_entered"]

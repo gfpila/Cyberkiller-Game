@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://mel0qn0h8f4w"]
+[gd_scene load_steps=18 format=3 uid="uid://mel0qn0h8f4w"]
 
 [ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_21ewi"]
 [ext_resource type="Script" uid="uid://4gj715xnr3rf" path="res://scenes/level10/level_10.gd" id="1_hvkqq"]
@@ -23,6 +23,18 @@ size = Vector2(861, 168)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kv7bg"]
 size = Vector2(209.75, 199)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cuewi"]
+size = Vector2(167, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4o0ge"]
+size = Vector2(204.5, 1.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jj33t"]
+size = Vector2(155, 7)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jpcka"]
+size = Vector2(203.5, 6)
 
 [node name="Level10" type="Node2D"]
 script = ExtResource("1_hvkqq")
@@ -95,3 +107,28 @@ position = Vector2(1461, 618)
 
 [node name="Drone2" parent="." instance=ExtResource("7_3depk")]
 position = Vector2(537, 154)
+
+[node name="ZonaDeQueda" type="Area2D" parent="." groups=["fall_pit"]]
+position = Vector2(135, 850)
+
+[node name="Hole" type="CollisionShape2D" parent="ZonaDeQueda"]
+position = Vector2(-43.5, 122)
+shape = SubResource("RectangleShape2D_cuewi")
+
+[node name="Hole2" type="CollisionShape2D" parent="ZonaDeQueda"]
+position = Vector2(139, 203.75)
+shape = SubResource("RectangleShape2D_4o0ge")
+
+[node name="Hole3" type="CollisionShape2D" parent="ZonaDeQueda"]
+position = Vector2(1181, 201.5)
+shape = SubResource("RectangleShape2D_jj33t")
+
+[node name="Hole4" type="CollisionShape2D" parent="ZonaDeQueda"]
+position = Vector2(1571.25, 201)
+shape = SubResource("RectangleShape2D_jpcka")
+
+[node name="PontoFixoRespawnInimigo" type="Marker2D" parent="."]
+position = Vector2(918, 854)
+
+[node name="PitCounterResetTimer" type="Timer" parent="."]
+wait_time = 0.5
