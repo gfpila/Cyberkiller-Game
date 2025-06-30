@@ -18,7 +18,7 @@ extends Node2D
 
 var current_level = null
 var player = null
-var double_attack_unlocked = false
+var double_attack_unlocked = true
 
 @onready var level_container = $LevelContainer
 @onready var hud = $HUD/Life
@@ -27,7 +27,7 @@ var player_health = 50
 var player_max_health = 50
 
 func _ready():
-	load_level(levels['1'])
+	load_level(levels['13'])
 
 func load_level(path):
 	# Limpa level anterior

@@ -1,0 +1,89 @@
+[gd_scene load_steps=18 format=3 uid="uid://b4yaoifsojlw6"]
+
+[ext_resource type="Script" uid="uid://urs7mwhljqao" path="res://scenes/enemyFinalBoss/laser.gd" id="1_00rre"]
+[ext_resource type="Texture2D" uid="uid://bgy46op1nd0c1" path="res://enemies/FinalBoss/laser/0.png" id="2_d2blh"]
+[ext_resource type="Texture2D" uid="uid://b7gbpuor33it8" path="res://enemies/FinalBoss/laser/1.png" id="3_58o36"]
+[ext_resource type="Texture2D" uid="uid://e1clm8abaho1" path="res://enemies/FinalBoss/laser/2.png" id="4_5p32t"]
+[ext_resource type="Texture2D" uid="uid://x5eqiiwskkg" path="res://enemies/FinalBoss/laser/3.png" id="5_aj4ln"]
+[ext_resource type="Texture2D" uid="uid://kpddspivj1kx" path="res://enemies/FinalBoss/laser/4.png" id="6_px6m4"]
+[ext_resource type="Texture2D" uid="uid://8fvlyrxah1v6" path="res://enemies/FinalBoss/laser/5.png" id="7_top8m"]
+[ext_resource type="Texture2D" uid="uid://b1vphpas3l1jt" path="res://enemies/FinalBoss/laser/6.png" id="8_74acb"]
+[ext_resource type="Texture2D" uid="uid://duwhpesge2gdl" path="res://enemies/FinalBoss/laser/7.png" id="9_7r307"]
+[ext_resource type="Texture2D" uid="uid://dsoxids3p7y8s" path="res://enemies/FinalBoss/laser/8.png" id="10_yc0sl"]
+[ext_resource type="Texture2D" uid="uid://ctkjpo5ixfqsf" path="res://enemies/FinalBoss/laser/9.png" id="11_2yfg8"]
+[ext_resource type="Texture2D" uid="uid://ch6t7nhpf0sye" path="res://enemies/FinalBoss/laser/10.png" id="12_6nhch"]
+[ext_resource type="Texture2D" uid="uid://cf8egyn4nwulx" path="res://enemies/FinalBoss/laser/11.png" id="13_tp5ee"]
+[ext_resource type="Texture2D" uid="uid://rnjacmsugu20" path="res://enemies/FinalBoss/laser/12.png" id="14_ogcrx"]
+[ext_resource type="Texture2D" uid="uid://r6f454dr55sr" path="res://enemies/FinalBoss/laser/13.png" id="15_00skb"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ntwqw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_d2blh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_58o36")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_5p32t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_aj4ln")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_px6m4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_top8m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_74acb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_7r307")
+}],
+"loop": false,
+"name": &"charge",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_yc0sl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_2yfg8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_6nhch")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_tp5ee")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_ogcrx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_00skb")
+}],
+"loop": false,
+"name": &"feixe",
+"speed": 13.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2cr2s"]
+size = Vector2(754, 51.75)
+
+[node name="Laser" type="Area2D"]
+position = Vector2(351, -6)
+script = ExtResource("1_00rre")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-9, -1)
+scale = Vector2(2.93265, 4.64969)
+sprite_frames = SubResource("SpriteFrames_ntwqw")
+animation = &"feixe"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-7, 1.125)
+shape = SubResource("RectangleShape2D_2cr2s")

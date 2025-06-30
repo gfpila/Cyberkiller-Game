@@ -5,6 +5,7 @@ extends Node2D
 @onready var exit_sprite = $ExitArea/AnimatedSprite2D
 @onready var audio = $ExitArea/AudioStreamPlayer2D
 
+
 func _ready():
 	exit_sprite.visible = false
 	exit_area.body_entered.connect(_on_exit_area_entered)

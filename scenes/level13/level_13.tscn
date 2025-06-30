@@ -1,13 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://djw84ela8i225"]
+[gd_scene load_steps=8 format=3 uid="uid://djw84ela8i225"]
 
 [ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_x3ho7"]
 [ext_resource type="Texture2D" uid="uid://l7c8a3mlmc65" path="res://Backgrounds/img 3.jpg" id="2_qb4ce"]
+[ext_resource type="PackedScene" uid="uid://ts3tbluj363j" path="res://scenes/enemyFinalBoss/final_boss.tscn" id="3_qb4ce"]
 [ext_resource type="PackedScene" uid="uid://cqphseavdiiiy" path="res://scenes/resources/player_start.tscn" id="3_so0uq"]
 [ext_resource type="PackedScene" uid="uid://cbyiwji00befa" path="res://scenes/resources/wall.tscn" id="4_62r5n"]
 [ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="5_ar8lb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n4b2e"]
-size = Vector2(1873.75, 199)
+size = Vector2(1952, 133.5)
 
 [node name="level_13" type="Node2D"]
 
@@ -16,11 +17,14 @@ position = Vector2(976.718, 555.569)
 scale = Vector2(1.01488, 1.0613)
 texture = ExtResource("2_qb4ce")
 
+[node name="FinalBoss" parent="." instance=ExtResource("3_qb4ce")]
+position = Vector2(1568, 908)
+
 [node name="PlayerStart" parent="." instance=ExtResource("3_so0uq")]
 position = Vector2(134, 884)
 
 [node name="StaticBody2D3" parent="." instance=ExtResource("4_62r5n")]
-position = Vector2(17, 730)
+position = Vector2(17, 783)
 
 [node name="StaticBody2D4" parent="." instance=ExtResource("4_62r5n")]
 position = Vector2(1876, 733)
@@ -34,14 +38,10 @@ collision_layer = 2
 collision_mask = 5
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D5"]
-position = Vector2(851.125, 1174)
+position = Vector2(861, 1206.75)
 shape = SubResource("RectangleShape2D_n4b2e")
 
 [node name="StaticBody2D6" type="StaticBody2D" parent="."]
-position = Vector2(107, -143)
+position = Vector2(971, 914)
 collision_layer = 2
 collision_mask = 5
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D6"]
-position = Vector2(209, 1636)
-shape = SubResource("RectangleShape2D_n4b2e")

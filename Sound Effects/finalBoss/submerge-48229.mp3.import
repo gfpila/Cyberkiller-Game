@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cfgk3l8o5yoqj"
+path="res://.godot/imported/submerge-48229.mp3-539b7bb552202faaf66943983a361d5f.mp3str"
+
+[deps]
+
+source_file="res://Sound Effects/finalBoss/submerge-48229.mp3"
+dest_files=["res://.godot/imported/submerge-48229.mp3-539b7bb552202faaf66943983a361d5f.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

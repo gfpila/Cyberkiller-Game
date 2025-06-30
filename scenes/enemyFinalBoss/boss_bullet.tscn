@@ -1,0 +1,51 @@
+[gd_scene load_steps=10 format=3 uid="uid://bk6os7xtyi7jq"]
+
+[ext_resource type="Script" uid="uid://cu60eqpo6jbf" path="res://boss_bullet.gd" id="1_51yxf"]
+[ext_resource type="Texture2D" uid="uid://7q6xdiqdaoa2" path="res://enemies/FinalBoss/projectile/0.png" id="2_i7nr0"]
+[ext_resource type="Texture2D" uid="uid://cxenfovvmvruc" path="res://enemies/FinalBoss/projectile/1.png" id="3_wsjwt"]
+[ext_resource type="Texture2D" uid="uid://cryto4ixqosm0" path="res://enemies/FinalBoss/projectile/2.png" id="4_ml67h"]
+[ext_resource type="Texture2D" uid="uid://d15b3v0i6q4to" path="res://enemies/FinalBoss/projectile/3.png" id="5_im4b1"]
+[ext_resource type="Texture2D" uid="uid://cbp67ymae3iti" path="res://enemies/FinalBoss/projectile/4.png" id="6_e52at"]
+[ext_resource type="Texture2D" uid="uid://cp1jkhy0r1kv3" path="res://enemies/FinalBoss/projectile/5.png" id="7_wvo6f"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1ydi4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_i7nr0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_wsjwt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ml67h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_im4b1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_e52at")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_wvo6f")
+}],
+"loop": false,
+"name": &"shoot",
+"speed": 22.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ts3n"]
+size = Vector2(87.25, 51.75)
+
+[node name="boss_bullet" type="Area2D"]
+script = ExtResource("1_51yxf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-9, -1)
+scale = Vector2(2.93265, 4.64969)
+sprite_frames = SubResource("SpriteFrames_1ydi4")
+animation = &"shoot"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-4.625, 1.125)
+shape = SubResource("RectangleShape2D_8ts3n")

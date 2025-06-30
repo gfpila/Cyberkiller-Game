@@ -150,10 +150,10 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cgp45"]
-size = Vector2(262, 122.5)
+size = Vector2(164, 80.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s7wsm"]
-size = Vector2(270.37, 157)
+size = Vector2(161.111, 89.75)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pxnga"]
 radius = 454.004
@@ -169,7 +169,7 @@ sprite_frames = SubResource("SpriteFrames_wa55q")
 animation = &"run"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -12.25)
+position = Vector2(2, 18.125)
 shape = SubResource("RectangleShape2D_cgp45")
 
 [node name="HandPivot" type="Node2D" parent="."]
@@ -181,7 +181,7 @@ position = Vector2(6.48132, -3)
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HandPivot/SwordArea"]
-position = Vector2(-6.48132, 18)
+position = Vector2(-4.62942, 40.125)
 shape = SubResource("RectangleShape2D_s7wsm")
 
 [node name="DetectionArea" type="Area2D" parent="."]
@@ -196,7 +196,7 @@ metadata/_edit_lock_ = true
 position = Vector2(-11, -9)
 
 [node name="hit" type="AudioStreamPlayer2D" parent="Audio"]
-position = Vector2(-9, -8)
+position = Vector2(-9, 8)
 stream = ExtResource("31_whhf1")
 
 [node name="attack" type="AudioStreamPlayer2D" parent="Audio"]
