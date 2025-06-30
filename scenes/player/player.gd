@@ -235,7 +235,9 @@ func die() -> void:
 	var game_over_scene = preload("res://scenes/gameOver/gameOver.tscn")
 	var game_over_instance = game_over_scene.instantiate()
 	get_tree().root.add_child(game_over_instance)
-
+	var main = get_tree().root.get_node("Main")
+	var hud = main.get_node("HUD")
+	hud.visible = false
 	await get_tree().create_timer(3).timeout
 
 	if is_instance_valid(get_tree()) and get_tree().root and is_inside_tree():
@@ -255,5 +257,5 @@ func play_audio(audio: String) -> void:
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemies"):
-		var damage = 30 if is_dash_attack else 1000
+		var damage = 30 if is_dash_attack else 10
 		body.take_damage(damage, global_position)
