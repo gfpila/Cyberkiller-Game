@@ -316,4 +316,4 @@ scale = Vector2(4.48409, 4.65865)
 sprite_frames = SubResource("SpriteFrames_t32bl")
 animation = &"blast"
 autoplay = "blast"
-frame_progress = 0.464358
+frame_progress = 0.520982

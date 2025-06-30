@@ -255,5 +255,5 @@ func play_audio(audio: String) -> void:
 
 func _on_attack_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemies"):
-		var damage = 30 if is_dash_attack else 10
+		var damage = 30 if is_dash_attack else 1000
 		body.take_damage(damage, global_position)

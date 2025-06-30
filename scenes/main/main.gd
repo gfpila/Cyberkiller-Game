@@ -27,7 +27,7 @@ var player_health = 50
 var player_max_health = 50
 
 func _ready():
-	load_level(levels['11'])
+	load_level(levels['13'])
 
 func load_level(path):
 	if current_level:

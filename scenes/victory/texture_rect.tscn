@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://clribt1axawfl"]
+
+[ext_resource type="Texture2D" uid="uid://drk4dw8tklhcw" path="res://menu/tea vitória .png" id="1_ebvjy"]
+[ext_resource type="AudioStream" uid="uid://dah2g6yqw31ug" path="res://Music/menu/win-in-the-video-game-191820.mp3" id="2_18e3i"]
+
+[node name="TextureRect" type="TextureRect"]
+offset_right = 1920.0
+offset_bottom = 1076.0
+texture = ExtResource("1_ebvjy")
+expand_mode = 1
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_18e3i")
+autoplay = true
