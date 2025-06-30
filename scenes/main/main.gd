@@ -27,37 +27,28 @@ var player_health = 50
 var player_max_health = 50
 
 func _ready():
-	load_level(levels['13'])
+	load_level(levels['11'])
 
 func load_level(path):
-	# Limpa level anterior
 	if current_level:
-		# 1. Remove todos os filhos do container (incluindo o nível)
 		for child in level_container.get_children():
 			child.queue_free()
 		
 		await get_tree().process_frame
 		current_level = null
-	
-	# Carrega novo level e instancia no container
+
 	var level_scene = load(path)
 	current_level = level_scene.instantiate()
 	level_container.add_child(current_level)
 	
-	# Encontra o player dentro do novo level
 	player = $Player
 	player.double_attack_unlocked = double_attack_unlocked
-	# Move o player para o ponto de início do novo level
 	var spawn_point = current_level.get_node_or_null("PlayerStart")
 	if spawn_point:
 		player.global_position = spawn_point.global_position
 	
-	# Atualiza status do player
 	player.health = player_health
 	player.max_health = player_max_health
-	
-	# Conecta sinal para manter estado sincronizado
-	#player.health_changed.disconnect_all()
 	player.health_changed.connect(_on_player_health_changed)
 
 	hud.set_player(player)
@@ -84,4 +75,4 @@ func stop_enemies_attack():
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	for enemy in enemies:
 			if enemy.attack_cooldown:
-				enemy.attack_cooldown = 9999  # Valor grande para congelar ataques
+				enemy.attack_cooldown = 9999

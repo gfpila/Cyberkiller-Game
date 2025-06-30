@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cwlrhops7e2kv"]
+[gd_scene load_steps=10 format=3 uid="uid://cwlrhops7e2kv"]
 
 [ext_resource type="Script" uid="uid://cia3tpmkjvbaq" path="res://scenes/level11/level_11.gd" id="1_15of5"]
 [ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_l7suh"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cbyiwji00befa" path="res://scenes/resources/wall.tscn" id="4_0w7cs"]
 [ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="5_m3w6u"]
 [ext_resource type="PackedScene" uid="uid://gkex5f5q7y0i" path="res://scenes/enemy_CrowAnimations/Crow.tscn" id="6_w01es"]
+[ext_resource type="PackedScene" uid="uid://cuv0h3p36bfmp" path="res://scenes/player/heal.tscn" id="8_l1ad6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aqoip"]
 size = Vector2(1909.75, 199)
@@ -42,4 +43,7 @@ position = Vector2(869.125, 1174)
 shape = SubResource("RectangleShape2D_aqoip")
 
 [node name="Crow" parent="." instance=ExtResource("6_w01es")]
-position = Vector2(842, 821)
+position = Vector2(860, 933)
+
+[node name="Heal" parent="." instance=ExtResource("8_l1ad6")]
+position = Vector2(1684, 817)

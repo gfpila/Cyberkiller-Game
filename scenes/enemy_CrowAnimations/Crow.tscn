@@ -453,7 +453,7 @@ func _start_empowered_sequence() -> void:
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_opd48"]
-size = Vector2(388, 452)
+size = Vector2(388, 335)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_iv7se"]
 animations = [{
@@ -578,7 +578,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e5e7g"]
-size = Vector2(632.87, 456.25)
+size = Vector2(454.398, 342)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e5e7g"]
 radius = 641.05
@@ -595,12 +595,12 @@ consecutive_hit_window = 2.0
 stun_immunity_duration = 3.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(129, -120)
+position = Vector2(129, -178.5)
 shape = SubResource("RectangleShape2D_opd48")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(130, -120.25)
-scale = Vector2(16.6496, 15.5)
+position = Vector2(101.252, -174.5)
+scale = Vector2(13.7748, 11.7586)
 sprite_frames = SubResource("SpriteFrames_iv7se")
 animation = &"overload"
 
@@ -628,7 +628,7 @@ position = Vector2(129.63, -110)
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HandPivot/SwordArea"]
-position = Vector2(125.926, 12.125)
+position = Vector2(36.6898, -45)
 shape = SubResource("RectangleShape2D_e5e7g")
 
 [node name="DetectionArea" type="Area2D" parent="."]

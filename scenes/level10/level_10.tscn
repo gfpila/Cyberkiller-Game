@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://mel0qn0h8f4w"]
+[gd_scene load_steps=19 format=3 uid="uid://mel0qn0h8f4w"]
 
 [ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_21ewi"]
 [ext_resource type="Script" uid="uid://4gj715xnr3rf" path="res://scenes/level10/level_10.gd" id="1_hvkqq"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="5_gbfju"]
 [ext_resource type="PackedScene" uid="uid://bx2kvly7q7pye" path="res://scenes/enemy_Shadow/Shadow.tscn" id="6_q1ymo"]
 [ext_resource type="PackedScene" uid="uid://c41b2rjoasjrc" path="res://scenes/enemyDrone/drone.tscn" id="7_3depk"]
+[ext_resource type="PackedScene" uid="uid://cuv0h3p36bfmp" path="res://scenes/player/heal.tscn" id="9_12gip"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3depk"]
 size = Vector2(1963.63, 20)
@@ -58,6 +59,7 @@ position = Vector2(1863, 884)
 
 [node name="Enemy" parent="." instance=ExtResource("6_q1ymo")]
 position = Vector2(1038, 791)
+pit_respawn_offset = Vector2(0, -250)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 collision_layer = 2
@@ -132,3 +134,6 @@ position = Vector2(918, 854)
 
 [node name="PitCounterResetTimer" type="Timer" parent="."]
 wait_time = 0.5
+
+[node name="Heal" parent="." instance=ExtResource("9_12gip")]
+position = Vector2(1679, 885)

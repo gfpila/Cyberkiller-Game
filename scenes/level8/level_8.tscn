@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bubifo7e8g2gd"]
+[gd_scene load_steps=12 format=3 uid="uid://bubifo7e8g2gd"]
 
 [ext_resource type="PackedScene" uid="uid://cbpfyd55g7y5f" path="res://scenes/resources/background.tscn" id="1_t6dlq"]
 [ext_resource type="Script" uid="uid://d0ft5ku8mf83x" path="res://scenes/level8/level_8.gd" id="1_vq62n"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://ukdhlpmvhdf5" path="res://scenes/resources/exit_area.tscn" id="5_6qxid"]
 [ext_resource type="PackedScene" uid="uid://c41b2rjoasjrc" path="res://scenes/enemyDrone/drone.tscn" id="6_4ssdh"]
 [ext_resource type="PackedScene" uid="uid://c6ykrdljvaluu" path="res://scenes/enemyBat/bat.tscn" id="7_53xj5"]
+[ext_resource type="PackedScene" uid="uid://cuv0h3p36bfmp" path="res://scenes/player/heal.tscn" id="9_6qxid"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_53xj5"]
 size = Vector2(506, 93)
@@ -79,3 +80,6 @@ collision_mask = 5
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
 position = Vector2(983, 893)
 shape = SubResource("RectangleShape2D_vq62n")
+
+[node name="Heal" parent="." instance=ExtResource("9_6qxid")]
+position = Vector2(1580, 529)
