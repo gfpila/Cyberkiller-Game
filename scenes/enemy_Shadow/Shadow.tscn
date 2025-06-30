@@ -322,24 +322,20 @@ func _on_teleport_timer_timeout() -> void:
 func _on_teleport_cooldown_timeout() -> void:
 	is_on_teleport_cooldown = false
 
-# --- NOVAS FUNÇÕES PARA QUEDA ---
 func teleport_to_safe_spot() -> void:
 	animated_sprite.visible = true
 	collision_shape.set_deferred(\"disabled\", false)
 	
-	# VERIFICAÇÃO PRINCIPAL: O contador de quedas atingiu o limite?
 	if pit_fall_counter >= 2:
 		if fixed_respawn_point:
 			audio_nodes['teleport'].play()
 			global_position = fixed_respawn_point.global_position
 		else:
-			# Fallback caso o ponto fixo não esteja configurado
 			global_position = last_safe_on_floor_position
 		
 		current_state = State.IDLE
-		pit_fall_counter = 0 # Zera o contador após a ação de emergência
+		pit_fall_counter = 0 
 	else:
-		# LÓGICA NORMAL (Contador < 2)
 		if has_target and is_instance_valid(target):
 			audio_nodes['teleport'].play()
 			global_position = target.global_position + pit_respawn_offset

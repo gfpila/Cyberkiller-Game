@@ -18,7 +18,7 @@ extends Node2D
 
 var current_level = null
 var player = null
-var double_attack_unlocked = true
+var double_attack_unlocked = false
 
 @onready var level_container = $LevelContainer
 @onready var hud = $HUD/Life
