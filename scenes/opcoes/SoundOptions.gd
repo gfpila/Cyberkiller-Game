@@ -18,3 +18,7 @@ func _on_unmute_pressed():
 	mute_button.visible = true
 	unmute_button.visible = false
 	get_tree().change_scene_to_file("res://scenes/main-menu/main_menu.tscn")	
+	
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+		get_tree().change_scene_to_file("res://scenes/main-menu/main_menu.tscn")
