@@ -48,14 +48,14 @@ script/source = "extends CharacterBody2D
 @export var attack_cooldown: float = 0.35
 
 @export_group(\"Stun\")
-@export var hits_for_stun: int = 3
+@export var hits_for_stun: int = 2
 @export var stun_duration: float = 3.0
-@export var consecutive_hit_window: float = 1.0
+@export var consecutive_hit_window: float = 2.0
 @export var stun_immunity_duration: float = 5.0
 
 @export_group(\"Misc\")
 @export var friction: float = 0.8
-@export var vertical_knockback_factor: float = 0.3
+@export var vertical_knockback_factor: float = 0.5
 @export var separation_distance: float = 80.0
 @export var separation_strength: float = 350.0
 @export var detection_range: float = 400.0
@@ -79,6 +79,7 @@ var is_empowered_attack: bool = false
 var stored_damage_for_retaliation: int = 0 # <-- ADICIONE ESTA LINHA
 var is_preparing_attack: bool = false # <-- Nossa nova trava
 var damage_to_retaliate: int = 0 # <-- Nossa nova variável \"snapshot\"
+var hits_taken_while_stunned: int = 0 # <-- ADICIONE ESTA LINHA
 
 
 
@@ -127,37 +128,48 @@ func _ready() -> void:
 # ALTERADO: Removida a linha que tocava a animação diretamente.
 # ALTERADO: Reintroduzida a chamada para tocar a animação de dano no estado STUNNED.
 func take_damage(amount: int, attack_origin: Vector2) -> void:
-	if current_state == State.DEAD:
+	# 1. Checa estados ininterruptíveis (Super Armor)
+	if current_state in [State.DEAD, State.ATTACK, State.PREPARE_ATTACK]:
+		if current_state != State.DEAD:
+			health -= amount
+			audio_nodes[\"hit\"].play()
+			if health <= 0:
+				die()
 		return
 
-	# Lógica de dano simplificada
+	# 2. Aplica dano e checa morte para todos os outros casos
 	health -= amount
 	audio_nodes[\"hit\"].play()
-
 	if health <= 0:
 		die()
 		return
 
-	# Lógica de dano durante o stun (para o ataque retaliador)
+	# 3. Lógica de estados após o dano
 	if current_state == State.STUNNED:
+		# Se JÁ está em stun, conta os hits para o especial
 		stored_damage_for_retaliation += amount
+		hits_taken_while_stunned += 1
 		animated_sprite.play(\"hurt\")
-		return
-
-	# Lógica para contar acertos para o stun
-	if not is_stun_immune:
+		
+	elif not is_stun_immune:
+		# Se não está imune, conta hits para ENTRAR em stun
 		consecutive_hits += 1
 		consecutive_hit_timer.start()
 		
+		# Toca a animação de dano, mas NÃO muda para o estado HURT.
+		# Isso evita que o inimigo pare e quebre o combo do jogador.
+		animated_sprite.play(\"hurt\")
+		
 		if consecutive_hits >= hits_for_stun:
+			# Stun alcançado!
 			consecutive_hits = 0
 			consecutive_hit_timer.stop()
-			start_stun()
-			return
-
-	# Lógica do estado de \"hurt\"
-	current_state = State.HURT
-	hurt_state_timer.start(0.3)
+			start_stun() # Inicia o processo de stun
+			
+	else:
+		# Se está com imunidade a stun, aí sim ele entra em \"hurt\" para recuar.
+		current_state = State.HURT
+		hurt_state_timer.start(0.3)
 
 
 # ALTERADO: `perform_empowered_attack` agora toca a animação mesmo se defendido
@@ -316,35 +328,40 @@ func is_player_defending(player: Node2D) -> bool:
 	return false
 
 # ALTERADO: Adicionada verificação de 'target' para mais robustez
+# SUBSTITUA SUA FUNÇÃO INTEIRA POR ESTA
+# SUBSTITUA SUA FUNÇÃO 'start_stun' INTEIRA POR ESTA VERSÃO
+# SUBSTITUA SUA FUNÇÃO 'start_stun' PELA VERSÃO FINAL ABAIXO
 func start_stun() -> void:
 	current_state = State.STUNNED
-	# NÃO zeramos o stored_damage aqui, pois o golpe que causa o stun ainda não foi processado
-	
-	# Espera o tempo do stun passar. É aqui que o jogador pode atacar para acumular dano.
-	await get_tree().create_timer(stun_duration).timeout
-	
-	# O stun acabou. Agora, \"congelamos\" o valor do dano acumulado.
-	damage_to_retaliate = stored_damage_for_retaliation
-	stored_damage_for_retaliation = 0 # Zeramos o acumulador para o próximo ciclo
-	
-	# Só contra-ataca se ainda for válido
-	if health > 0 and current_state == State.STUNNED and is_instance_valid(target):
-		# Toca a animação de overload para sinalizar o ataque
-		animated_sprite.play(\"overload\")
-		
-		# Espera um frame para garantir que a animação \"overload\" seja desenhada na tela
+	hits_taken_while_stunned = 0
+	animated_sprite.modulate = Color.RED
+
+	var time_elapsed = 0.0
+	while time_elapsed < stun_duration and hits_taken_while_stunned < 5:
+		time_elapsed += get_process_delta_time()
 		await get_tree().process_frame
-		
-		# Chama o ataque fortalecido
+
+	damage_to_retaliate = stored_damage_for_retaliation
+	stored_damage_for_retaliation = 0
+
+	if health > 0 and current_state == State.STUNNED and is_instance_valid(target):
+
+		if hits_taken_while_stunned >= 5:
+			# MUDANÇA: Define o estado para PREPARE_ATTACK antes da animação
+			current_state = State.PREPARE_ATTACK
+			# A função handle_animations agora vai tocar \"overload\"
+			await animated_sprite.animation_finished
+
 		await perform_empowered_attack()
-		
+
 		is_stun_immune = true
 		stun_immunity_timer.start()
-		
 		current_state = State.CHASE if has_target else State.IDLE
 
 	elif health > 0:
 		current_state = State.IDLE
+
+	animated_sprite.modulate = Color.WHITE
 
 func _on_consecutive_hit_timer_timeout() -> void:
 	consecutive_hits = 0
@@ -388,17 +405,29 @@ func handle_combat() -> void:
 		velocity.x = final_direction.x * move_speed
 
 func start_attack() -> void:
-	if !can_attack: return
+	if not can_attack or not is_instance_valid(target): return # Adicionada verificação de target
+	
 	can_attack = false
 	current_state = State.ATTACK
+	
+	# NOVO: Verifica se o jogador está defendendo/de costas
+	var was_defended = is_player_defending(target)
+	
 	await get_tree().create_timer(0.15).timeout
+	
 	audio_nodes[\"attack\"].play()
-	update_attack_area_position()
-	attack_area.monitoring = true
+	
+	# Só ativa a área de dano se o ataque NÃO foi defendido
+	if not was_defended:
+		update_attack_area_position()
+		attack_area.monitoring = true
+	
 	await animated_sprite.animation_finished
+	
 	attack_area.monitoring = false
 	if current_state == State.ATTACK:
 		current_state = State.CHASE if has_target else State.IDLE
+		
 	await get_tree().create_timer(attack_cooldown).timeout
 	can_attack = true
 
@@ -552,7 +581,7 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
-"duration": 10.0,
+"duration": 30.0,
 "texture": ExtResource("24_ylfv4")
 }],
 "loop": true,
@@ -590,8 +619,6 @@ script = SubResource("GDScript_4g3ns")
 max_health = 200
 move_speed = 100.0
 attack_range = 230.0
-hits_for_stun = 2
-consecutive_hit_window = 2.0
 stun_immunity_duration = 3.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

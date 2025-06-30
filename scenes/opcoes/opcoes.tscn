@@ -16,25 +16,27 @@ texture = ExtResource("1_uiea3")
 
 [node name="ButtonUnmute" type="TextureButton" parent="."]
 anchors_preset = -1
-anchor_left = 0.055
-anchor_top = 0.834
-anchor_right = 0.055
-anchor_bottom = 0.834
-offset_left = -692.6
-offset_top = -571.72
-offset_right = 843.4
-offset_bottom = 452.28
+anchor_left = 0.274
+anchor_top = 0.553
+anchor_right = 0.274
+anchor_bottom = 0.553
+offset_left = -383.08
+offset_top = -256.24
+offset_right = 1152.92
+offset_bottom = 767.76
+scale = Vector2(0.5, 0.5)
 texture_normal = ExtResource("3_6jgmn")
-stretch_mode = 4
+stretch_mode = 6
 
 [node name="ButtonMute" type="TextureButton" parent="."]
 anchors_preset = -1
-anchor_left = 0.931
-anchor_top = 0.819
-anchor_right = 0.931
-anchor_bottom = 0.819
-offset_left = -767.52
-offset_top = -512.52
-offset_right = 768.48
-offset_bottom = 511.48
+anchor_left = 0.719
+anchor_top = 0.556
+anchor_right = 0.719
+anchor_bottom = 0.556
+offset_left = -384.48
+offset_top = -255.48
+offset_right = 1151.52
+offset_bottom = 768.52
+scale = Vector2(0.5, 0.5)
 texture_normal = ExtResource("4_00e1i")
