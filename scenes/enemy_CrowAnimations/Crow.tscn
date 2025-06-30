@@ -78,6 +78,8 @@ var is_stun_immune: bool = false
 var is_empowered_attack: bool = false
 var stored_damage_for_retaliation: int = 0 # <-- ADICIONE ESTA LINHA
 var is_preparing_attack: bool = false # <-- Nossa nova trava
+var damage_to_retaliate: int = 0 # <-- Nossa nova variável \"snapshot\"
+
 
 
 @onready var animated_sprite = $AnimatedSprite2D
@@ -139,7 +141,6 @@ func take_damage(amount: int, attack_origin: Vector2) -> void:
 	# Lógica de dano durante o stun (para o ataque retaliador)
 	if current_state == State.STUNNED:
 		stored_damage_for_retaliation += amount
-		print(\"Dano armazenado: \", stored_damage_for_retaliation)
 		animated_sprite.play(\"hurt\")
 		return
 
@@ -317,14 +318,31 @@ func is_player_defending(player: Node2D) -> bool:
 # ALTERADO: Adicionada verificação de 'target' para mais robustez
 func start_stun() -> void:
 	current_state = State.STUNNED
-	stored_damage_for_retaliation = 0
-	is_preparing_attack = false # <-- RESETA A TRAVA AQUI
+	# NÃO zeramos o stored_damage aqui, pois o golpe que causa o stun ainda não foi processado
 	
+	# Espera o tempo do stun passar. É aqui que o jogador pode atacar para acumular dano.
 	await get_tree().create_timer(stun_duration).timeout
 	
-	# Ao final do stun, se ainda for válido, apenas muda o estado para preparar o ataque.
+	# O stun acabou. Agora, \"congelamos\" o valor do dano acumulado.
+	damage_to_retaliate = stored_damage_for_retaliation
+	stored_damage_for_retaliation = 0 # Zeramos o acumulador para o próximo ciclo
+	
+	# Só contra-ataca se ainda for válido
 	if health > 0 and current_state == State.STUNNED and is_instance_valid(target):
-		current_state = State.PREPARE_ATTACK
+		# Toca a animação de overload para sinalizar o ataque
+		animated_sprite.play(\"overload\")
+		
+		# Espera um frame para garantir que a animação \"overload\" seja desenhada na tela
+		await get_tree().process_frame
+		
+		# Chama o ataque fortalecido
+		await perform_empowered_attack()
+		
+		is_stun_immune = true
+		stun_immunity_timer.start()
+		
+		current_state = State.CHASE if has_target else State.IDLE
+
 	elif health > 0:
 		current_state = State.IDLE
 
@@ -337,17 +355,16 @@ func _on_stun_immunity_timer_timeout() -> void:
 func _on_attack_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group(\"player\") and current_state == State.ATTACK:
 		var damage_to_deal = base_attack_damage
-		# Se for o ataque pós-stun...
+		
 		if is_empowered_attack:
-			# Verifica se houve dano armazenado
-			if stored_damage_for_retaliation > 0:
-				# Usa o dano armazenado como dano do ataque
-				damage_to_deal = stored_damage_for_retaliation
-				print(\"Retaliando com %d de dano!\" % damage_to_deal)
+			# Verifica a variável \"congelada\"
+			if damage_to_retaliate > 0:
+				damage_to_deal = damage_to_retaliate
 			else:
-				# Fallback: Se não tomou dano, duplica o dano base
 				damage_to_deal *= 2
-				print(\"Ataque fortalecido com dano duplicado!\")
+			
+			# Zera a variável após o uso
+			damage_to_retaliate = 0
 		
 		body.take_damage(damage_to_deal, global_position)
 
